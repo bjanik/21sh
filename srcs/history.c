@@ -18,10 +18,10 @@ static void	realloc_history(t_history *history)
 
 void	append_history(t_history *history, char *command)
 {
+	ft_printf("histolen = %d\n", history->history_len); 
 	if (history->history_len == history->history_size)
 		history->realloc_history(history);
 	history->history[history->history_len] = ft_strdup(command);	
-	ft_printf("\n%s\n", history->history[history->current_pos]);
 	history->history_len++;
 	history->current_pos++;
 }
@@ -29,13 +29,17 @@ void	append_history(t_history *history, char *command)
 t_history	*init_history(void)
 {
 	t_history	*history;
+	int	i;
 
+	i = 0;
 	history = (t_history*)ft_malloc(sizeof(history));
 	history->history_size = INITIAL_HISTO_SIZE;
 	history->history_len = 0;
 	history->current_pos = 0;
 	history->history = (char**)ft_malloc(sizeof(char*) *
  		(INITIAL_HISTO_SIZE + 1));
+	while (i < history->history_size)
+		history->history[i++] = NULL;
 	history->realloc_history = realloc_history;
 	history->append_history = append_history;
 	return (history);

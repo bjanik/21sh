@@ -107,6 +107,7 @@ static void	get_key(t_input *input)
 		;
 	else if (input->read_buffer[0] == '\n' && input->buffer_len > 0)
 	{
+		ft_printf("histolen = %d\n", input->history->history_len);
 		input->history->append_history(input->history, input->buffer);
 		ft_printf("\n[%s]\n", input->buffer);
 		ft_bzero(input->buffer, input->buffer_size);
