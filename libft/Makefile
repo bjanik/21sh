@@ -121,6 +121,7 @@ SRCS = ft_putstr.c \
 	   ft_valid_file.c \
 	   ft_error_msg.c \
 	   ft_malloc.c \
+	   ft_putchar_termcaps.c \
 
 OBJ = $(SRCS:.c=.o)
 RM = rm -f

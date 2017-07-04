@@ -17,5 +17,5 @@ int	ft_isprint(int c)
 	unsigned char car;
 
 	car = (unsigned char)c;
-	return (c >= 32 && c <= 126);
+	return (car >= 32 && car <= 126);
 }

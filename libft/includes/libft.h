@@ -17,6 +17,7 @@
 # include <string.h>
 # include <stdarg.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 
 # define BLK "\x1B[30m"
 # define RED "\x1B[31m"
@@ -37,12 +38,15 @@
 # define STDOUT 1
 # define STDERR 2
 
-typedef struct		s_dlst
+typedef unsigned long long int uintmax_t;
+typedef long long int intmax_t;
+
+typedef struct		s_dlist
 {
 	void			*data;
-	struct s_dlst	*next;
-	struct s_dlst	*prev;
-}					t_dlst;
+	struct s_dlist	*next;
+	struct s_dlist	*prev;
+}					t_dlist;
 
 typedef struct		s_list
 {
@@ -52,6 +56,7 @@ typedef struct		s_list
 }					t_list;
 
 int					ft_putchar(char c);
+int					ft_putchar_termcaps(int c);
 int					ft_putnchar(char c, int n);
 int					ft_putwchar_t(wchar_t wc);
 int					ft_wchar_len(wchar_t wc);
@@ -142,4 +147,7 @@ int					get_next_line(int fd, char **line);
 void				ft_display_string_tab(char **tab);
 void				ft_error_msg(char *error);
 void				*ft_malloc(size_t size);
+
+t_dlist				*ft_dlstnew(void const *data);
+void				ft_dlstadd(t_dlist *dlst, t_dlist *new);
 #endif
