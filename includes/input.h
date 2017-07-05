@@ -24,7 +24,7 @@ typedef struct	s_input
 	int			buffer_size;
 	int			cursor_line_pos;
 	char		read_buffer[MAX_KEY_LENGTH + 1];
-	void		(*get_key)(struct s_input *input);
+	int			(*get_key)(struct s_input *input);
 	void		(*insert_char)(struct s_input *input, char c);
 	void		(*delete_char)(struct s_input *input);
 	void		(*realloc_buffer)(struct s_input *input);

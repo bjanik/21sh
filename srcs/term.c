@@ -1,4 +1,16 @@
-#define TERM_C 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   term.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/05 14:55:29 by bjanik            #+#    #+#             */
+/*   Updated: 2017/07/05 16:18:21 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#define TERM_C
 #include "term.h"
 
 static void	get_term_size(t_term *term)
@@ -17,11 +29,11 @@ static void	get_prompt(t_term *term)
 	if ((pwd = getcwd(NULL, MAX_PROMPT_SIZE)) == NULL)
 	{
 		ft_putendl_fd("getcwd failed", STDERR);
-		exit(-1);	
+		exit(-1);
 	}
 	ft_bzero(term->prompt, MAX_PROMPT_SIZE);
 	if (pwd[0] == '/' && !pwd[1])
-		term->prompt[0] = *pwd; 
+		term->prompt[0] = *pwd;
 	else
 		ft_strcpy(term->prompt, ft_strrchr(pwd, '/') + 1);
 	free(pwd);
@@ -31,14 +43,14 @@ static void	get_prompt(t_term *term)
 
 static void	print_prompt(t_term *term, char *color)
 {
-	ft_printf("%s%s%s ",color, term->prompt, RESET);
+	ft_printf("%s%s%s ", color, term->prompt, RESET);
 }
 
 static void	get_cursor_pos(t_term *term)
 {
-	char buf[9];
+	char	buf[9];
 	char	**split;
-	
+
 	ft_bzero(buf, 7);
 	write(STDOUT, ASK_CURSOR_POS, 5);
 	read(STDIN, buf, 8);
@@ -48,7 +60,7 @@ static void	get_cursor_pos(t_term *term)
 	ft_free_string_tab(&split);
 }
 
-t_term	*init_term(void)
+t_term		*init_term(void)
 {
 	t_term	*term;
 
@@ -62,6 +74,5 @@ t_term	*init_term(void)
 	term->get_term_size(term);
 	term->get_prompt(term);
 	term->get_cursor_pos = get_cursor_pos;
-	return (term);	
+	return (term);
 }
-
