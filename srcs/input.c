@@ -12,9 +12,7 @@
 
 #include "input.h"
 #include "libft.h"
-#include <term.h>
-#include <termios.h>
-#include <termcap.h>
+#include "fcntl.h"
 
 static void	realloc_buffer(t_input *input)
 {
@@ -29,7 +27,7 @@ static void	realloc_buffer(t_input *input)
 	free(tmp);
 }
 
-static void	insert_char(t_input *input, char c)
+int	handle_reg_char(t_input *input, char c)
 {
 	if (input->buffer_len == input->buffer_size)
 		input->realloc_buffer(input);
@@ -45,11 +43,18 @@ static void	insert_char(t_input *input, char c)
 	tputs(tgetstr("im", NULL), 1, ft_putchar_termcaps);
 	write(STDIN, &c, 1);
 	tputs(tgetstr("ei", NULL), 1, ft_putchar_termcaps);
+	if (input->term->cursor_col == input->term->width)
+	{
+		tputs(tgetstr("do", NULL), 1, ft_putchar_termcaps);
+		input->term->cursor_col = 0;
+	}
 	input->buffer_len++;
 	input->cursor_line_pos++;
+	input->term->cursor_col++;
+	return (0);
 }
 
-static void	delete_char(t_input *input)
+void	delete_char(t_input *input)
 {
 	if (input->cursor_line_pos == input->buffer_len)
 		return ;
@@ -60,96 +65,12 @@ static void	delete_char(t_input *input)
 	tputs(tgetstr("dc", NULL), 1, ft_putchar_termcaps);
 }
 
-static void	move_cursor_left(t_input *input)
-{
-	if (input->cursor_line_pos > 0)
-	{
-		tputs(tgetstr("le", NULL), 1, ft_putchar_termcaps);
-		input->cursor_line_pos--;
-	}
-}
-
-static void	move_cursor_right(t_input *input)
-{
-	if (input->cursor_line_pos < input->buffer_len)
-	{
-		tputs(tgetstr("nd", NULL), 1, ft_putchar_termcaps);
-		input->cursor_line_pos++;
-	}
-}
-
-static int	get_key(t_input *input)
-{
-	if (!ft_strcmp(input->read_buffer, ARROW_UP))
-	{
-		if (input->history->current_pos > 0)
-		{
-			input->history->current_pos--;
-			tputs(tgetstr("rc", NULL), 1, ft_putchar_termcaps);
-			tputs(tgetstr("ce", NULL), 1, ft_putchar_termcaps);
-			input->cp_history_to_buffer(input, input->history->current_pos);
-			input->print_buffer(input);
-		}
-	}
-	else if (!ft_strcmp(input->read_buffer, ARROW_DOWN))
-	{
-		if (input->history->current_pos < input->history->history_len)
-		{
-			input->history->current_pos++;
-			tputs(tgetstr("rc", NULL), 1, ft_putchar_termcaps);
-			tputs(tgetstr("ce", NULL), 1, ft_putchar_termcaps);
-			if (input->history->current_pos < input->history->history_len)
-			{
-				input->cp_history_to_buffer(input, input->history->current_pos);
-				input->print_buffer(input);
-			}
-			else
-			{
-				input->cursor_line_pos = 0;
-				ft_bzero(input->buffer, input->buffer_len);
-			}
-		}
-	}
-	else if (!ft_strcmp(input->read_buffer, ARROW_RIGHT))
-		input->move_cursor_right(input);
-	else if (!ft_strcmp(input->read_buffer, ARROW_LEFT))
-		input->move_cursor_left(input);
-	else if (!ft_strcmp(input->read_buffer, HOME))
-	{
-		tputs(tgetstr("rc", NULL), 1, ft_putchar_termcaps);
-		input->cursor_line_pos = 0;
-	}
-	else if (!ft_strcmp(input->read_buffer, END))
-		;
-	else if (input->read_buffer[0] == '\n' && input->buffer_len > 0)
-	{
-		input->history->append_history(input->history, input->buffer);
-		ft_printf("\n[%s]", input->buffer);
-		ft_bzero(input->buffer, input->buffer_size);
-		input->cursor_line_pos = 0;
-		input->history->current_pos = input->history->history_len;
-		input->buffer_len = 0;
-		return (1);
-	}
-	else if (input->read_buffer[0] == DEL)
-	{
-		input->move_cursor_left(input);
-		input->delete_char(input);
-	}
-	else if (input->read_buffer[0] == 27 && input->read_buffer[1] == '[' &&
-		input->read_buffer[2] == '3' && input->read_buffer[3] == '~')
-		input->delete_char(input);
-	else if (ft_isprint(input->read_buffer[0]))
-		input->insert_char(input, input->read_buffer[0]);
-	return (0);
-}
-
 void	cp_history_to_buffer(t_input *input, int current_pos)
 {
 	int	command_len;
 
 	command_len = 0;
-	if (input->history->history_len != 0)
+	if (input->history->len != 0)
 		command_len = ft_strlen(input->history->history[current_pos]);
 	while (input->buffer_size < command_len)
 		input->realloc_buffer(input);
@@ -163,24 +84,54 @@ void	print_buffer(t_input *input)
 	ft_putstr_fd(input->buffer, STDIN);
 }
 
-t_input	*init_input(t_term *term, t_history *history)
-{
-	t_input *input;
+t_keys  handle_keys[] = {
+        {ARROW_UP, handle_arrow_up},
+        {ARROW_DOWN, handle_arrow_down},
+        {ARROW_LEFT, handle_arrow_left},
+        {ARROW_RIGHT, handle_arrow_right},
+        {CTRL_UP, handle_ctrl_up},
+        {CTRL_DOWN, handle_ctrl_down},
+        {CTRL_LEFT, handle_ctrl_left},
+        {CTRL_RIGHT, handle_ctrl_right},
+        {DEL, handle_del},
+        {DELETE, handle_delete},
+        {END, handle_end},
+        {HOME, handle_home},
+        {RETURN, handle_return},
+};
 
-	input = (t_input*)malloc(sizeof(t_input));
-	input->buffer = (char*)ft_memalloc(INITIAL_BUFFER_SIZE + 1);
-	input->buffer_size = INITIAL_BUFFER_SIZE;
-	input->buffer_len = 0;
-	input->cursor_line_pos = 0;
-	input->get_key = get_key;
-	input->insert_char = insert_char;
-	input->delete_char = delete_char;
-	input->realloc_buffer = realloc_buffer;
-	input->move_cursor_left = move_cursor_left;
-	input->move_cursor_right = move_cursor_right;
-	input->print_buffer = print_buffer;
-	input->cp_history_to_buffer = cp_history_to_buffer;
-	input->term = term;
-	input->history = history;
-	return (input);
+int	get_key(t_input *input)
+{
+	int	i;
+
+	i = -1;
+	while (++i < NB_KEYS)
+	{
+		if (!ft_strcmp(handle_keys[i].key, input->read_buffer))
+			return (handle_keys[i].handle_keystroke(input));
+	}
+	dprintf(input->fd, "%d && %d\n", input->term->width, input->term->cursor_col);
+	return (ft_isprint(input->read_buffer[0])) ? handle_reg_char(input, input->read_buffer[0]): 0;
 }
+
+t_input *init_input(t_term *term, t_history *history)
+{
+        t_input *input;
+        int     fd;
+
+        input = (t_input*)malloc(sizeof(t_input));
+        input->buffer = (char*)ft_memalloc(INITIAL_BUFFER_SIZE + 1);
+        input->buffer_size = INITIAL_BUFFER_SIZE;
+        input->buffer_len = 0;
+        input->cursor_line_pos = 0;
+        input->get_key = get_key;
+        input->realloc_buffer = realloc_buffer;
+        input->print_buffer = print_buffer;
+        input->cp_history_to_buffer = cp_history_to_buffer;
+        input->term = term;
+        input->history = history;
+        fd = open("/dev/pts/2", O_WRONLY | O_CREAT);
+        input->fd = fd;
+        return (input);
+}
+

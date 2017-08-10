@@ -10,13 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "term.h"
-#include "termios.h"
-#include "termcap.h"
-
 #include "input.h"
 #include "libft.h"
-
 
 int		init_termcaps(void)
 {
@@ -60,11 +55,9 @@ int main(int argc, char **argv, char **env)
 			if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
 				exit(-1);
 			if (input->get_key(input))
-			{
-				write(STDOUT, "\n", 1);
 				break ;
-			}
 		}
+		write(STDOUT, "\n", 1);
 	}
 	return (0);
 }

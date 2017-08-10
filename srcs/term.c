@@ -18,8 +18,8 @@ static void	get_term_size(t_term *term)
 	struct winsize	winsize;
 
 	ioctl(STDIN, TIOCGWINSZ, &winsize);
-	term->term_width = winsize.ws_col;
-	term->term_height = winsize.ws_row;
+	term->width = winsize.ws_col;
+	term->height = winsize.ws_row;
 }
 
 static void	get_prompt(t_term *term)
@@ -37,12 +37,14 @@ static void	get_prompt(t_term *term)
 	else
 		ft_strcpy(term->prompt, ft_strrchr(pwd, '/') + 1);
 	free(pwd);
-	term->prompt_len = ft_strlen(term->prompt);
-	term->first_line_len = term->term_width - (term->prompt_len + 1);
+	term->prompt_len = ft_strlen(term->prompt) + 1;
+	term->cursor_col = term->prompt_len + 1;
+	term->first_line_len = term->width - term->prompt_len;
 }
 
 static void	print_prompt(t_term *term, char *color)
 {
+	term->get_prompt(term);
 	ft_printf("%s%s%s ", color, term->prompt, RESET);
 }
 
@@ -51,7 +53,7 @@ static void	get_cursor_pos(t_term *term)
 	char	buf[9];
 	char	**split;
 
-	ft_bzero(buf, 7);
+	ft_bzero(buf, 9);
 	write(STDOUT, ASK_CURSOR_POS, 5);
 	read(STDIN, buf, 8);
 	split = ft_strsplit(buf, ';');
