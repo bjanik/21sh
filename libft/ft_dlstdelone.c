@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd.c                                        :+:      :+:    :+:   */
+/*   ft_dlstdelone.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/08 13:37:20 by bjanik            #+#    #+#             */
-/*   Updated: 2016/11/09 10:32:06 by bjanik           ###   ########.fr       */
+/*   Created: 2016/11/08 13:16:51 by bjanik            #+#    #+#             */
+/*   Updated: 2016/11/08 16:57:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dlstadd(t_dlst **alst, t_dlst *new)
+void	ft_dlstdelone(t_dlst **alst, void (*del)(void *, size_t))
 {
-	if (alst != NULL && *alst == NULL)
-		*alst = new;
-	else if (alst != NULL && *alst != NULL && new != NULL)
+	if (alst != NULL && *alst != NULL && del != NULL)
 	{
-		new->next = *alst;
-		new->prev = NULL;
-		(*alst)->prev = new;
-		*alst = new;
+		del((*alst)->data, (*alst)->data_size);
+		if ((*alst)->prev != NULL)
+			(*alst)->prev->next = NULL;
+		free(*alst);
+		*alst = NULL;
 	}
 }

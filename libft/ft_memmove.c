@@ -23,8 +23,8 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 		return (dst);
 	if (source < dest)
 	{
-		source += len;
-		dest += len;
+		source += len - 1;
+		dest += len - 1;
 		while (len--)
 			*dest-- = *source--;
 	}

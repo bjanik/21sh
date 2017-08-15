@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **env)
         init_termcaps();
 	while (42)
 	{
-		ft_bzero(input->buffer, input->buffer_len);
+		ft_bzero(input->buffer, input->buffer_size);
 		input->buffer_len = 0;
 		term->print_prompt(term, BOLD_CYAN);
 		while (42)
@@ -48,16 +48,18 @@ int	main(int argc, char **argv, char **env)
                         ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
                         if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
                                 exit(-1);
-                        if (input->get_key(input))
+                        if (get_key(input))
                                 break ;
 		}
 		write(STDOUT, RETURN, 1);
-		token_lst = tokenizer(input->buffer);
+		dprintf(input->fd, "line = %s\n", input->buffer);
+		token_lst = lexer(input->buffer);
 		while (token_lst)
 		{
-			dprintf(input->fd, "[%s]\n", token_lst->token);
+			dprintf(input->fd, "[%s] -> ", token_lst->token);
 			token_lst = token_lst->next;
 		}
+		dprintf(input->fd, "end of tokens\n");
 	}
 	//g_token_lst = token_lst;
 	//yyparse();

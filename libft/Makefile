@@ -88,6 +88,9 @@ SRCS = ft_putstr.c \
 	   ft_lstadd.c \
 	   ft_lstiter.c \
 	   ft_lstmap.c \
+	   ft_dlstnew.c \
+	   ft_dlstadd.c \
+	   ft_dlstdelone.c \
 	   ft_swap.c \
 	   ft_isspace.c \
 	   ft_strndup.c \

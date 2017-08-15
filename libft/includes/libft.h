@@ -38,15 +38,16 @@
 # define STDOUT 1
 # define STDERR 2
 
-//typedef unsigned long long int uintmax_t;
-//typedef long long int intmax_t;
+typedef unsigned long long int uintmax_t;
+typedef long long int intmax_t;
 
-typedef struct		s_dlist
+typedef struct		s_dlst
 {
 	void			*data;
-	struct s_dlist	*next;
-	struct s_dlist	*prev;
-}					t_dlist;
+	size_t			data_size;
+	struct s_dlst	*next;
+	struct s_dlst	*prev;
+}					t_dlst;
 
 typedef struct		s_list
 {
@@ -137,6 +138,9 @@ void				ft_lstdel(t_list **alst, void(*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+t_dlst				*ft_dlstnew(void const *data, size_t data_size);
+void				ft_dlstdelone(t_dlst **alst, void(*del)(void *, size_t));
+void				ft_dlstadd(t_dlst **alst, t_dlst *new);
 void				ft_swap(void *a, void *b);
 int					ft_nb_digit_base(long long n, int base);
 int					ft_abs(int i);
@@ -148,6 +152,4 @@ void				ft_display_string_tab(char **tab);
 void				ft_error_msg(char *error);
 void				*ft_malloc(size_t size);
 
-t_dlist				*ft_dlstnew(void const *data);
-void				ft_dlstadd(t_dlist *dlst, t_dlist *new);
 #endif

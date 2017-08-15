@@ -77,11 +77,11 @@ t_transition	g_aut_lexer[MAX_STATE][MAX_EVENT] = {
 	 {COMMENT, skip_char}},
 	};
 
-void	init(t_tokenizer *lexer)
+void	init(t_lexer *lexer)
 {
 }
 
-void	skip_char(t_tokenizer *lexer)
+void	skip_char(t_lexer *lexer)
 {
 }
 
@@ -98,7 +98,7 @@ int		is_operator(char *token)
 	return (-1);
 }
 
-void	get_operator(t_tokenizer *lexer)
+void	get_operator(t_lexer *lexer)
 {
 	if (lexer->token_len == 0)
 		lexer->append_char(lexer);
@@ -119,7 +119,7 @@ void	get_operator(t_tokenizer *lexer)
 	}
 }
 
-void		get_event(t_tokenizer *lexer)
+void		get_event(t_lexer *lexer)
 {
 	char	c;
 
@@ -142,8 +142,23 @@ void		get_event(t_tokenizer *lexer)
 		lexer->event = EV_REG_CHAR;
 }
 
-void	append_char(t_tokenizer *lexer)
+void	realloc_current_token(t_lexer *lexer)
 {
+	char    *tmp;
+
+        tmp = lexer->current_token;
+	lexer->token_size *= 2;
+        lexer->current_token = (char *)ft_malloc((lexer->token_size * 2 + 1)
+			* sizeof(char));
+	ft_bzero(lexer->current_token, lexer->token_size + 1);
+	ft_strcpy(lexer->current_token, tmp);
+	free(tmp);
+}
+
+void	append_char(t_lexer *lexer)
+{
+	if (lexer->token_len + 1 > lexer->token_size)
+		lexer->realloc_current_token(lexer);
 	if (is_operator(lexer->current_token) != -1)
 	{
 		lexer->current_token[lexer->token_len++] = *(lexer->input);
@@ -158,29 +173,30 @@ void	append_char(t_tokenizer *lexer)
 		lexer->current_token[lexer->token_len++] = *(lexer->input);
 }
 
-void	delimitate_token(t_tokenizer *lexer)
+void	delimitate_token(t_lexer *lexer)
 {
 	if (lexer->token_len > 0)
 		push_back_token(lexer);
 }	
 
-void	end_of_input(t_tokenizer *lexer)
+void	end_of_input(t_lexer *lexer)
 {
 	lexer->delimitate_token(lexer);
 	lexer->append_char(lexer);
 	lexer->delimitate_token(lexer);
 }
 
-t_tokenizer	*init_tokenizer(char *input)
+t_lexer	*init_lexer(char *input)
 {
-	t_tokenizer	*tk;
+	t_lexer	*tk;
 	
-	if (!(tk = (t_tokenizer*)malloc(sizeof(t_tokenizer))))
+	if (!(tk = (t_lexer*)malloc(sizeof(t_lexer))))
 		return (NULL);
 	tk->input = ft_strdup(input);
-	if (!(tk->current_token = (char*)malloc(512 + 1)))
+	if (!(tk->current_token = (char*)malloc(INITIAL_TOKEN_SIZE + 1)))
 		return (NULL);
-	ft_bzero(tk->current_token, 512);
+	ft_bzero(tk->current_token, INITIAL_TOKEN_SIZE);
+	tk->token_size = INITIAL_TOKEN_SIZE;
 	tk->token_len = 0;
 	tk->state = INIT;
 	tk->event = START;
@@ -188,14 +204,15 @@ t_tokenizer	*init_tokenizer(char *input)
 	tk->append_char = append_char;
 	tk->skip_char = skip_char;
 	tk->delimitate_token = delimitate_token;
+	tk->realloc_current_token = realloc_current_token;
 	return (tk);
 }
 
-t_token	*tokenizer(char *input)
+t_token	*lexer(char *input)
 {
-	t_tokenizer	*lexer;
+	t_lexer	*lexer;
 	
-	lexer = init_tokenizer(input);
+	lexer = init_lexer(input);
 	while (lexer->state != NWLINE && *(lexer->input) != '\0')
 	{
 		g_aut_lexer[lexer->state][lexer->event].p_transition(lexer);
