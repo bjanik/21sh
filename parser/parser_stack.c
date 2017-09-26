@@ -11,7 +11,7 @@ void		pop_stack(t_stack **stack)
 		tmp = *stack;
 		*stack = (*stack)->next;
 		tmp->next = NULL;
-		free(tmp);		
+		ft_memdel((void**)&tmp);		
 	}	
 }
 
@@ -22,6 +22,7 @@ void		push_token_stack(t_parser *parser)
 	if ((node = (t_stack*)malloc(sizeof(t_stack))) == NULL)
 		return ;
 	node->sym.type = parser->cur_token->type;
+	node->sym.value = parser->cur_token->token;
 	node->state = -1;
 	node->next = parser->stack;
 	parser->stack = node;
@@ -34,13 +35,12 @@ void		push_state(t_parser *parser)
 
 	if ((node = (t_stack*)malloc(sizeof(t_stack))) == NULL)
 		return ;
-	state = g_aut_parser[parser->state][parser->cur_token->type].new_state;
+	state = g_aut_parser[parser->state][parser->cur_token->type].transition;
 	node->state = state;
 	node->sym.type = -1;
 	parser->state = state;
 	node->next = parser->stack;
 	parser->stack = node;
-
 }
 
 t_parser	*init_parser(t_token *token_list)
@@ -54,7 +54,11 @@ t_parser	*init_parser(t_token *token_list)
 	parser->stack->next = NULL;
 	parser->stack->state = 0;
 	parser->stack->sym.type = -1;
+	parser->stack->sym.value = NULL;
+	parser->exec_list = NULL;
 	parser->state = 0;
 	parser->cur_token = token_list;
+	parser->exec_list = init_exec();
+	parser->last_exec = parser->exec_list;
 	return (parser);
 }
