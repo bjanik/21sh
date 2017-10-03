@@ -30,7 +30,6 @@
 # define END "\x1B[F"
 
 # define RETURN "\n" 
-# define NB_KEYS 13
 
 typedef struct		s_input
 {
@@ -72,4 +71,5 @@ void		cp_history_to_buffer(t_input *input);
 void		update_visual_buffer(t_input *input);
 int		cursor_on_last_line(t_input *input);
 int		get_key(t_input *input);
+void		realloc_buffer(t_input *input);
 #endif

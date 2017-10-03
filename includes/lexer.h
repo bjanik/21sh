@@ -36,6 +36,7 @@ typedef enum e_event {
 			EV_NEWLINE,
 			EV_COMMENT,
 			EV_REG_CHAR,
+			EV_BACKSLASH,
 			MAX_EVENT} e_event;
 
 typedef struct s_lexer
@@ -47,10 +48,7 @@ typedef struct s_lexer
 	e_state	state;
 	size_t	event;
 	t_token	*token_list;
-	void	(*append_char)(struct s_lexer *aut);
-	void	(*delimitate_token)(struct s_lexer *aut);
-	void	(*skip_char)(struct s_lexer *aut);
-	void	(*realloc_current_token)(struct s_lexer *aut);
+	t_token	*last_token;
 }		t_lexer;
 
 typedef struct	s_transition
@@ -59,17 +57,18 @@ typedef struct	s_transition
 	void 	(*p_transition)(t_lexer *aut);
 }		t_transition;
 
-t_token		*lexer(char *input);
+t_token		*lexer(t_lexer *lexer, char *input);
 t_token		*init_token_node(t_lexer *aut);
 void		skip_char(t_lexer *aut);
 void		push_back_token(t_lexer *aut);
 void		append_char(t_lexer *aut);
 void		delimitate_token(t_lexer *aut);
+void		handle_backslash(t_lexer *lexer);
 void		end_of_input(t_lexer *aut);
 void		get_operator(t_lexer *aut);
 void		init(t_lexer *aut);
 
-extern t_transition	g_aut_token[MAX_STATE][MAX_EVENT];
+extern t_transition	g_lexer[MAX_STATE][MAX_EVENT];
 extern char	g_op_char[6];
-extern char	*g_op_list[11];
+extern char	*g_op_list[12];
 #endif
