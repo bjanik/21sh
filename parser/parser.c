@@ -4,7 +4,7 @@ extern int		g_successor_state[18][MAX_SYM];
 extern int		g_reduce_table[NB_RULES];
 extern t_save_exec	g_save_exec_list[NB_RULES];
 
-t_switch	g_aut_parser[MAX_STATES][MAX_EVENTS] = {
+t_switch	g_parser[MAX_STATES][MAX_EVENTS] = {
 	{{1, shift},
 	 {2, shift},
 	 {3, shift},
@@ -781,34 +781,49 @@ static const int	g_rules_len[] ={		2,
 
 int		syntax_error(t_parser *parser)
 {
-	ft_printf("bash: syntax error near unexpected token `%s'\n", parser->cur_token->token);	
-	return (-1);
+	int	type;
+
+	type = parser->cur_token->type;
+	if (parser->state == 0 || (parser->state > 2 && parser->state < 10) ||
+				 (parser->state >= 35 &&
+				 parser->state <= 37 && type != NEWLINE) ||
+				parser->state == 11)
+		if (type == NEWLINE)
+			ft_printf("bash: syntax error near unexpected token `newline'\n");
+		else
+			ft_printf("bash: syntax error near unexpected token `%s'\n",
+						 parser->cur_token->token);
+	else
+		return (-2);
+	return (-4);
 }
 
 int		accept(t_parser *parser)
 {
-	ft_printf("bash: syntax correct!\n");	
+	//ft_printf("bash: syntax correct!\n");	
 	return (-1);
 }
 
 int		shift(t_parser	*parser)
 {
-	if (parser->cur_token->type >= AND_IF && 
-		parser->cur_token->type <= PIPE)
+	if (parser->exec_list && (parser->cur_token->type >= AND_IF && 
+		parser->cur_token->type <= PIPE))
 	{
 		parser->last_exec->cmd_separator = parser->cur_token->type;
 		parser->last_exec->next = init_exec();
 		parser->last_exec->next->prev = parser->last_exec;
 		parser->last_exec = parser->last_exec->next;
 	}
-	
 	if (parser->cur_token->pushed == 1)
-		return (-1);
+		return (-3);
 	push_token_stack(parser);
 	push_state(parser);
 	parser->cur_token->pushed = 1;
 	if (parser->cur_token->next)
+	{
+		parser->cur_token->pushed = 0;
 		parser->cur_token = parser->cur_token->next;
+	}
 	return (1);
 }
 
@@ -839,8 +854,8 @@ int		reduce(t_parser *parser)
 	int	i;
 	int	k;
 	
-	i = g_aut_parser[parser->state][parser->cur_token->type].transition;
-	if (g_save_exec_list[i].save)
+	i = g_parser[parser->state][parser->cur_token->type].transition;
+	if (g_save_exec_list[i].save && parser->exec_list)
 		g_save_exec_list[i].save(parser->last_exec, parser->stack);
 	k = i;
 	i = g_rules_len[i] * 2 - 1;
@@ -853,16 +868,32 @@ int		reduce(t_parser *parser)
 	return (1);
 }
 
-void            parser(t_token *token_list)
+void	display_prompt(t_input *input)
 {
-        t_parser        *parser;
+	input->term->prompt_len = 2;
+	ft_bzero(input->buffer, input->buffer_len);
+	ft_strcpy(input->term->prompt, "> ");
+	write(STDOUT, "> ", 2);
+	input->cursor_pos = 0;
+	input->buffer_len = 0;
+	input->term->cursor_col = 3;
+}
 
-        parser = init_parser(token_list);
-        while (42)
-        {
-                if (g_aut_parser[parser->state][parser->cur_token->type].p_switch(parser) < 0)
-			break;
-        }
-	while (parser->stack)
-		pop_stack(&parser->stack);
+int            parser(t_exec **exec, t_token *token_list, int ex)
+{
+        t_parser        *parse;
+	int		ret;
+	
+	ret = 0;
+        parse = init_parser(token_list, ex);
+        while (ret > -1)
+		ret = g_parser[parse->state][parse->cur_token->type].p_switch(parse);
+	while (parse->stack)
+		pop_stack(&parse->stack);
+	if (ex && ret == -1)
+		*exec = parse->exec_list;
+	else
+		clear_exec(exec);
+	ft_memdel((void**)&parse);	
+	return (ret);
 }

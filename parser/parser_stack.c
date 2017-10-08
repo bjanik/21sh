@@ -1,6 +1,6 @@
 #include "parser.h"
 
-extern t_switch g_aut_parser[MAX_STATES][MAX_EVENTS];
+extern t_switch g_parser[MAX_STATES][MAX_EVENTS];
 
 void		pop_stack(t_stack **stack)
 {
@@ -35,7 +35,7 @@ void		push_state(t_parser *parser)
 
 	if ((node = (t_stack*)malloc(sizeof(t_stack))) == NULL)
 		return ;
-	state = g_aut_parser[parser->state][parser->cur_token->type].transition;
+	state = g_parser[parser->state][parser->cur_token->type].transition;
 	node->state = state;
 	node->sym.type = -1;
 	parser->state = state;
@@ -43,7 +43,7 @@ void		push_state(t_parser *parser)
 	parser->stack = node;
 }
 
-t_parser	*init_parser(t_token *token_list)
+t_parser	*init_parser(t_token *token_list, int ex)
 {
 	t_parser	*parser;
 
@@ -55,10 +55,9 @@ t_parser	*init_parser(t_token *token_list)
 	parser->stack->state = 0;
 	parser->stack->sym.type = -1;
 	parser->stack->sym.value = NULL;
-	parser->exec_list = NULL;
 	parser->state = 0;
 	parser->cur_token = token_list;
-	parser->exec_list = init_exec();
+	parser->exec_list = (ex == SAVE_EXEC) ? init_exec(): NULL;
 	parser->last_exec = parser->exec_list;
 	return (parser);
 }
