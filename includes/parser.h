@@ -2,7 +2,10 @@
 # define PARSER_H
 # include "libft.h"
 # include "tools.h"
-# include "exec.h"
+# include "input.h"
+# include "lexer.h"
+# define SAVE_EXEC 1
+# define NO_SAVE_EXEC 0
 # define MAX_STATES 51
 # define MAX_EVENTS 14
 # define NB_RULES 39
@@ -90,14 +93,14 @@ int		accept(t_parser *parser);
 void		push_token_stack(t_parser *parser);
 void		push_state(t_parser *parser);
 void		pop_stack(t_stack **stack);
-void		parser(t_token *list);
-t_parser	*init_parser(t_token *token_list);
-
+int		parser(t_exec **exec, t_token *list, int ex);
+t_parser	*init_parser(t_token *token_list, int ex);
 t_exec		*init_exec(void);
 t_redir		*init_redir(t_exec *exec, t_stack *stack);
 void		append_wordlist(t_exec *exec, t_stack *stack);
 void		set_io_number(t_exec *exec, t_stack *stack);
 void		set_here_end(t_exec *exec, t_stack *stack);
 void		set_dest_file(t_exec *exec, t_stack *stack);
+void		waiting_for_input(t_input *input);
 
 #endif

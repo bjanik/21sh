@@ -28,6 +28,7 @@
 # define BACKSPACE "\x7F"
 # define HOME "\x1B[H"
 # define END "\x1B[F"
+# define CLEAR_SCREEN "L"
 
 # define RETURN "\n" 
 
@@ -67,6 +68,7 @@ int		handle_return(t_input *input);
 int		handle_reg_char(t_input *input, char c);
 int		handle_alt_less(t_input *input);
 int		handle_alt_great(t_input *input);
+int		handle_clear_screen(t_input *input);
 void		cp_history_to_buffer(t_input *input);
 void		update_visual_buffer(t_input *input);
 int		cursor_on_last_line(t_input *input);

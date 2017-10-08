@@ -5,15 +5,7 @@
 
 #define INITIAL_TOKEN_SIZE 512
 
-typedef union 
-{
-	int	i;
-	char	*s;
-
-} YYSTYPE;
-
 t_token	*g_token_lst;
-extern YYSTYPE	yylval;
 
 typedef enum e_state {
 			INIT,
@@ -54,19 +46,19 @@ typedef struct s_lexer
 typedef struct	s_transition
 {
 	e_state	new_state;
-	void 	(*p_transition)(t_lexer *aut);
+	void 	(*p_transition)(t_lexer *lexer);
 }		t_transition;
 
-t_token		*lexer(t_lexer *lexer, char *input);
-t_token		*init_token_node(t_lexer *aut);
-void		skip_char(t_lexer *aut);
-void		push_back_token(t_lexer *aut);
-void		append_char(t_lexer *aut);
-void		delimitate_token(t_lexer *aut);
+t_lexer		*lexer(t_lexer *lexer, char *input, int initial_state);
+t_token		*init_token_node(t_lexer *lexer);
+void		skip_char(t_lexer *lexer);
+void		push_back_token(t_lexer *lexer);
+void		append_char(t_lexer *lexer);
+void		delimitate_token(t_lexer *lexer);
 void		handle_backslash(t_lexer *lexer);
-void		end_of_input(t_lexer *aut);
-void		get_operator(t_lexer *aut);
-void		init(t_lexer *aut);
+void		end_of_input(t_lexer *lexer);
+void		get_operator(t_lexer *lexer);
+void		init(t_lexer *lexer);
 
 extern t_transition	g_lexer[MAX_STATE][MAX_EVENT];
 extern char	g_op_char[6];

@@ -37,6 +37,7 @@ typedef struct 		s_token
 	int		type;
 	int		pushed;
 	struct s_token	*next;
+	struct s_token	*prev;
 }			t_token;
 
 #endif
