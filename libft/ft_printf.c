@@ -46,7 +46,7 @@ const char	*start_arg(t_arg *p, const char *format, va_list ap)
 		p->arg_len = 0;
 	}
 	if (p->arg && ft_strcmp(p->arg, "0x") == 0)
-		p->arg = ft_strjoin_and_free(p->arg, "0", 1);
+		p->arg = ft_strjoin_free(p->arg, "0", 1);
 	if (p->arg && ft_strcmp(p->arg, "0x0") == 0 && p->spec == 'p' &&
 			p->precision > -1)
 	{

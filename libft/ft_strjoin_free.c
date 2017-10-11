@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_single_chr.c                                :+:      :+:    :+:   */
+/*   ft_strjoin_and_free.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/23 13:41:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/04/23 13:43:19 by bjanik           ###   ########.fr       */
+/*   Created: 2016/12/22 12:22:14 by bjanik            #+#    #+#             */
+/*   Updated: 2017/04/23 12:47:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_str_single_chr(const char *s, int c)
+char	*ft_strjoin_free(char *s1, char *s2, int choice)
 {
-	int	i;
+	char	*str;
 
-	i = -1;
-	while (s[++i])
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	if ((str = (char*)malloc(ft_strlen(s1) + ft_strlen(s2) + 1)) == NULL)
+		return (NULL);
+	ft_strcpy(str, s1);
+	ft_strcat(str, s2);
+	if (choice == 1)
+		ft_strdel(&s1);
+	else if (choice == 2)
+		ft_strdel(&s2);
+	else if (choice == 3)
 	{
-		if (s[i] != (char)c)
-			return (0);
+		ft_strdel(&s1);
+		ft_strdel(&s2);
 	}
-	return (1);
+	return (str);
 }

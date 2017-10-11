@@ -100,6 +100,7 @@ char				*ft_strnstr(const char *big, const char *little,
 int					ft_atoi(const char *str);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
+int					ft_str_isdigit(char *str);
 int					ft_isalnum(int c);
 int					ft_isascii(int c);
 int					ft_isprint(int c);
@@ -123,7 +124,7 @@ int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strnjoin(char *s1, int n, ...);
-char				*ft_strjoin_and_free(char *s1, char *s2, int choice);
+char				*ft_strjoin_free(char *s1, char *s2, int choice);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				**ft_strtok(char const *str, const char *s);
@@ -148,7 +149,7 @@ void				ft_free_string_tab(char ***tab);
 int					ft_valid_file(char *path);
 int					ft_printf(const char *format, ...);
 int					get_next_line(int fd, char **line);
-void				ft_display_string_tab(char **tab);
+void				ft_display_tab(char **tab);
 void				ft_error_msg(char *error);
 void				*ft_malloc(size_t size);
 

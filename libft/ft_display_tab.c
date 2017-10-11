@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_single_chr.c                                :+:      :+:    :+:   */
+/*   display_string_tab.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/23 13:41:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/04/23 13:43:19 by bjanik           ###   ########.fr       */
+/*   Created: 2017/01/18 16:17:32 by bjanik            #+#    #+#             */
+/*   Updated: 2017/02/14 14:49:44 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_str_single_chr(const char *s, int c)
+void	ft_display_tab(char **tab)
 {
 	int	i;
 
-	i = -1;
-	while (s[++i])
+	i = 0;
+	if (tab)
 	{
-		if (s[i] != (char)c)
-			return (0);
+		while (tab[i])
+		{
+			ft_putendl(tab[i]);
+			i++;
+		}
 	}
-	return (1);
 }

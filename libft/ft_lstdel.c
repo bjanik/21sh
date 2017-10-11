@@ -23,7 +23,6 @@ void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 	{
 		*alst = (*alst)->next;
 		del(lst->content, lst->content_size);
-		free(lst);
 		lst = *alst;
 	}
 }

@@ -31,6 +31,7 @@ SRCS = ft_putstr.c \
 	   ft_putnbr_fd.c \
 	   ft_isalpha.c \
 	   ft_isdigit.c \
+	   ft_str_isdigit.c \
 	   ft_isalnum.c \
 	   ft_isascii.c \
 	   ft_isprint.c \
@@ -59,7 +60,7 @@ SRCS = ft_putstr.c \
 	   ft_strsub.c \
 	   ft_strjoin.c \
 	   ft_strnjoin.c \
-	   ft_strjoin_and_free.c \
+	   ft_strjoin_free.c \
 	   ft_strtrim.c \
 	   ft_strsplit.c \
 	   ft_strtok.c \
@@ -98,7 +99,7 @@ SRCS = ft_putstr.c \
 	   ft_nb_digit_base.c \
 	   ft_nb_digit_base_umax.c \
 	   ft_free_string_tab.c \
-	   ft_display_string_tab.c \
+	   ft_display_tab.c \
 	   get_next_line.c \
 	   ft_ischar.c \
 	   handle_arg.c \

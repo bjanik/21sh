@@ -19,7 +19,7 @@ static void	*handle_arg_2(t_arg *p, va_list ap)
 	s = NULL;
 	if (p->spec == 'p')
 	{
-		s = (ft_strjoin_and_free("0x",
+		s = (ft_strjoin_free("0x",
 					ft_itoa_base((intmax_t)va_arg(ap, long long), HEXA_L), 2));
 		return (s);
 	}

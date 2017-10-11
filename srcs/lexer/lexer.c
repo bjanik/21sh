@@ -1,12 +1,12 @@
 #include "lexer.h"
 
 char	g_op_char[6] = "><&|;";
-char	*g_op_list[11] = { ">>", "<<", ">", "<", "&&" , "||", "|", "<&", ">&", ";", NULL};
+char	*g_op_list[12] = { ">>", "<<", ">", "<", "&&" , "||", "|", "<&", ">&",
+			 ";", "&", NULL};
 
 t_token	*g_token_lst;
 
-
-t_transition	g_aut_lexer[MAX_STATE][MAX_EVENT] = {
+t_transition	g_lexer[MAX_STATE][MAX_EVENT] = {
 	 {{STD, init},
 	 {DQUOTE, append_char},
 	 {QUOTE, append_char},
@@ -17,7 +17,7 @@ t_transition	g_aut_lexer[MAX_STATE][MAX_EVENT] = {
 	 {COMMENT, NULL},
 	 {STD, append_char}},
 
-	 {{DQUOTE, NULL},
+	 {{DQUOTE, append_char},
 	 {STD, append_char},
 	 {DQUOTE, append_char},
 	 {DQUOTE, append_char},
@@ -25,7 +25,8 @@ t_transition	g_aut_lexer[MAX_STATE][MAX_EVENT] = {
 	 {DQUOTE, append_char},
 	 {DQUOTE, append_char},
 	 {DQUOTE, append_char},
-	 {DQUOTE, append_char}},
+	 {DQUOTE, append_char},
+	 {DQUOTE, handle_backslash}},
 
 	 {{QUOTE, NULL},
 	 {QUOTE, append_char},
@@ -35,18 +36,21 @@ t_transition	g_aut_lexer[MAX_STATE][MAX_EVENT] = {
 	 {QUOTE, append_char},
 	 {QUOTE, append_char},
 	 {QUOTE, append_char},
+	 {QUOTE, append_char},
 	 {QUOTE, append_char}},
 
-	 {{BQUOTE, NULL},
+	 {{STD, NULL},
 	 {DQUOTE, append_char},
 	 {QUOTE, append_char},
+	 {BQUOTE, NULL},
 	 {STD, append_char},
 	 {STD, append_char},
 	 {STD, append_char},
 	 {NWLINE, append_char},
-	 {COMMENT, NULL}},
+	 {COMMENT, NULL},
+	 {STD, handle_backslash}},
 	
-	 {{STD, NULL},
+	 {{STD, append_char},
 	 {DQUOTE, append_char},
 	 {QUOTE, append_char},
 	 {STD, append_char},
@@ -54,9 +58,11 @@ t_transition	g_aut_lexer[MAX_STATE][MAX_EVENT] = {
 	 {STD, delimitate_token},
 	 {NWLINE, end_of_input},
 	 {COMMENT, skip_char},
-	 {STD, append_char}},
+	 {STD, append_char},
+	 {STD, handle_backslash}},
 
 	 {{NWLINE, NULL},
+	 {NWLINE, NULL},
 	 {NWLINE, NULL},
 	 {NWLINE, NULL},
 	 {NWLINE, NULL},
@@ -73,6 +79,7 @@ t_transition	g_aut_lexer[MAX_STATE][MAX_EVENT] = {
 	 {COMMENT, skip_char},
 	 {COMMENT, skip_char},
 	 {NWLINE, end_of_input},
+	 {COMMENT, skip_char},
 	 {COMMENT, skip_char},
 	 {COMMENT, skip_char}},
 	};
@@ -101,7 +108,7 @@ int		is_operator(char *token)
 void	get_operator(t_lexer *lexer)
 {
 	if (lexer->token_len == 0)
-		lexer->append_char(lexer);
+		append_char(lexer);
 	else if (ft_strchr(g_op_char, lexer->current_token[0]))
 	{
 		lexer->current_token[lexer->token_len++] = *(lexer->input);
@@ -110,15 +117,21 @@ void	get_operator(t_lexer *lexer)
 			lexer->current_token[--lexer->token_len] = '\0';
 			lexer->input--;
 		}
-		lexer->delimitate_token(lexer);
+		delimitate_token(lexer);
 	}
 	else if (is_operator(lexer->current_token) == -1)
 	{
-		lexer->delimitate_token(lexer);
-		lexer->append_char(lexer);
+		delimitate_token(lexer);
+		append_char(lexer);
 	}
 }
 
+void		handle_backslash(t_lexer *lexer)
+{
+	lexer->current_token[lexer->token_len++] = *(lexer->input);
+	lexer->input++;
+	lexer->current_token[lexer->token_len++] = *(lexer->input);
+}
 void		get_event(t_lexer *lexer)
 {
 	char	c;
@@ -126,6 +139,8 @@ void		get_event(t_lexer *lexer)
 	c = *(lexer->input);
 	if (c == '"')
 		lexer->event = EV_DQUOTE;
+	else if (c == '\\')
+		lexer->event = EV_BACKSLASH;
 	else if (c == '\'')
 		lexer->event = EV_QUOTE;
 	else if (c == '`')
@@ -158,14 +173,14 @@ void	realloc_current_token(t_lexer *lexer)
 void	append_char(t_lexer *lexer)
 {
 	if (lexer->token_len + 1 > lexer->token_size)
-		lexer->realloc_current_token(lexer);
+		realloc_current_token(lexer);
 	if (is_operator(lexer->current_token) != -1)
 	{
 		lexer->current_token[lexer->token_len++] = *(lexer->input);
 		if (is_operator(lexer->current_token) == -1)
 		{
 			lexer->current_token[--lexer->token_len] = '\0';
-			lexer->delimitate_token(lexer);
+			delimitate_token(lexer);
 			lexer->current_token[lexer->token_len++] = *(lexer->input);
 		}
 	}
@@ -175,66 +190,91 @@ void	append_char(t_lexer *lexer)
 
 void	delimitate_token(t_lexer *lexer)
 {
+	t_token	*token;
+	
 	if (lexer->token_len > 0)
-		push_back_token(lexer);
+	{
+		token = init_token_node(lexer);
+		if (!lexer->token_list)
+		{
+			token->prev = NULL;
+			lexer->token_list = token;
+		}
+		else
+		{
+			lexer->last_token->next = token;
+			token->prev = lexer->last_token;
+		}
+		lexer->last_token = token;
+	}
+	//ft_printf("%p && %s\n", lexer->token_list, lexer->last_token->token);
 }	
 
 void	end_of_input(t_lexer *lexer)
 {
-	lexer->delimitate_token(lexer);
-	lexer->append_char(lexer);
-	lexer->delimitate_token(lexer);
+	delimitate_token(lexer);
+	append_char(lexer);
+	delimitate_token(lexer);
 }
 
-t_lexer	*init_lexer(char *input)
+t_lexer	*init_lexer(t_lexer *lexer, char *input, int initial_state)
 {
-	t_lexer	*tk;
-	
-	if (!(tk = (t_lexer*)malloc(sizeof(t_lexer))))
-		return (NULL);
-	tk->input = ft_strdup(input);
-	if (!(tk->current_token = (char*)malloc(INITIAL_TOKEN_SIZE + 1)))
-		return (NULL);
-	ft_bzero(tk->current_token, INITIAL_TOKEN_SIZE);
-	tk->token_size = INITIAL_TOKEN_SIZE;
-	tk->token_len = 0;
-	tk->state = INIT;
-	tk->event = START;
-	tk->token_list = NULL;
-	tk->append_char = append_char;
-	tk->skip_char = skip_char;
-	tk->delimitate_token = delimitate_token;
-	tk->realloc_current_token = realloc_current_token;
-	return (tk);
+	if (!lexer)
+	{
+		if (!(lexer = (t_lexer*)malloc(sizeof(t_lexer))))
+			return (NULL);
+		if (!(lexer->current_token = (char*)malloc(INITIAL_TOKEN_SIZE + 1)))
+			return (NULL);
+	}
+	lexer->input = ft_strdup(input);
+	ft_bzero(lexer->current_token, INITIAL_TOKEN_SIZE);
+	lexer->token_size = INITIAL_TOKEN_SIZE;
+	lexer->token_len = 0;
+	lexer->state = initial_state;
+	lexer->event = START;
+	lexer->token_list = NULL;
+	lexer->last_token = NULL;
+	return (lexer);
 }
 
-t_token	*lexer(char *input)
+void    get_io_number(t_token *token_lst)
 {
-	t_lexer	*lexer;
+        t_token *lst;
+
+        lst = token_lst;
+        while (lst)
+        {
+                if (lst->type == WORD
+				&& ft_str_isdigit(lst->token)
+				&& lst->next
+				&& (lst->next->type >= DLESS
+                                && lst->next->type <= GREAT))
+                        lst->type = IO_NUMBER;
+                lst = lst->next;
+        }
+}
+
+t_lexer	*lexer(t_lexer *lexer, char *input, int initial_state)
+{
+	char	*buffer;
 	
-	lexer = init_lexer(input);
+	lexer = init_lexer(lexer, input, initial_state);
+	buffer = lexer->input;
+	if (initial_state != INIT)
+		get_event(lexer);
 	while (lexer->state != NWLINE && *(lexer->input) != '\0')
 	{
-		g_aut_lexer[lexer->state][lexer->event].p_transition(lexer);
+		g_lexer[lexer->state][lexer->event].p_transition(lexer);
 		if (lexer->state != INIT)
 			lexer->input++;
-		lexer->state = g_aut_lexer[lexer->state][lexer->event].new_state;
+		lexer->state = g_lexer[lexer->state][lexer->event].new_state;
 		get_event(lexer);
 	}
-	return (lexer->token_list);
+	lexer->input = buffer;	
+	delimitate_token(lexer);
+	get_io_number(lexer->token_list);
+	//display_token_list(input, lexer->token_list);
+	//ft_printf("END LEXER \n");
+	//ft_printf("%d\n", lexer->state);
+	return (lexer);
 }
-
-/*int	yylex(void)
-{
-	t_token	*tmp;
-
-	tmp = g_token_lst;
-	if (g_token_lst != NULL)	
-	{
-		g_token_lst = g_token_lst->next;
-		if (tmp->type == WORD)
-			yylval.s = ft_strdup(tmp->token);
-		return (tmp->type);
-	}
-	return (0);
-}*/

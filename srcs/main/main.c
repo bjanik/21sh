@@ -4,6 +4,8 @@
 //#include "expander.h"
 #include "history.h"
 #include "input.h"
+#include "builtins.h"
+#include "exec.h"
 
 int             init_termcaps(void)
 {
@@ -58,7 +60,7 @@ void		display_token_list(t_input *input, t_token *lst)
 {
 	while (lst)
 	{
-		dprintf(input->fd, "[%s] -> %d\n", lst->token, lst->pushed);
+		dprintf(input->fd, "[%s] type =  %d\n", lst->token, lst->type);
 		lst = lst->next;
 	}
 }
@@ -150,7 +152,7 @@ void		clear_exec(t_exec **exec)
 	}
 }
 
-int		main(int argc, char **argv, char **env)
+int		main(int argc, char **argv, char **environ)
 {
 	t_token		*token_lst[2];
 	t_history	*history;
@@ -158,6 +160,7 @@ int		main(int argc, char **argv, char **env)
 	t_term		*term;
 	t_lexer		*lex;
 	t_exec		*exec;
+	t_env		*env;
 	int		ret;
 
 	term = init_term();
@@ -166,6 +169,7 @@ int		main(int argc, char **argv, char **env)
 	lex = NULL;
 	exec = NULL;
         init_termcaps();
+	env = dup_env(environ);
 	while (42)
 	{
 		ft_bzero(input->buffer, input->buffer_size);
@@ -175,6 +179,7 @@ int		main(int argc, char **argv, char **env)
 		lex = lexer(lex, input->buffer, INIT);
 		token_lst[0] = lex->token_list;
 		token_lst[1] = lex->last_token;
+		display_token_list(input, token_lst[0]);
 		ret = parser(&exec, lex->token_list, SAVE_EXEC);
 		if (ret < -1 && ret != -4)
 		{
@@ -183,11 +188,11 @@ int		main(int argc, char **argv, char **env)
 			display_token_list(input, token_lst[0]);
 			ret = parser(&exec, token_lst[0], SAVE_EXEC);
 		}
-		display_token_list(input, token_lst[0]);
+		//display_token_list(input, token_lst[0]);
 		clear_token_list(token_lst[0]);
 		while (exec && ret == -1)
 		{
-			launch_command(exec);
+			launch_command(exec, env);
 			if ((exec->cmd_separator == AND_IF && exec->exit_status) ||
 				(exec->cmd_separator == OR_IF && !exec->exit_status))
 				exec = exec->next;
