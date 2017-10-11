@@ -6,11 +6,12 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:56:16 by bjanik            #+#    #+#             */
-/*   Updated: 2017/07/05 15:50:55 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/11 20:25:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
+#include "builtins.h"
 
 void		append_history(t_history *history, char *cmd, int cmd_size)
 {
@@ -33,6 +34,11 @@ t_history	*init_history(void)
 	history->end = NULL;
 	history->current = NULL;
 	history->len = 0;
-	history->append_history = append_history;
+	history->fd = open("~/.21sh_history", O_CREAT | O_RDWR | O_APPEND, 0644);
 	return (history);
+}
+
+int			ft_history(t_env **env, char **cmd)
+{
+	return (0);
 }

@@ -57,8 +57,9 @@ void	launch_command(t_exec *exec, t_env *env)
 	char	**paths;
 	char	*full_path;
 	char	**env_tab;
-	
+
 	i = -1;
+	cmd = NULL;
 	if ((pid = fork()) < 0)
 		exit(-1);
 	if (!pid)

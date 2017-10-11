@@ -6,11 +6,10 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/07/05 16:18:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/11 20:45:23 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define TERM_C
 #include "term.h"
 
 static void	get_term_size(t_term *term)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/11 20:15:09 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "lexer.h"
 #include "parser.h"
@@ -7,25 +19,25 @@
 #include "builtins.h"
 #include "exec.h"
 
-int             init_termcaps(void)
+int		init_termcaps(void)
 {
-        char                    *termtype;
-        struct termios  term;
+	char			*termtype;
+	struct termios	term;
 
-        if (!isatty(STDIN))
-                exit(-1);
-        if (!(termtype = getenv("TERM")))
-                ft_error_msg("Missing $TERM variable");
-        if (!tgetent(NULL, termtype))
-                exit(-1);
-        if (tcgetattr(STDIN, &term) == -1)
-                exit(-1);
-        term.c_lflag &= ~(ICANON | ECHO);
-        term.c_cc[VMIN] = 1;
-        term.c_cc[VTIME] = 0;
-        if (tcsetattr(STDIN, TCSADRAIN, &term) == -1)
-                ft_error_msg("Unable to set terminal");
-        return (0);
+	if (!isatty(STDIN))
+	exit(-1);
+	if (!(termtype = getenv("TERM")))
+		ft_error_msg("Missing $TERM variable");
+	if (!tgetent(NULL, termtype))
+		exit(-1);
+	if (tcgetattr(STDIN, &term) == -1)
+		exit(-1);
+	term.c_lflag &= ~(ICANON | ECHO);
+	term.c_cc[VMIN] = 1;
+	term.c_cc[VTIME] = 0;
+	if (tcsetattr(STDIN, TCSADRAIN, &term) == -1)
+		ft_error_msg("Unable to set terminal");
+	return (0);
 }
 
 void		clear_token_list(t_token *token_lst)
@@ -60,9 +72,10 @@ void		display_token_list(t_input *input, t_token *lst)
 {
 	while (lst)
 	{
-		dprintf(input->fd, "[%s] type =  %d\n", lst->token, lst->type);
+		ft_printf("[%s] type =  %d\n", lst->token, lst->type);
 		lst = lst->next;
 	}
+	ft_printf("----------------------------------\n");
 }
 
 void	del_newline_token(t_lexer *lexer, t_token **token_lst)
@@ -77,18 +90,20 @@ void	del_newline_token(t_lexer *lexer, t_token **token_lst)
 	(*token_lst)->next = NULL;
 }
 
-void	handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret, t_token *token_lst[])
+void	handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret,
+		t_token *token_lst[])
 {
-	while (ret == -2 || ret == -3)
+	while (ret == END_IS_OP || ret == UNCLOSED_QUOTES)
 	{
-		(ret == -2)? del_newline_token(lex, &token_lst[1]): 0;
+		(ret == END_IS_OP)? del_newline_token(lex, &token_lst[1]): 0;
 		input->buf_tmp = input->buffer;
 		input->buffer = (char*)ft_memalloc(INITIAL_BUFFER_SIZE + 1);
 		display_prompt(input);
 		waiting_for_input(input);
 		lex = lexer(lex, input->buffer, lex->state);
 		ret = parser(NULL, lex->token_list, NO_SAVE_EXEC);
-		if ((ret == -3 || ret == -1) && token_lst[1]->type == WORD)
+		if ((ret == UNCLOSED_QUOTES || ret == ACCEPTED) &&
+				token_lst[1]->type == WORD)
 		{
 			token_lst[1]->token = ft_strjoin_free(token_lst[1]->token, lex->token_list->token, 3);
 			token_lst[1]->pushed = 0;
@@ -152,6 +167,19 @@ void		clear_exec(t_exec **exec)
 	}
 }
 
+void	execution(t_exec *exec, int ret, t_env *env)
+{
+	while (exec && ret == ACCEPTED)
+	{
+		launch_command(exec, env);
+		if ((exec->cmd_separator == AND_IF && exec->exit_status) ||
+			(exec->cmd_separator == OR_IF && !exec->exit_status))
+			exec = exec->next;
+		if (exec)
+			exec = exec->next;
+	}
+}
+
 int		main(int argc, char **argv, char **environ)
 {
 	t_token		*token_lst[2];
@@ -161,14 +189,14 @@ int		main(int argc, char **argv, char **environ)
 	t_lexer		*lex;
 	t_exec		*exec;
 	t_env		*env;
-	int		ret;
+	int			ret;
 
 	term = init_term();
-        history = init_history();
-        input = init_input(term, history);
+	history = init_history();
+	input = init_input(term, history);
 	lex = NULL;
 	exec = NULL;
-        init_termcaps();
+	init_termcaps();
 	env = dup_env(environ);
 	while (42)
 	{
@@ -179,26 +207,15 @@ int		main(int argc, char **argv, char **environ)
 		lex = lexer(lex, input->buffer, INIT);
 		token_lst[0] = lex->token_list;
 		token_lst[1] = lex->last_token;
-		display_token_list(input, token_lst[0]);
 		ret = parser(&exec, lex->token_list, SAVE_EXEC);
-		if (ret < -1 && ret != -4)
+		if (ret > ACCEPTED && ret != SYNTAX_ERROR)
 		{
 			handle_unclosed_quotes(lex, input, ret, token_lst);
 			token_lst[1]->pushed = 0;
-			display_token_list(input, token_lst[0]);
 			ret = parser(&exec, token_lst[0], SAVE_EXEC);
 		}
-		//display_token_list(input, token_lst[0]);
 		clear_token_list(token_lst[0]);
-		while (exec && ret == -1)
-		{
-			launch_command(exec, env);
-			if ((exec->cmd_separator == AND_IF && exec->exit_status) ||
-				(exec->cmd_separator == OR_IF && !exec->exit_status))
-				exec = exec->next;
-			if (exec)
-				exec = exec->next;
-		}
+		execution(exec, ret, env);
 		clear_exec(&exec);
 	}
 }

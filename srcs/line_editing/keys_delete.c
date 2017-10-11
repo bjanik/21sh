@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keys_delete.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 20:38:51 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/11 20:39:06 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "input.h"
 
 static void	delete_char(t_input *input)
@@ -12,19 +24,19 @@ static void	delete_char(t_input *input)
 	update_visual_buffer(input);
 }
 
-int     handle_backspace(t_input *input)
+int	handle_backspace(t_input *input)
 {
 	if (input->cursor_pos > 0)
-        {
+	{
 		handle_arrow_left(input);
-        	delete_char(input);
+		delete_char(input);
 	}
-        return (0);
+	return (0);
 }
 
-int     handle_delete(t_input *input)
+int	handle_delete(t_input *input)
 {
-        delete_char(input);
-        return (0);
+	delete_char(input);
+	return (0);
 }
 
