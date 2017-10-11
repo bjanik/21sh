@@ -28,7 +28,7 @@
 # define BACKSPACE "\x7F"
 # define HOME "\x1B[H"
 # define END "\x1B[F"
-# define CLEAR_SCREEN "L"
+# define CLEAR_SCREEN "xxxxxsd"
 
 # define RETURN "\n" 
 

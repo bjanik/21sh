@@ -40,5 +40,7 @@ typedef struct 		s_token
 	struct s_token	*prev;
 }			t_token;
 
+
+
 #endif
 
