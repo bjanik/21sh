@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_operator.c                                      :+:      :+:    :+:   */
+/*   check_arg_opt.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/11 20:18:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/12 12:06:59 by bjanik           ###   ########.fr       */
+/*   Created: 2017/10/14 13:11:12 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/14 13:29:39 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "builtins.h"
 
-int			is_operator(char *token)
+char	check_arg_opt(char *arg_opt, char *available_opts, char *options)
 {
 	int	i;
+	int	j;
 
-	i = 2;
-	while (g_op_list[++i])
+	i = -1;
+	j = 0;
+	while (arg_opt[++i])
 	{
-		if (!ft_strcmp(g_op_list[i], token))
-			return (i);
+		if (!ft_strchr(available_opts, arg_opt[i]))
+			return (arg_opt[i]);
+		if (!ft_strchr(options, arg_opt[i]))
+			options[j++] = arg_opt[i];
 	}
-	return (-1);
+	return (0);
 }

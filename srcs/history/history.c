@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:56:16 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 20:25:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/12 18:23:46 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,4 @@ t_history	*init_history(void)
 	history->len = 0;
 	history->fd = open("~/.21sh_history", O_CREAT | O_RDWR | O_APPEND, 0644);
 	return (history);
-}
-
-int			ft_history(t_env **env, char **cmd)
-{
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 20:45:23 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/12 14:02:51 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ t_term		*init_term(void)
 {
 	t_term	*term;
 
-	term = (t_term*)malloc(sizeof(t_term));
+	if (!(term = (t_term*)malloc(sizeof(t_term))))
+		return (NULL);
 	term->prompt_len = 0;
 	term->cursor_row = 0;
 	term->cursor_col = 0;
+	//term->initial_term_settings = save_initial_settings();
 	term->get_term_size = get_term_size;
 	term->get_prompt = get_prompt;
 	term->print_prompt = print_prompt;

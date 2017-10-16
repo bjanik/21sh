@@ -26,7 +26,8 @@ char		**env_to_tab(t_env *env)
 	{
 		if (env->exportable)
 		{
-			if (!(tab[i] = (char*)malloc(sizeof(char) * (ft_strlen(env->var_value) + ft_strlen(env->var_name) + 2))))
+			if (!(tab[i] = (char*)malloc(sizeof(char) *
+				(ft_strlen(env->var_value) + ft_strlen(env->var_name) + 2))))
 				perror("malloc");
 			ft_strcpy(tab[i], env->var_name);
 			ft_strcat(tab[i], "=");
@@ -36,4 +37,11 @@ char		**env_to_tab(t_env *env)
 	}
 	tab[i] = NULL;
 	return (tab);
+}
+
+int		ft_env(t_env **env, char **cmd)
+{
+	if (cmd && cmd[0] && !cmd[1])
+		return (display_env(*env));
+	return (0);
 }

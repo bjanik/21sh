@@ -3,7 +3,6 @@
 
 int	redir_greatand(t_redir *redir)
 {
-	//ft_printf("IN >&, file  = %s && fd = %d\n", redir->dest_file, redir->fd);
 	if (!ft_strcmp(redir->dest_file, "-"))
 		close(redir->fd);
 	else if (ft_str_isdigit(redir->dest_file))

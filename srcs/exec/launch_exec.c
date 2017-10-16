@@ -1,7 +1,7 @@
 #include "exec.h"
 #include "parser.h"
 
-char	**lst_to_tab(t_list *word_list, int word_count)
+char		**lst_to_tab(t_list *word_list, int word_count)
 {
 	char	**tab;
 	int	i;
@@ -18,14 +18,13 @@ char	**lst_to_tab(t_list *word_list, int word_count)
 	return (tab);
 }
 
-void	handle_redirection(t_exec *exec)
+void		handle_redirection(t_exec *exec)
 {
 	t_redir	*redir;
 	
 	redir = exec->redir_list;
 	while (redir)
 	{
-		//ft_printf("%p - file = %s - type = %d - here = %s\n", list, list->dest_file, list->type, list->here_end);
 		if (redir->type == GREAT)
 			redir_great(redir);
 		else if (redir->type == DGREAT)
@@ -35,40 +34,36 @@ void	handle_redirection(t_exec *exec)
 		else if (redir->type == GREATAND)
 			redir_greatand(redir);
 		redir = redir->next;
-	}	
+	}
 }
 
-char	**get_cmd_path(char **env)
+char		**get_cmd_path(t_env *env)
 {
 	char	**paths;
-	char	*path;
+	t_env	*path;
 
-	if (!(path = getenv("PATH")))
+	if (!(path = ft_getenv(env, "PATH")))
 		return (NULL);
-	paths = ft_strsplit(path, ':');
-	return (paths);	
+	paths = ft_strsplit(path->var_value, ':');
+	return (paths);
 }
 
-void	launch_command(t_exec *exec, t_env *env)
+void		launch_command(t_exec *exec, t_env *env, char **cmd)
 {
-	int	pid;
-	int	i;
-	char	**cmd;
+	int		pid;
+	int		i;
 	char	**paths;
 	char	*full_path;
 	char	**env_tab;
 
 	i = -1;
-	cmd = NULL;
 	if ((pid = fork()) < 0)
 		exit(-1);
 	if (!pid)
 	{
 		handle_redirection(exec);
-		if (exec->word_list)
-			cmd = lst_to_tab(exec->word_list, exec->word_count);
+		paths = get_cmd_path(env);
 		env_tab = env_to_tab(env);
-		paths = get_cmd_path(env_tab);
 		while (paths && paths[++i] && cmd[0][0] != '/')
 		{
 			full_path = ft_strnjoin(paths[i], 2, "/", cmd[0]);

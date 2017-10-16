@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_operator.c                                      :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/11 20:18:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/12 12:06:59 by bjanik           ###   ########.fr       */
+/*   Created: 2017/10/12 18:27:24 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/12 20:37:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "builtins.h"
 
-int			is_operator(char *token)
+int	ft_echo(t_env **env, char **cmd)
 {
+	int	new_line;
 	int	i;
 
-	i = 2;
-	while (g_op_list[++i])
+	(void)env;
+	new_line = 1;
+	i = 1;
+	if (cmd[1] && !ft_strcmp("-n", cmd[1]))
 	{
-		if (!ft_strcmp(g_op_list[i], token))
-			return (i);
+		new_line = 0;
+		i++;
 	}
-	return (-1);
+	while ( cmd[i])
+		ft_putstr(cmd[i++]);
+	(new_line) ? ft_putchar('\n') : 0;
+	return (0);
 }

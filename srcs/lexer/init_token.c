@@ -4,16 +4,22 @@
 t_token	*init_token_node(t_lexer *lexer)
 {
 	t_token	*token;
+	int		op;
 
-	token = (t_token*)malloc(sizeof(t_token));
-	token->token = ft_strdup(lexer->current_token);
+	op = 0;
+	if (!(token = (t_token*)malloc(sizeof(t_token))))
+		return (NULL);
+	if (!(token->token = ft_strdup(lexer->current_token)))
+		return (NULL);
 	token->pushed = 0;
-	//if ((op = is_operator(token->token)) != -1)
-	//	token->type = op;
-	if (!ft_strcmp(lexer->current_token, "\n") && (lexer->state == STD ||
+	if ((op = is_operator(token->token)) != -1)
+		token->type = op;
+	else if (!ft_strcmp(lexer->current_token, "\n") && (lexer->state == STD ||
 			lexer->state == COMMENT))
 		token->type = NEWLINE;
-	else if (!ft_strcmp(lexer->current_token, ">>"))
+	else
+		token->type = WORD;
+	/*else if (!ft_strcmp(lexer->current_token, ">>"))
 		token->type = DGREAT;
 	else if (!ft_strcmp(lexer->current_token, "<<"))
 		token->type = DLESS;
@@ -34,11 +40,9 @@ t_token	*init_token_node(t_lexer *lexer)
 	else if (!ft_strcmp(lexer->current_token, ";"))
 		token->type = SEMI;
 	else if (!ft_strcmp(lexer->current_token, "&"))
-		token->type = AND;
-	else
-		token->type = WORD;
+		token->type = AND;*/
 	token->next = NULL;
 	ft_bzero(lexer->current_token, lexer->token_len);
 	lexer->token_len = 0;
-	return (token);	
+	return (token);
 }

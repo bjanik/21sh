@@ -1,6 +1,6 @@
 #include "builtins.h"
 
-t_env	*dup_env(char **environ)
+t_env	*env_to_lst(char **environ)
 {
 	t_env	*env;
 	int	i;
@@ -10,14 +10,14 @@ t_env	*dup_env(char **environ)
 	while (environ[i])
 	{
 		if (!env)
-			env = create_node(environ[i++]);
+			env = create_node(environ[i++], 1);
 		else
-			push_back_env(&env, environ[i++]);
+			push_back_env(&env, environ[i++], 1);
 	}
 	return (env);
 }
 
-t_env		*create_node(char *env_var)
+t_env		*create_node(char *env_var, int export)
 {
 	t_env	*env;
 	char	**splitted_env_var;
@@ -37,12 +37,12 @@ t_env		*create_node(char *env_var)
 	else if (!(env->var_value = ft_strdup("")))
 		perror("malloc failed");
 	env->next = NULL;
-	env->exportable = 1;
+	env->exportable = export;
 	ft_free_string_tab(&splitted_env_var);
 	return (env);
 }
 
-void		push_back_env(t_env **env, char *env_var)
+void		push_back_env(t_env **env, char *env_var, int export)
 {
 	t_env	*ptr;
 
@@ -51,19 +51,33 @@ void		push_back_env(t_env **env, char *env_var)
 		ptr = *env;
 		while (ptr->next)
 			ptr = ptr->next;
-		ptr->next = create_node(env_var);
+		ptr->next = create_node(env_var, export);
 	}
 	else
-		*env = create_node(env_var);
+		*env = create_node(env_var, export);
 }
 
 int	display_env(t_env *env)
 {
 	while (env)
 	{
-		if (env->exportable)
-			ft_printf("%s=%s\n", env->var_name, env->var_value);
+		//if (env->exportable)
+			ft_printf("%s=%s  exportable = %d\n", env->var_name, env->var_value, env->exportable);
 		env = env->next;
 	}
 	return (0);
+}
+
+t_env	*ft_getenv(t_env *env, char *name)
+{
+	t_env	*e;
+
+	e = env;
+	while (e)
+	{
+		if (!ft_strcmp(e->var_name, name))
+			return (e);
+		e = e->next;
+	}
+	return (NULL);
 }
