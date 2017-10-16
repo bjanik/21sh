@@ -8,7 +8,7 @@
 #define DGREAT 4
 #define LESSAND 5
 #define GREATAND 6
-#define LESS 7 
+#define LESS 7
 #define GREAT 8
 #define AND_IF 9
 #define OR_IF 10
@@ -30,17 +30,15 @@
 				IO_NUMBER,
 				WORD,
 			}e_tokens;*/
-			
-typedef struct 		s_token
+
+typedef struct		s_token
 {
-	char		*token;
-	int		type;
-	int		pushed;
+	char			*token;
+	int				type;
+	int				pushed;
 	struct s_token	*next;
 	struct s_token	*prev;
-}			t_token;
-
-
+}					t_token;
 
 #endif
 

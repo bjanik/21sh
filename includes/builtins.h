@@ -1,38 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 18:33:13 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/16 14:51:22 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BUILTINS_H
 # define BUILTINS_H
 # include "libft.h"
 # include "errno.h"
 
+# define IS_OPTION(x, y) ft_strchr(x, y)
+# define EXPORT_OPTIONS "np"
+# define HISTORY_OPTIONS "cdan"
+
 typedef struct		s_env
 {
-	char		*var_name;
-	char		*var_value;
-	short int	exportable;
+	char			*var_name;
+	char			*var_value;
+	short int		exportable;
 	struct s_env	*next;
-}			t_env;
+}					t_env;
 
 typedef struct		s_builtins
 {
-	char		*b_name;
-	int		(*builtins)(t_env **, char **);
-}			t_builtins;
+	char			*b_name;
+	int				(*builtin)(t_env **, char **);
+}					t_builtins;
 
-t_env			*dup_env(char **environ);
-t_env			*create_node(char *env_var);
-void			push_back_env(t_env **env, char *env_var);
-int			env_size(t_env *env);
-int			display_env(t_env *env);
-char			**env_to_tab(t_env *env);
+int					cmd_is_builtin(char **cmd);
+t_env				*env_to_lst(char **environ);
+t_env				*create_node(char *env_var, int exportable);
+void				push_back_env(t_env **env, char *env_var, int exportable);
+int					env_size(t_env *env);
+int					display_env(t_env *env);
+char				**env_to_tab(t_env *env);
+t_env				*ft_getenv(t_env *env, char *name);
 
-/*static t_builtins g_builtins[] = {
-        { "cd", ft_cd },
-        { "echo", ft_echo },
-        { "env", ft_env},
-        { "setenv", ft_setenv },
-        { "unsetenv", ft_unsetenv},
+int					ft_export(t_env **env, char **cmd);
+int					ft_cd(t_env **env, char **cmd);
+int					ft_setenv(t_env **env, char **cmd);
+int					ft_unsetenv(t_env **env, char **cmd);
+int					ft_env(t_env **env, char **cmd);
+int					ft_echo(t_env **env, char **cmd);
+int					ft_history(t_env **env, char **cmd);
+
+char				check_arg_opt(char *arg_opt, char *avail_opt, char *opts);
+
+static t_builtins	g_builtins[] = {
+	{ "cd", ft_cd},
+	{ "echo", ft_echo},
+	{ "env", ft_env},
+	{ "setenv", ft_setenv},
+	{ "unsetenv", ft_unsetenv},
 	{ "export", ft_export},
 	{ "history", ft_history},
 	{ NULL, NULL},
-};*/
-
+};
 #endif
