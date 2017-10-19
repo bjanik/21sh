@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:25:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/14 17:11:56 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 18:19:25 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ int			ft_setenv(t_env **env, char **cmd)
 		return (-1);
 	}
 	while (cmd[i])
-		set_var(env, cmd[i++], 0);
+		set_var(env, cmd[i++], LOCAL_VAR);
 	return (0);
 }

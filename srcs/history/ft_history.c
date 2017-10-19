@@ -6,20 +6,12 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:14:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/16 16:36:32 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 20:40:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-static int	history_usage(char invalid_opt)
-{
-	ft_putstr_fd("bsh: history: -", STDERR);
-	ft_putchar_fd(invalid_opt, STDERR);
-	ft_putendl_fd(": invalid option", STDERR);
-	ft_putendl_fd("history: usage: history [-c] [-d offset] [-n]", STDERR);
-	return (1);
-}
 
 static int		display_history(t_history *hist)
 {
@@ -42,37 +34,44 @@ void			del_hist(void *data, size_t data_size)
 	ft_memdel(&data);
 }
 
-static int		history_option_d(t_dlst *head, char **cmd, int i)
+static int		history_option_d(t_dlst **end, char **cmd, int i)
 {
 	int		offset;
 	t_dlst	*lst;
 
+	lst = *end;
+	if (!*end)
+		return (1);
+	ft_printf("hist->end = %s, hist->head = %s\n", (*end)->data, get_bsh()->history->head->data);
+	if (!cmd[i])
+		return (history_usage('d', MISSING_ARG));
 	i = (!ft_strcmp("--", cmd[i])) ? i + 1 : i;
 	offset = ft_atoi(cmd[i]);
-	ft_printf("OFFSET = %d\n", offset);
-	while (offset-- && lst)
-		lst = lst->next;
-	if (!lst)
+	if (!offset || ft_abs(offset) > get_bsh()->history->len)
+		return (option_d_error(cmd[i]));
+	while (--offset && lst)
+		lst = lst->prev;
+	if (!lst->prev)
 	{
-		ft_putstr_fd("bsh: history: ", STDERR);
-		ft_putstr_fd(cmd[i], STDERR);
-		ft_putendl_fd(": history position out of range", STDERR);
-		return (1);
+		get_bsh()->history->head = lst->next;
+		ft_memdel(&lst->data);
+		ft_memdel((void**)&lst);
 	}
-}
-
-static int		history_option_c(t_dlst *head)
-{
-}
-
-int	launch_history(char *options)
-{
-	int	i;
-
-	i = -1;
-	while (options[++i])
+	else if (!lst->next)
 	{
+		lst->prev->next = NULL;
+		*end = lst->prev;
+		ft_memdel(&lst->data);
+		ft_memdel((void**)&lst);
 	}
+	else
+	{
+		lst->prev->next = lst->next;
+		lst->next->prev = lst->prev;
+		ft_memdel(&lst->data);
+		ft_memdel((void**)lst);
+	}
+	return (0);
 }
 
 int				ft_history(t_env **env, char **cmd)
@@ -95,12 +94,14 @@ int				ft_history(t_env **env, char **cmd)
 			return (1);
 		}
 		if ((wrong_opt = check_arg_opt(cmd[i] + 1, HISTORY_OPTIONS, options)))
-			return (history_usage(wrong_opt));
+			return (history_usage(wrong_opt, INVALID_OPT));
 	}
 	if (IS_OPTION(options, 'c'))
+	{
 		ft_dlstdel(&hist->head, del_hist);
-	if (IS_OPTION(options, 'd'))
-		history_option_d(hist->head, cmd, i);
-
+		hist->end = NULL;
+	}
+	else if (IS_OPTION(options, 'd'))
+		history_option_d(&hist->end, cmd, i);
 	return (0);
 }

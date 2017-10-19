@@ -1,5 +1,4 @@
-#include "parser.h"
-#include "exec.h"
+#include "bsh.h"
 
 int	redir_greatand(t_redir *redir)
 {

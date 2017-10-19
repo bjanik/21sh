@@ -6,18 +6,18 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:56:16 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/12 18:23:46 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 17:50:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 #include "builtins.h"
 
-void		append_history(t_history *history, char *cmd, int cmd_size)
+void		append_history(t_history *history, char *cmd, int cmd_len)
 {
 	t_dlst	*hist;
 
-	hist = ft_dlstnew(cmd, cmd_size);
+	hist = ft_dlstnew(cmd, cmd_len + 1);
 	ft_dlstadd(&history->head, hist);
 	if (history->end == NULL)
 		history->end = history->head;
@@ -29,7 +29,8 @@ t_history	*init_history(void)
 {
 	t_history	*history;
 
-	history = (t_history*)ft_malloc(sizeof(t_history));
+	if (!(history = (t_history*)malloc(sizeof(t_history))))
+		return (NULL);
 	history->head = NULL;
 	history->end = NULL;
 	history->current = NULL;

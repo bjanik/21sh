@@ -18,7 +18,7 @@ int	handle_return(t_input *input)
 {
 	if (input->buffer_len > 0)
 	{
-		append_history(input->history, input->buffer, input->buffer_len + 1);
+		//append_history(input->history, input->buffer, input->buffer_len + 1);
 		handle_end(input);
 		input->cursor_pos = 0;
 	}

@@ -38,17 +38,17 @@ int	handle_ctrl_up(t_input *input)
 
 int	handle_ctrl_right(t_input *input)
 {
-		if (input->cursor_pos != input->buffer_len)
+	if (input->cursor_pos != input->buffer_len)
+	{
+		while (ft_isprint(input->buffer[input->cursor_pos]))
 		{
-			while (ft_isprint(input->buffer[input->cursor_pos]))
-			{
-					handle_arrow_right(input);
-					if (input->buffer[input->cursor_pos] == ' ' &&
-					input->buffer[input->cursor_pos - 1] != ' ')
-		 			break;
-			}
+				handle_arrow_right(input);
+				if (input->buffer[input->cursor_pos] == ' ' &&
+				input->buffer[input->cursor_pos - 1] != ' ')
+	 			break;
+		}
 	}
-	  	return (0);
+	return (0);
 }
 
 int	handle_ctrl_left(t_input *input)

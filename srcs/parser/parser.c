@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 16:09:03 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/12 13:23:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 16:12:29 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "bsh.h"
 
 extern int			g_successor_state[18][MAX_SYM];
 extern int			g_reduce_table[NB_RULES];

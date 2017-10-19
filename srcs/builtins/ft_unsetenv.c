@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:56:24 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/14 16:32:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 18:19:35 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,17 @@ void	unset_var(t_env **env, t_env **ptr, t_env *prev)
 	}
 }
 
-int		ft_unsetenv_error(void)
+static int		ft_unsetenv_error(void)
 {
 	ft_putendl_fd("unsetenv: not enough arguments", STDERR);
 	return (-1);
 }
 
-int		ft_unsetenv(t_env **env, char **args)
+int				ft_unsetenv(t_env **env, char **args)
 {
-	int		i;
-	t_env	*prev;
-	t_env	*ptr;
+	int			i;
+	t_env		*prev;
+	t_env		*ptr;
 
 	i = 1;
 	if (args[0] && !args[1])

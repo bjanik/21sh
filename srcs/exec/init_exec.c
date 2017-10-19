@@ -1,11 +1,11 @@
-#include "parser.h"
+#include "bsh.h"
 
 t_exec	*init_exec(void)
 {
 	t_exec	*exec;
 
 	if (!(exec = (t_exec*)malloc(sizeof(t_exec))))
-		return (NULL);
+		exit(EXIT_FAILURE);
 	exec->word_list = NULL;
 	exec->last_word = NULL;
 	exec->word_count = 0;

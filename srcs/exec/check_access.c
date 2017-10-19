@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   realloc_current_token.c                            :+:      :+:    :+:   */
+/*   check_access.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/11 20:22:35 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 20:57:51 by bjanik           ###   ########.fr       */
+/*   Created: 2017/10/17 18:48:07 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/19 17:36:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-void		realloc_current_token(t_lexer *lexer)
+int		check_access_exist(char *file)
 {
-	char	*tmp;
+	if (access(file, F_OK))
+		return (ft_no_file_msg(file));
+	return (0);
+}
 
-	tmp = lexer->current_token;
-	lexer->token_size *= 2;
-	if (!(lexer->current_token = (char *)ft_memalloc((lexer->token_size * 2 + 1)
-					* sizeof(char))))
-		exit(EXIT_FAILURE);
-	ft_bzero(lexer->current_token, lexer->token_size + 1);
-	ft_strcpy(lexer->current_token, tmp);
-	free(tmp);
+int		check_access_writing(char *file)
+{
+	if (access(file, W_OK))
+		return (ft_perm_denied_msg(file));
+	return (0);
+}
+
+int		check_access_reading(char *file)
+{
+	if (access(file, R_OK))
+		return (ft_perm_denied_msg(file));
+	return (0);
 }

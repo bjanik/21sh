@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:51:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/07/05 16:29:56 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/16 16:30:34 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 # define LIBFT_H
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <string.h>
 # include <stdarg.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+
 
 # define BLK "\x1B[30m"
 # define RED "\x1B[31m"
@@ -38,8 +42,6 @@
 # define STDOUT 1
 # define STDERR 2
 
-typedef unsigned long long int uintmax_t;
-typedef long long int intmax_t;
 
 typedef struct		s_dlst
 {
@@ -141,6 +143,7 @@ void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_dlst				*ft_dlstnew(void const *data, size_t data_size);
 void				ft_dlstdelone(t_dlst **alst, void(*del)(void *, size_t));
+void				ft_dlstdel(t_dlst **alst, void(*del)(void *, size_t));
 void				ft_dlstadd(t_dlst **alst, t_dlst *new);
 void				ft_swap(void *a, void *b);
 int					ft_nb_digit_base(long long n, int base);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/19 17:58:23 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/19 17:58:25 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TOOLS_H
 #define TOOLS_H
 
@@ -15,7 +27,7 @@
 #define SEMI 11
 #define AND 12
 #define PIPE 13
-/*typedef enum e_tokens {
+/*enum e_tokens {
 				DGREAT,
 				DLESS,
 				GREAT,
@@ -29,7 +41,7 @@
 				NEWLINE,
 				IO_NUMBER,
 				WORD,
-			}e_tokens;*/
+};*/
 
 typedef struct		s_token
 {

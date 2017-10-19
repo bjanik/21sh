@@ -1,11 +1,11 @@
-#include "parser.h"
+#include "bsh.h"
 
-t_redir	*init_redir(t_exec *exec, t_stack *stack)
+t_redir	*init_redir(void)
 {
 	t_redir	*redir;
 
 	if (!(redir = (t_redir*)malloc(sizeof(t_redir))))
-		return (NULL);
+		exit(EXIT_FAILURE);
 	redir->next = NULL;
 	redir->dest_file = NULL;
 	redir->here_end = NULL;

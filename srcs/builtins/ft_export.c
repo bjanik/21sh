@@ -10,7 +10,6 @@ static int	export_usage(char invalid_opt)
 	return (1);
 }
 
-
 int			ft_export(t_env **env, char **cmd)
 {
 	int		i;
@@ -41,6 +40,6 @@ int			ft_export(t_env **env, char **cmd)
 		}
 	}
 	while (cmd[i])
-		set_var(env, cmd[i++], 1);
+		set_var(env, cmd[i++], EXPORT_VAR);
 	return (0);
 }

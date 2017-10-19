@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:33:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/16 14:51:22 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 18:18:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define IS_OPTION(x, y) ft_strchr(x, y)
 # define EXPORT_OPTIONS "np"
 # define HISTORY_OPTIONS "cdan"
+# define LOCAL_VAR 0
+# define EXPORT_VAR 1
 
 typedef struct		s_env
 {
@@ -41,6 +43,7 @@ int					env_size(t_env *env);
 int					display_env(t_env *env);
 char				**env_to_tab(t_env *env);
 t_env				*ft_getenv(t_env *env, char *name);
+void				set_var(t_env **env, char *var, int export);
 
 int					ft_export(t_env **env, char **cmd);
 int					ft_cd(t_env **env, char **cmd);

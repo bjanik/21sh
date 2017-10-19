@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:13:50 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 16:54:04 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 15:59:28 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "bsh.h"
 
 void	delimitate_token(t_lexer *lexer)
 {
@@ -31,5 +31,4 @@ void	delimitate_token(t_lexer *lexer)
 		}
 		lexer->last_token = token;
 	}
-	//ft_printf("%p && %s\n", lexer->token_list, lexer->last_token->token);
 }

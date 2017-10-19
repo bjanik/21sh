@@ -6,17 +6,15 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/07/05 17:44:08 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 17:23:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
-#include "libft.h"
-#include "fcntl.h"
+#include "bsh.h"
 
-int	cursor_on_last_line(t_input *input)
+int			cursor_on_last_line(t_input *input)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (input->cursor_pos + i < input->buffer_len &&
@@ -24,10 +22,10 @@ int	cursor_on_last_line(t_input *input)
 		i++;
 	if (input->cursor_pos + i == input->buffer_len)
 		return (1);
-	return (0);	
+	return (0);
 }
 
-void	update_visual_buffer(t_input *input)
+void		update_visual_buffer(t_input *input)
 {
 	if (!cursor_on_last_line(input))
 	{
@@ -41,7 +39,7 @@ void	update_visual_buffer(t_input *input)
 	}
 }
 
-void	realloc_buffer(t_input *input)
+void		realloc_buffer(t_input *input)
 {
 	char	*tmp;
 
@@ -54,7 +52,7 @@ void	realloc_buffer(t_input *input)
 	free(tmp);
 }
 
-int	handle_reg_char(t_input *input, char c)
+int		handle_reg_char(t_input *input, char c)
 {
 	if (input->buffer_len == input->buffer_size)
 		realloc_buffer(input);
@@ -82,9 +80,9 @@ int	handle_reg_char(t_input *input, char c)
 	return (0);
 }
 
-void	cp_history_to_buffer(t_input *input)
+void		cp_history_to_buffer(t_input *input)
 {
-	int	i;
+	int		i;
 	char	*str;
 
 	i = -1;
@@ -92,6 +90,7 @@ void	cp_history_to_buffer(t_input *input)
 	ft_bzero(input->buffer, input->buffer_size);
 	input->buffer_len = 0;
 	handle_home(input);
+	//ft_printf("IN HIST BUFFER\n");
 	while (str[++i])
 		handle_reg_char(input, str[i]);
 	tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);

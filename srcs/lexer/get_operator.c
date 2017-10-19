@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:40:44 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 16:16:41 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 15:59:02 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "bsh.h"
 
 void		get_operator(t_lexer *lexer)
 {

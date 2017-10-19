@@ -6,22 +6,22 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:39:37 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 17:26:05 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 20:43:41 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "bsh.h"
 
 t_lexer		*init_lexer(t_lexer *lexer, char *input, int initial_state)
 {
 	if (!lexer)
 	{
 		if (!(lexer = (t_lexer*)malloc(sizeof(t_lexer))))
-			return (NULL);
+			exit(EXIT_FAILURE);
 		if (!(lexer->current_token = (char*)malloc(INITIAL_TOKEN_SIZE + 1)))
-			return (NULL);
+			exit(EXIT_FAILURE);
 	}
-	lexer->input = ft_strdup(input);
+	lexer->input = input;
 	ft_bzero(lexer->current_token, INITIAL_TOKEN_SIZE);
 	lexer->token_size = INITIAL_TOKEN_SIZE;
 	lexer->token_len = 0;

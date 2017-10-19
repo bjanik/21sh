@@ -1,40 +1,44 @@
-#include "exec.h"
-#include "parser.h"
+#include "bsh.h"
 
 char		**lst_to_tab(t_list *word_list, int word_count)
 {
+	t_list	*wd;
 	char	**tab;
-	int	i;
+	int		i;
 
 	i = 0;
+	wd = word_list;
 	if (!(tab = (char**)malloc(sizeof(char*) * (word_count + 1))))
 		return (NULL);
-	while (word_list)
+	while (wd)
 	{
-		tab[i++] = word_list->content;
-		word_list = word_list->next;
+		tab[i++] = wd->content;
+		wd = wd->next;
 	}
 	tab[i] = NULL;
 	return (tab);
 }
 
-void		handle_redirection(t_exec *exec)
+int			handle_redirection(t_exec *exec)
 {
 	t_redir	*redir;
-	
+	int		ret;
+
+	ret = 0;
 	redir = exec->redir_list;
-	while (redir)
+	while (redir && !ret)
 	{
 		if (redir->type == GREAT)
-			redir_great(redir);
+			ret = redir_great(redir);
 		else if (redir->type == DGREAT)
-			redir_dgreat(redir);
+			ret = redir_dgreat(redir);
 		else if (redir->type == LESS)
-			redir_less(redir);
+			ret = redir_less(redir);
 		else if (redir->type == GREATAND)
-			redir_greatand(redir);
+			ret = redir_greatand(redir);
 		redir = redir->next;
 	}
+	return (ret);
 }
 
 char		**get_cmd_path(t_env *env)
@@ -48,6 +52,18 @@ char		**get_cmd_path(t_env *env)
 	return (paths);
 }
 
+int			access_exec_binary(char *bin_path)
+{
+	if (access(bin_path, F_OK))
+		return (COMMAND_NOT_FOUND);
+	else if (access(bin_path, X_OK))
+	{
+		ft_printf("ACCESS PERMISSION DENIED\n");
+		return (PERMISSION_DENIED);
+	}
+	return (0);
+}
+
 void		launch_command(t_exec *exec, t_env *env, char **cmd)
 {
 	int		pid;
@@ -55,26 +71,41 @@ void		launch_command(t_exec *exec, t_env *env, char **cmd)
 	char	**paths;
 	char	*full_path;
 	char	**env_tab;
+	int		ret;
+	char	*pwd;
 
 	i = -1;
+	ret = 0;
 	if ((pid = fork()) < 0)
-		exit(-1);
+		exit(EXIT_FAILURE);
 	if (!pid)
 	{
-		handle_redirection(exec);
+		(handle_redirection(exec)) ? exit(EXIT_FAILURE) : 0;
 		paths = get_cmd_path(env);
 		env_tab = env_to_tab(env);
-		while (paths && paths[++i] && cmd[0][0] != '/')
+		while (paths && paths[++i] && cmd[0][0] != '/' &&
+				ft_strncmp("./", cmd[0], 2))
 		{
 			full_path = ft_strnjoin(paths[i], 2, "/", cmd[0]);
 			cmd[0] = ft_strdup(exec->word_list->content);
-			if (access(full_path, F_OK | X_OK) == 0)
+			if (!(ret = access_exec_binary(full_path)))
 				execve(full_path, cmd, env_tab);
 		}
-		if (access(cmd[0], F_OK | X_OK) == 0)
+		if (!ft_strncmp(cmd[0], "./", 2))
+		{
+			pwd = getcwd(NULL, 256);
+			full_path = ft_strnjoin(pwd, 2, "/", cmd[0] + 2);
+			if (!(ret = access_exec_binary(full_path)))
+				execve(full_path, cmd, env_tab);
+			ft_strdel(&full_path);
+		}
+		else if (!(ret = access_exec_binary(cmd[0])))
 			execve(cmd[0], cmd, env_tab);
-		ft_printf("bsh: %s: command not found...\n", cmd[0]);
-		exit(COMMAND_NOT_FOUND);
+		if (ret == COMMAND_NOT_FOUND)
+			ft_cmd_not_found(cmd[0]);
+		else if (ret == PERMISSION_DENIED)
+			ft_perm_denied_msg(cmd[0]);
+		exit(ret);
 	}
 	else
 	{

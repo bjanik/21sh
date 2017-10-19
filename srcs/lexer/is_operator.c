@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:18:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/12 12:06:59 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 15:58:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "bsh.h"
 
 int			is_operator(char *token)
 {

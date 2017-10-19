@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bsh.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/19 21:07:30 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BSH_H
 # define BSH_H
 
@@ -7,6 +19,9 @@
 # include "exec.h"
 # include "history.h"
 # include "builtins.h"
+
+# define INTERACTIVE 0
+# define FILE_MODE 1
 
 typedef struct	s_bsh
 {
@@ -18,8 +33,19 @@ typedef struct	s_bsh
 	t_env		*env;
 	t_history	*history;
 	t_token		*tokens[2];
+	pid_t		pid;
 }				t_bsh;
 
 t_bsh			*get_bsh(void);
+void			clear_exec(t_exec **exec);
+void			clear_token_list(t_token **token);
 
+void			waiting_for_input(t_input *input);
+
+int				ft_perm_denied_msg(char *file);
+int				ft_no_file_msg(char *file);
+int				ft_cmd_not_found(char *cmd);
+int				check_access_exist(char *file);
+int				check_access_writing(char *file);
+int				check_access_reading(char *file);
 #endif

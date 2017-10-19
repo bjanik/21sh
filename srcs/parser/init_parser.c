@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:47:01 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 20:48:00 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 20:39:39 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_parser	*init_parser(t_token *token_list, int ex)
 	t_parser	*parser;
 
 	if (!(parser = (t_parser*)malloc(sizeof(t_parser))))
-		return (NULL);
+		exit(EXIT_FAILURE);
 	if (!(parser->stack = (t_stack*)malloc(sizeof(t_stack))))
-		return (NULL);
+		exit(EXIT_FAILURE);
 	parser->stack->next = NULL;
 	parser->stack->state = 0;
 	parser->stack->sym.type = -1;

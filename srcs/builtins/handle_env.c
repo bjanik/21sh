@@ -10,9 +10,9 @@ t_env	*env_to_lst(char **environ)
 	while (environ[i])
 	{
 		if (!env)
-			env = create_node(environ[i++], 1);
+			env = create_node(environ[i++], EXPORT_VAR);
 		else
-			push_back_env(&env, environ[i++], 1);
+			push_back_env(&env, environ[i++], EXPORT_VAR);
 	}
 	return (env);
 }
@@ -24,18 +24,19 @@ t_env		*create_node(char *env_var, int export)
 	
 	if (!env_var)
 		return (NULL);
-	splitted_env_var = ft_strsplit(env_var, '=');
+	if (!(splitted_env_var = ft_strsplit(env_var, '=')))
+		exit(EXIT_FAILURE);
 	if (!(env = (t_env*)malloc(sizeof(t_env))))
-		perror("malloc failed");
+		exit(EXIT_FAILURE);
 	if (!(env->var_name = ft_strdup(splitted_env_var[0])))
-		perror("malloc failed");
+		exit(EXIT_FAILURE);
 	if (splitted_env_var[1])
 	{
 		if (!(env->var_value = ft_strdup(splitted_env_var[1])))
-			perror("malloc failed");
+			exit(EXIT_FAILURE);
 	}
 	else if (!(env->var_value = ft_strdup("")))
-		perror("malloc failed");
+		exit(EXIT_FAILURE);
 	env->next = NULL;
 	env->exportable = export;
 	ft_free_string_tab(&splitted_env_var);
@@ -61,8 +62,8 @@ int	display_env(t_env *env)
 {
 	while (env)
 	{
-		//if (env->exportable)
-			ft_printf("%s=%s  exportable = %d\n", env->var_name, env->var_value, env->exportable);
+		if (env->exportable)
+			ft_printf("%s=%s\n", env->var_name, env->var_value, env->exportable);
 		env = env->next;
 	}
 	return (0);

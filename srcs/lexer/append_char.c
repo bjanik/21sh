@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:15:35 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 15:16:36 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 16:52:43 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "bsh.h"
 
 void	append_char(t_lexer *lexer)
 {

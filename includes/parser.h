@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/19 17:57:57 by bjanik            #+#    #+#             */
+/*   Updated: 2017/10/19 17:58:04 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSER_H
 # define PARSER_H
 # include "libft.h"
 # include "tools.h"
 # include "input.h"
 # include "lexer.h"
+# include "exec.h"
 # define SAVE_EXEC 1
 # define NO_SAVE_EXEC 0
 
@@ -38,29 +51,7 @@ enum e_sym
 	MAX_SYM,
 };
 
-typedef struct		s_redir
-{
-	char			*dest_file;
-	int				fd;
-	char			*here_end;
-	int				type;
-	struct s_redir	*next;
-}					t_redir;
-
-typedef struct 		s_exec
-{
-	t_list			*word_list;
-	int				word_count;
-	t_list			*last_word;
-	t_redir			*redir_list;
-	t_redir			*last_redir;
-	int				cmd_separator;
-	int				exit_status;
-	struct s_exec	*next;
-	struct s_exec	*prev;
-}					t_exec;
-
-typedef struct 		s_sym
+typedef struct		s_sym
 {
 	int				type;
 	char			*value;
@@ -73,7 +64,7 @@ typedef struct		s_stack
 	struct s_stack	*next;
 }					t_stack;
 
-typedef struct 		s_parser
+typedef struct		s_parser
 {
 	t_stack			*stack;
 	int				state;
@@ -82,7 +73,7 @@ typedef struct 		s_parser
 	t_exec			*last_exec;
 }					t_parser;
 
-typedef struct 		s_switch
+typedef struct		s_switch
 {
 	int				transition;
 	int				(*p_switch)(t_parser *parser);
@@ -103,12 +94,11 @@ void				push_state(t_parser *parser);
 void				pop_stack(t_stack **stack);
 t_parser			*init_parser(t_token *token_list, int ex);
 t_exec				*init_exec(void);
-t_redir				*init_redir(t_exec *exec, t_stack *stack);
+t_redir				*init_redir(void);
 
 void				append_wordlist(t_exec *exec, t_stack *stack);
 void				set_io_number(t_exec *exec, t_stack *stack);
 void				set_here_end(t_exec *exec, t_stack *stack);
 void				set_dest_file(t_exec *exec, t_stack *stack);
-void				waiting_for_input(t_input *input);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: bjanik <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 16:52:33 by bjanik            #+#    #+#              #
-#    Updated: 2017/06/30 17:02:50 by bjanik           ###   ########.fr        #
+#    Updated: 2017/10/16 16:29:35 by bjanik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,6 +92,7 @@ SRCS = ft_putstr.c \
 	   ft_dlstnew.c \
 	   ft_dlstadd.c \
 	   ft_dlstdelone.c \
+	   ft_dlstdel.c \
 	   ft_swap.c \
 	   ft_isspace.c \
 	   ft_strndup.c \

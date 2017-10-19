@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:17:02 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 15:19:19 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/19 15:59:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "bsh.h"
 
 void		get_event(t_lexer *lexer)
 {
