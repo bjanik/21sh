@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:58:09 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 17:58:10 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/27 15:37:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ typedef struct		s_term
 	int				first_line_len;
 	int				cursor_col;
 	int				cursor_row;
-	struct termios	*initial_term_settings;
-	struct termios	*termcaps_term_settings;
-	void			(*get_term_size)(struct s_term *term);
-	void			(*get_prompt)(struct s_term *term);
-	void			(*print_prompt)(struct s_term *term, char *color);
+	t_termios		initial_attr;
+	t_termios		custom_attr;
 }					t_term;
 
 t_term				*init_term(void);
+int					init_termcaps(t_term *term);
+int					restore_initial_attr(t_term *term);
+int					restore_custom_attr(t_term *term);
+void				get_term_size(t_term *term);
+void				get_prompt(t_term *term);
+void				print_prompt(t_term *term, char *color);
 #endif

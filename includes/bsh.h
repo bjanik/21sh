@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 21:07:30 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/28 17:44:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "exec.h"
 # include "history.h"
 # include "builtins.h"
+# include "expander.h"
 
 # define INTERACTIVE 0
 # define FILE_MODE 1
@@ -33,7 +34,10 @@ typedef struct	s_bsh
 	t_env		*env;
 	t_history	*history;
 	t_token		*tokens[2];
+	t_expander	*exp;
 	pid_t		pid;
+	int			exit_status;
+	char		*shell_name;
 }				t_bsh;
 
 t_bsh			*get_bsh(void);

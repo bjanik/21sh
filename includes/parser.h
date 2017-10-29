@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 17:58:04 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/20 16:50:31 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ t_redir				*init_redir(void);
 void				append_wordlist(t_exec *exec, t_stack *stack);
 void				set_io_number(t_exec *exec, t_stack *stack);
 void				set_here_end(t_exec *exec, t_stack *stack);
-void				set_dest_file(t_exec *exec, t_stack *stack);
+void				set_filename(t_exec *exec, t_stack *stack);
 
 #endif

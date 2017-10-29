@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:33:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 18:18:47 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/23 19:22:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int					display_env(t_env *env);
 char				**env_to_tab(t_env *env);
 t_env				*ft_getenv(t_env *env, char *name);
 void				set_var(t_env **env, char *var, int export);
-
 int					ft_export(t_env **env, char **cmd);
 int					ft_cd(t_env **env, char **cmd);
 int					ft_setenv(t_env **env, char **cmd);
 int					ft_unsetenv(t_env **env, char **cmd);
 int					ft_env(t_env **env, char **cmd);
 int					ft_echo(t_env **env, char **cmd);
+int					ft_exit(t_env **env, char **cmd);
 int					ft_history(t_env **env, char **cmd);
 
 char				check_arg_opt(char *arg_opt, char *avail_opt, char *opts);
@@ -63,6 +63,7 @@ static t_builtins	g_builtins[] = {
 	{ "unsetenv", ft_unsetenv},
 	{ "export", ft_export},
 	{ "history", ft_history},
+	{ "exit", ft_exit},
 	{ NULL, NULL},
 };
 #endif
