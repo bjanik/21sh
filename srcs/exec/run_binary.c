@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 15:00:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/28 18:37:00 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/29 17:39:53 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,31 +67,26 @@ static int	exec_search_in_env_path(char **cmd, t_env *env,  char **env_tab)
 
 void		run_binary(t_exec *exec, t_env *env, char **cmd)
 {
-	int		pid;
 	char	**env_tab;
 	int		ret;
 
-	((pid = fork()) < 0) ? exit(EXIT_FAILURE): 0;
-	if (!pid)
-	{
-		restore_initial_attr(get_bsh()->term);
-		(handle_redirection(exec)) ? exit(EXIT_FAILURE) : 0;
-		env_tab = env_to_tab(env);
-		if (cmd[0][0] == '/')
-			ret = exec_absolute_path(cmd, env_tab);
-		else if (!ft_strncmp("./", cmd[0],  2))
-			ret = exec_current_dir(cmd, env_tab, 2);
-		else
-			ret = exec_search_in_env_path(cmd, env, env_tab);
-		(ret == COMMAND_NOT_FOUND) ? ft_cmd_not_found(cmd[0]) :
-			ft_perm_denied_msg(cmd[0]);
-		exit(ret);
-	}
+	restore_initial_attr(get_bsh()->term);
+	(handle_redirection(exec)) ? exit(EXIT_FAILURE) : 0;
+	env_tab = env_to_tab(env);
+	if (cmd[0][0] == '/')
+		ret = exec_absolute_path(cmd, env_tab);
+	else if (!ft_strncmp("./", cmd[0],  2))
+		ret = exec_current_dir(cmd, env_tab, 2);
 	else
+		ret = exec_search_in_env_path(cmd, env, env_tab);
+	(ret == COMMAND_NOT_FOUND) ? ft_cmd_not_found(cmd[0]) :
+		ft_perm_denied_msg(cmd[0]);
+	exit(ret);
+	/*else
 	{
 		waitpid(pid, &exec->exit_status, 0);
 		restore_custom_attr(get_bsh()->term);
 		if (WIFEXITED(exec->exit_status))
 			get_bsh()->exit_status = WEXITSTATUS(exec->exit_status);
-	}
+	}*/
 }

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:06:59 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/11 20:59:11 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/20 16:50:06 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_save_exec	g_save_exec_list[NB_RULES] = {
 	{NULL},
 	{NULL},
 	{NULL},
-	{set_dest_file},
+	{set_filename},
 	{set_here_end},
 	{NULL},
 	{NULL},

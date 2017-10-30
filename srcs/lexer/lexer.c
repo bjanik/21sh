@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:22:54 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/12 14:44:23 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/27 15:22:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,7 @@ void				get_io_number(t_token *token_lst)
 
 t_lexer				*lexer(t_lexer *lexer, char *input, int initial_state)
 {
-	char	*buffer;
-
 	lexer = init_lexer(lexer, input, initial_state);
-	buffer = lexer->input;
 	if (initial_state != INIT)
 		get_event(lexer);
 	while (lexer->state != NWLINE && *(lexer->input) != '\0')
@@ -156,7 +153,6 @@ t_lexer				*lexer(t_lexer *lexer, char *input, int initial_state)
 		lexer->state = g_lexer[lexer->state][lexer->event].new_state;
 		get_event(lexer);
 	}
-	lexer->input = buffer;
 	delimitate_token(lexer);
 	get_io_number(lexer->token_list);
 	return (lexer);

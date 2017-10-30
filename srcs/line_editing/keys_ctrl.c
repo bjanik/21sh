@@ -1,6 +1,6 @@
 # include "input.h"
 
-int	handle_ctrl_down(t_input *input)
+int		handle_ctrl_down(t_input *input)
 {
 	if (input->cursor_pos + input->term->width < input->buffer_len)
 	{
@@ -14,7 +14,7 @@ int	handle_ctrl_down(t_input *input)
 	return (0);
 }
 
-int	handle_ctrl_up(t_input *input)
+int		handle_ctrl_up(t_input *input)
 {
 	int	nb;
 
@@ -36,7 +36,7 @@ int	handle_ctrl_up(t_input *input)
 	return (0);
 }
 
-int	handle_ctrl_right(t_input *input)
+int		handle_ctrl_right(t_input *input)
 {
 	if (input->cursor_pos != input->buffer_len)
 	{
@@ -51,7 +51,7 @@ int	handle_ctrl_right(t_input *input)
 	return (0);
 }
 
-int	handle_ctrl_left(t_input *input)
+int		handle_ctrl_left(t_input *input)
 {
 	if (input->cursor_pos)
 	{
@@ -68,10 +68,10 @@ int	handle_ctrl_left(t_input *input)
 	return (0);
 }
 
-int	handle_clear_screen(t_input *input)
+int		handle_clear_screen(t_input *input)
 {
 	tputs(tgetstr("cl", NULL), 1, ft_putchar_termcaps);
-	input->term->print_prompt(input->term, BOLD_CYAN);
+	print_prompt(input->term, BOLD_CYAN);
 	ft_bzero(input->buffer, input->buffer_len);
 	input->buffer_len = 0;
 	input->cursor_pos = 0;

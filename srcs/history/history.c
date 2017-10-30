@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:56:16 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 17:50:04 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/30 16:45:17 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_history	*init_history(void)
 	history->end = NULL;
 	history->current = NULL;
 	history->len = 0;
-	history->fd = open("~/.21sh_history", O_CREAT | O_RDWR | O_APPEND, 0644);
+	//history->fd = open("/Users/bjanik/.21sh_history", O_CREAT | O_RDWR | O_APPEND, 0644);
+	history->fd = -1;
 	return (history);
 }

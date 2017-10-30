@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 16:04:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 16:11:22 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/24 17:46:30 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		clear_exec(t_exec **exec)
 		while (rd)
 		{
 			ex->redir_list = rd->next;
-			ft_strdel(&rd->dest_file);
+			ft_strdel(&rd->filename);
 			ft_strdel(&rd->here_end);
 			rd->next = NULL;
 			ft_memdel((void**)&rd);

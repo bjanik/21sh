@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 17:23:47 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/23 17:13:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void		realloc_buffer(t_input *input)
 	char	*tmp;
 
 	tmp = input->buffer;
-	input->buffer = (char *)ft_malloc((input->buffer_size * 2 + 1)
+	input->buffer = (char*)ft_malloc((input->buffer_size * 2 + 1)
 			* sizeof(char));
 	input->buffer_size *= 2;
 	ft_bzero(input->buffer, input->buffer_size + 1);
@@ -57,7 +57,7 @@ int		handle_reg_char(t_input *input, char c)
 	if (input->buffer_len == input->buffer_size)
 		realloc_buffer(input);
 	if (input->cursor_pos == input->buffer_len)
-		input->buffer[input->buffer_len] = c;
+		input->buffer[input->cursor_pos] = c;
 	else
 	{
 		ft_memmove((char*)input->buffer + input->cursor_pos + 1,

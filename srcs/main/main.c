@@ -6,32 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 19:32:30 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/30 16:06:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
-int				init_termcaps(void)
-{
-	char		*termtype;
-	t_termios	term;
-
-	if (!isatty(STDIN))
-		exit(-1);
-	if (!(termtype = getenv("TERM")))
-		ft_error_msg("Missing $TERM variable");
-	if (!tgetent(NULL, termtype))
-		exit(-1);
-	if (tcgetattr(STDIN, &term) == -1)
-		exit(-1);
-	term.c_lflag &= ~(ICANON | ECHO);
-	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 0;
-	if (tcsetattr(STDIN, TCSADRAIN, &term) == -1)
-		ft_error_msg("Unable to set terminal");
-	return (0);
-}
 
 void			waiting_for_input(t_input *input)
 {
@@ -39,14 +18,14 @@ void			waiting_for_input(t_input *input)
 	{
 		ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
 		if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
-			exit(-1);
+			exit(EXIT_FAILURE);
 		if (get_key(input))
 			break ;
 	}
 	write(STDOUT, RETURN, 1);
 }
 
-void			display_token_list(t_input *input, t_token *lst)
+/*void			display_token_list(t_input *input, t_token *lst)
 {
 	while (lst)
 	{
@@ -54,7 +33,7 @@ void			display_token_list(t_input *input, t_token *lst)
 		lst = lst->next;
 	}
 	ft_printf("----------------------------------\n");
-}
+}*/
 
 void	del_newline_token(t_lexer *lexer, t_token **token_lst)
 {
@@ -78,7 +57,7 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret,
 		input->buffer = (char*)ft_memalloc(INITIAL_BUFFER_SIZE + 1);
 		display_prompt(input);
 		waiting_for_input(input);
-		lex = lexer(lex, input->buffer, lex->state);
+		lexer(lex, input->buffer, lex->state);
 		ret = parser(NULL, lex->token_list, NO_SAVE_EXEC);
 		if ((ret == UNCLOSED_QUOTES || ret == ACCEPTED) &&
 			token_lst[1]->type == WORD)
@@ -99,38 +78,54 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret,
 			token_lst[1]->next = lex->token_list;
 			token_lst[1] = lex->last_token;
 		}
-		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 1);
+		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 0);
 	}
 }
 
-static void		run_builtin(t_bsh *bsh, int builtin, char **cmd)
-{
-	handle_redirection(bsh->exec);
-	bsh->exec->exit_status = g_builtins[builtin].builtin(&(bsh->env), cmd);
-}
-
-void			execution(t_bsh *bsh, int ret)
+void			execution(t_bsh *bsh)
 {
 	char	**cmd;
 	int		builtin;
 	t_exec	*exec;
+	int		**pipes_fd;
+	int		nb_pipes;
+	int		pid;
 
 	cmd = NULL;
-	builtin = 0;
+	pipes_fd = NULL;
+	builtin = -1;
 	exec = bsh->exec;
-	while (exec && ret == ACCEPTED)
+	while (exec)
 	{
-		if (exec->word_list)
-			cmd = lst_to_tab(exec->word_list, exec->word_count);
-		if ((builtin = cmd_is_builtin(cmd)) > 0)
-			run_builtin(bsh, builtin, cmd);
+		if ((pipes_fd = get_pipes_fd(exec, &nb_pipes)))
+			pipe_sequence(&exec, pipes_fd, nb_pipes);
 		else
-			launch_command(exec, bsh->env, cmd);
-		if ((exec->cmd_separator == AND_IF && exec->exit_status) ||
-			(exec->cmd_separator == OR_IF && !exec->exit_status))
-			exec = exec->next;
-		if (exec)
-			exec = exec->next;
+		{
+			if (exec->word_list)
+			{
+				cmd = lst_to_tab(exec->word_list, exec->word_count);
+				expand_words(bsh->exp, cmd);
+			}
+			if ((builtin = cmd_is_builtin(cmd)) > -1)
+				run_builtin(builtin, cmd);
+			else
+			{
+				if ((pid = fork()) < 0)
+					exit(EXIT_FAILURE);
+				if (!pid)
+					run_binary(exec, bsh->env, cmd);
+			}
+			ft_free_string_tab(&cmd);
+			waitpid(pid, &exec->exit_status, 0);
+			restore_custom_attr(get_bsh()->term);
+			if (WIFEXITED(exec->exit_status))
+				get_bsh()->exit_status = WEXITSTATUS(exec->exit_status);
+			if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
+				(exec->cmd_separator == OR_IF && !bsh->exit_status))
+				exec = exec->next;
+			if (exec)
+				exec = exec->next;
+		}
 	}
 }
 
@@ -159,7 +154,7 @@ static void	start_process(t_bsh *bsh, int mode)
 	if (bsh->input->buffer_len > 0)
 		append_history(bsh->history, bsh->input->buffer,
 				bsh->input->buffer_len + 1);
-	execution(bsh, ret);
+	(ret == ACCEPTED) ? execution(bsh): 0;
 }
 
 static void	file_mode(t_bsh *bsh, char **argv)
@@ -194,20 +189,23 @@ int		main(int argc, char **argv, char **environ)
 
 	bsh = get_bsh();
 	bsh->env = env_to_lst(environ);
+	bsh->exp = init_expander(bsh->env);
 	if (argc > 1)
 		file_mode(bsh, argv);
 	else
 	{
-		init_termcaps();
+		init_termcaps(bsh->term);
 		while (42)
 		{
 			ft_bzero(bsh->input->buffer, bsh->input->buffer_size);
 			bsh->input->buffer_len = 0;
-			bsh->term->print_prompt(bsh->term, BOLD_CYAN);
+			print_prompt(bsh->term, BOLD_CYAN);
 			waiting_for_input(bsh->input);
 			start_process(bsh, INTERACTIVE);
 			clear_token_list(&bsh->tokens[0]);
-			clear_token_list(&bsh->lexer->token_list);
+			bsh->lexer->token_list = NULL;
+			bsh->lexer->last_token = NULL;
+			//clear_token_list(&bsh->lexer->token_list);
 			clear_exec(&(bsh->exec));
 		}
 	}

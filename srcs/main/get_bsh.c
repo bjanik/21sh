@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 21:07:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/27 15:12:54 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static t_bsh		*init_bsh(void)
 	bsh->tokens[0] = NULL;
 	bsh->tokens[1] = NULL;
 	bsh->pid = getpid();
+	bsh->exit_status = 0;
+	bsh->shell_name = "-bsh";
 	return (bsh);
 }
 
