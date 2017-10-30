@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 16:20:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/04/27 13:44:37 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/10/23 14:55:22 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,13 @@
 
 void	ft_free_string_tab(char ***tab)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (!tab || !*tab)
 		return ;
 	while ((*tab)[i])
-	{
-		free((*tab)[i]);
-		i++;
-	}
+		free((*tab)[i++]);
 	free(*tab);
 	*tab = NULL;
 }
