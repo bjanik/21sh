@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/27 17:16:09 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 13:25:05 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int				restore_custom_attr(t_term *term)
 {
 	if (tcsetattr(STDIN, TCSANOW, &term->custom_attr) == -1)
-		ft_error_msg("Unable to set terminal");
+		ft_error_msg("Unable to set custom attributes");
 	return (0);
 }
 
@@ -37,14 +37,14 @@ int					init_termcaps(t_term *term)
 	term->custom_attr.c_cc[VMIN] = 1;
 	term->custom_attr.c_cc[VTIME] = 0;
 	if (tcsetattr(STDIN, TCSANOW, &term->custom_attr) == -1)
-		ft_error_msg("Unable to set terminal");
+		ft_error_msg("Unable to set custom attributes");
 	return (0);
 }
 
 int				restore_initial_attr(t_term *term)
 {
 	if (tcsetattr(STDIN, TCSANOW, &term->initial_attr) == -1)
-		ft_error_msg("Unable to set terminal");
+		ft_error_msg("Unable to reset initial attributes");
 	return (0);
 }
 

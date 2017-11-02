@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 15:00:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/29 17:39:53 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 13:24:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,21 @@ static int	exec_search_in_env_path(char **cmd, t_env *env,  char **env_tab)
 	return (ret);
 }
 
-void		run_binary(t_exec *exec, t_env *env, char **cmd)
+void		run_binary(t_exec *exec, t_env *env)
 {
 	char	**env_tab;
 	int		ret;
 
-	restore_initial_attr(get_bsh()->term);
 	(handle_redirection(exec)) ? exit(EXIT_FAILURE) : 0;
 	env_tab = env_to_tab(env);
-	if (cmd[0][0] == '/')
-		ret = exec_absolute_path(cmd, env_tab);
-	else if (!ft_strncmp("./", cmd[0],  2))
-		ret = exec_current_dir(cmd, env_tab, 2);
+	if (exec->cmd[0][0] == '/')
+		ret = exec_absolute_path(exec->cmd, env_tab);
+	else if (!ft_strncmp("./", exec->cmd[0],  2))
+		ret = exec_current_dir(exec->cmd, env_tab, 2);
 	else
-		ret = exec_search_in_env_path(cmd, env, env_tab);
-	(ret == COMMAND_NOT_FOUND) ? ft_cmd_not_found(cmd[0]) :
-		ft_perm_denied_msg(cmd[0]);
+		ret = exec_search_in_env_path(exec->cmd, env, env_tab);
+	(ret == COMMAND_NOT_FOUND) ? ft_cmd_not_found(exec->cmd[0]) :
+		ft_perm_denied_msg(exec->cmd[0]);
 	exit(ret);
 	/*else
 	{

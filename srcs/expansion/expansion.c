@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/24 21:09:18 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 14:44:34 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void			expand_words(t_expander *exp, char **word_tab)
 		while (*(exp->tmp))
 		{
 			g_expander[exp->state][exp->event].p_transit(exp);
-			(exp->state != INIT1) ? (exp->tmp)++ : 0;
+			(exp->state != INIT1) ? exp->tmp++ : 0;
 			exp->state = g_expander[exp->state][exp->event].new_state;
 			if (*(exp->tmp) == '\0')
 				break ;

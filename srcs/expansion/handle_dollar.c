@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:43:22 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/24 20:30:47 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 14:49:05 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	get_process_pid(t_expander *exp)
 
 	if (!(s = ft_itoa(get_bsh()->pid)))
 		exit(EXIT_FAILURE);
+	exp->buffer_len += ft_strlen(s);
 	ft_strcat(exp->buffer, s);
 	free(s);
 	exp->tmp++;
@@ -29,6 +30,7 @@ static void	get_exit_status(t_expander *exp)
 
 	if (!(s = ft_itoa(get_bsh()->exit_status)))
 		exit(EXIT_FAILURE);
+	exp->buffer_len += ft_strlen(s);
 	ft_strcat(exp->buffer, s);
 	free(s);
 	exp->tmp++;
@@ -37,6 +39,7 @@ static void	get_exit_status(t_expander *exp)
 static void	get_shell_name(t_expander *exp)
 {
 	ft_strcat(exp->buffer, get_bsh()->shell_name);
+	exp->buffer_len += 4;
 	exp->tmp++;
 }
 

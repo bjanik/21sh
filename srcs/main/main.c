@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/30 16:06:04 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 14:18:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,12 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret,
 
 void			execution(t_bsh *bsh)
 {
-	char	**cmd;
-	int		builtin;
 	t_exec	*exec;
 	int		**pipes_fd;
 	int		nb_pipes;
 	int		pid;
 
-	cmd = NULL;
 	pipes_fd = NULL;
-	builtin = -1;
 	exec = bsh->exec;
 	while (exec)
 	{
@@ -103,23 +99,25 @@ void			execution(t_bsh *bsh)
 		{
 			if (exec->word_list)
 			{
-				cmd = lst_to_tab(exec->word_list, exec->word_count);
-				expand_words(bsh->exp, cmd);
+				exec->cmd = lst_to_tab(exec->word_list, exec->word_count);
+				expand_words(bsh->exp, exec->cmd);
 			}
-			if ((builtin = cmd_is_builtin(cmd)) > -1)
-				run_builtin(builtin, cmd);
+			if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
+				run_builtin(exec->is_builtin, exec->cmd);
 			else
 			{
 				if ((pid = fork()) < 0)
 					exit(EXIT_FAILURE);
 				if (!pid)
-					run_binary(exec, bsh->env, cmd);
+				{
+					restore_initial_attr(bsh->term);
+					run_binary(exec, bsh->env);
+				}
 			}
-			ft_free_string_tab(&cmd);
 			waitpid(pid, &exec->exit_status, 0);
 			restore_custom_attr(get_bsh()->term);
 			if (WIFEXITED(exec->exit_status))
-				get_bsh()->exit_status = WEXITSTATUS(exec->exit_status);
+				bsh->exit_status = WEXITSTATUS(exec->exit_status);
 			if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
 				(exec->cmd_separator == OR_IF && !bsh->exit_status))
 				exec = exec->next;

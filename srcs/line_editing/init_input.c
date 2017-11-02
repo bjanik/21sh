@@ -3,7 +3,7 @@
 t_input *init_input(t_term *term, t_history *history)
 {
 	t_input *input;
-	int	fd;
+	//int	fd;
 
 	if (!(input = (t_input*)malloc(sizeof(t_input))))
 		exit(EXIT_FAILURE);
@@ -15,6 +15,6 @@ t_input *init_input(t_term *term, t_history *history)
 	input->term = term;
 	input->history = history;
 	//fd = open("/dev/ttys000", O_WRONLY | O_CREAT);
-	input->fd = fd;
+	//input->fd = fd;
 	return (input);
 }
