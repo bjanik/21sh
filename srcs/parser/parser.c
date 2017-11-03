@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 16:09:03 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 15:16:33 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 15:48:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -783,52 +783,10 @@ const t_switch		g_parser[MAX_STATES][MAX_EVENTS] = {
 		{22, reduce}},
 };
 
-int					syntax_error(t_parser *parser)
-{
-	int				type;
-
-	type = parser->cur_token->type;
-	if (parser->state == 0 || (parser->state > 2 && parser->state < 10) ||
-			(parser->state >= 34 &&
-			parser->state <= 37 && type != NEWLINE) ||
-			parser->state == 11)
-		if (type == NEWLINE)
-			ft_printf("bsh: syntax error near unexpected token `newline'\n");
-		else
-			ft_printf("bash: syntax error near unexpected token `%s'\n",
-						parser->cur_token->token);
-	else
-		return (END_IS_OP);
-	return (SYNTAX_ERROR);
-}
-
 int					accept(t_parser *parser)
 {
 	(void)parser;
 	return (ACCEPTED);
-}
-
-int					shift(t_parser *parser)
-{
-	if (parser->exec_list && (parser->cur_token->type >= AND_IF &&
-		parser->cur_token->type <= PIPE))
-	{
-		parser->last_exec->cmd_separator = parser->cur_token->type;
-		parser->last_exec->next = init_exec();
-		parser->last_exec->next->prev = parser->last_exec;
-		parser->last_exec = parser->last_exec->next;
-	}
-	if (parser->cur_token->pushed == 1)
-		return (UNCLOSED_QUOTES);
-	push_token_stack(parser);
-	push_state(parser);
-	parser->cur_token->pushed = 1;
-	if (parser->cur_token->next)
-	{
-		parser->cur_token->pushed = 0;
-		parser->cur_token = parser->cur_token->next;
-	}
-	return (-1);
 }
 
 int					get_successor_state(t_parser *parser, int sym_type)
@@ -851,25 +809,6 @@ int					get_successor_state(t_parser *parser, int sym_type)
 	node->next = parser->stack;
 	parser->stack = node;
 	return (0);
-}
-
-int					reduce(t_parser *parser)
-{
-	int				i;
-	int				k;
-
-	i = g_parser[parser->state][parser->cur_token->type].transition;
-	if (g_save_exec_list[i].save && parser->exec_list)
-		g_save_exec_list[i].save(parser->last_exec, parser->stack);
-	k = i;
-	i = g_rules_len[i] * 2 - 1;
-	while (i--)
-		pop_stack(&parser->stack);
-	parser->stack->sym.type = g_reduce_table[k];
-	if (parser->stack->next)
-		parser->state = parser->stack->next->state;
-	get_successor_state(parser, parser->stack->sym.type);
-	return (-2);
 }
 
 void				display_prompt(t_input *input)
