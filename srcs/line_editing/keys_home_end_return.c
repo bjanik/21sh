@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keys_home_end_return.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/03 15:16:44 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 15:16:50 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "input.h"
 
 int	handle_home(t_input *input)
@@ -18,7 +30,6 @@ int	handle_return(t_input *input)
 {
 	if (input->buffer_len > 0)
 	{
-		//append_history(input->history, input->buffer, input->buffer_len + 1);
 		handle_end(input);
 		input->cursor_pos = 0;
 	}
@@ -27,4 +38,3 @@ int	handle_return(t_input *input)
 	input->buffer[input->buffer_len] = '\n';
 	return (1);
 }
-

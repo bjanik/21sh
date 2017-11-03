@@ -6,11 +6,18 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/27 15:12:54 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 17:04:59 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
+
+/*void	set_signals_handlers(void)
+{
+	signal(SIGINT, sigint_handler);
+	//signal(SIGWINCH, window_change);
+	//signal(SIGTSTP, SIG_IGN);
+}*/
 
 static t_bsh		*init_bsh(void)
 {
@@ -40,3 +47,4 @@ t_bsh				*get_bsh(void)
 		bsh = init_bsh();
 	return (bsh);
 }
+

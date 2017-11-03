@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:43:22 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 14:49:05 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 17:07:14 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,28 @@ static void	get_shell_name(t_expander *exp)
 	exp->tmp++;
 }
 
-void		handle_dollar(t_expander *exp)
+static void	get_env_variable(t_expander *exp, char *s)
 {
 	t_env	*env_var;
 	int		len;
-	char	*s;
 
 	len = 0;
+	while (ft_isdigit(*(s + len)) || ft_isalpha(*(s + len)))
+		len++;
+	s = ft_strndup(exp->tmp + 1, len);
+	if ((env_var = ft_getenv(exp->env, s)))
+	{
+		ft_strcat(exp->buffer, env_var->var_value);
+		exp->buffer_len += ft_strlen(env_var->var_value);
+		free(s);
+	}
+	exp->tmp += len;
+}
+
+void		handle_dollar(t_expander *exp)
+{
+	char	*s;
+
 	s = exp->tmp + 1;
 	if (!*s)
 		append(exp);
@@ -60,16 +75,5 @@ void		handle_dollar(t_expander *exp)
 	else if (*s == '0')
 		get_shell_name(exp);
 	else
-	{
-		while (ft_isdigit(*(s + len)) || ft_isalpha(*(s + len)))
-			len++;
-		s = ft_strndup(exp->tmp + 1, len);
-		if ((env_var = ft_getenv(exp->env, s)))
-		{
-			ft_strcat(exp->buffer, env_var->var_value);
-			exp->buffer_len += ft_strlen(env_var->var_value);
-			free(s);
-		}
-		exp->tmp += len;
-	}
+		get_env_variable(exp, s);
 }

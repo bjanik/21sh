@@ -1,4 +1,16 @@
-# include "input.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keys_ctrl.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/03 16:33:58 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 16:36:20 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "input.h"
 
 int		handle_ctrl_down(t_input *input)
 {
@@ -42,10 +54,10 @@ int		handle_ctrl_right(t_input *input)
 	{
 		while (ft_isprint(input->buffer[input->cursor_pos]))
 		{
-				handle_arrow_right(input);
-				if (input->buffer[input->cursor_pos] == ' ' &&
-				input->buffer[input->cursor_pos - 1] != ' ')
-	 			break;
+			handle_arrow_right(input);
+			if (input->buffer[input->cursor_pos] == ' ' &&
+			input->buffer[input->cursor_pos - 1] != ' ')
+				break ;
 		}
 	}
 	return (0);
@@ -60,10 +72,10 @@ int		handle_ctrl_left(t_input *input)
 		{
 			handle_arrow_left(input);
 			if ((input->buffer[input->cursor_pos] != ' ' &&
-				input->buffer[input->cursor_pos - 1] == ' ') ||
-				!input->cursor_pos)
-					break;
-			}
+			input->buffer[input->cursor_pos - 1] == ' ') ||
+			!input->cursor_pos)
+				break ;
+		}
 	}
 	return (0);
 }

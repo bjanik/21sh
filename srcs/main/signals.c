@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   keys_alt.c                                         :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/03 16:10:25 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 16:30:27 by bjanik           ###   ########.fr       */
+/*   Created: 2017/11/03 13:38:26 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 14:42:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
+#include "bsh.h"
 
-int	handle_alt_great(t_input *input)
+/*void	sigint_handler(int signum)
 {
-	input->history->current = input->history->head;
-	cp_history_to_buffer(input);
-	return (0);
-}
+	t_bsh	*bsh;
 
-int	handle_alt_less(t_input *input)
-{
-	input->history->current = input->history->end;
-	cp_history_to_buffer(input);
-	return (0);
-}
+	bsh = get_bsh();
+	if (g_pid == 0)
+	{
+		write(STDOUT, "\n", 1);
+		print_prompt(bsh->term, BOLD_CYAN);
+	}
+	else
+		kill(getpid(), SIGKILL);
+}*/

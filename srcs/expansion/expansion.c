@@ -6,14 +6,14 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 14:44:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 16:59:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
 t_transit	g_expander[MAX_STATE1][MAX_EVENT1] = {
-	{{STD1, init_exp_aut},
+	{{STD1, skip},
 		{DQUOTE1, skip},
 		{QUOTE1, skip},
 		{STD1, handle_dollar},
@@ -46,12 +46,7 @@ t_transit	g_expander[MAX_STATE1][MAX_EVENT1] = {
 		{QUOTE1, append}},
 };
 
-inline void	init_exp_aut(t_expander *exp)
-{
-	(void)exp;
-}
-
-static void			save_expanded_word(t_expander *exp, char **word, int i)
+static void	save_expanded_word(t_expander *exp, char **word, int i)
 {
 	char	*tmp;
 
@@ -83,11 +78,10 @@ inline void	handle_bckslsh(t_expander *exp)
 	exp->buffer[exp->buffer_len++] = *(exp->tmp);
 }
 
-
-void			expand_words(t_expander *exp, char **word_tab)
+void		expand_words(t_expander *exp, char **word_tab)
 {
-	char			*s;
-	int				i;
+	char	*s;
+	int		i;
 
 	i = -1;
 	while (word_tab[++i])
@@ -108,4 +102,3 @@ void			expand_words(t_expander *exp, char **word_tab)
 		save_expanded_word(exp, word_tab, i);
 	}
 }
-

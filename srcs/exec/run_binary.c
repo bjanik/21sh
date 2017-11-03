@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 15:00:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 13:24:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 16:43:07 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,4 @@ void		run_binary(t_exec *exec, t_env *env)
 	(ret == COMMAND_NOT_FOUND) ? ft_cmd_not_found(exec->cmd[0]) :
 		ft_perm_denied_msg(exec->cmd[0]);
 	exit(ret);
-	/*else
-	{
-		waitpid(pid, &exec->exit_status, 0);
-		restore_custom_attr(get_bsh()->term);
-		if (WIFEXITED(exec->exit_status))
-			get_bsh()->exit_status = WEXITSTATUS(exec->exit_status);
-	}*/
 }

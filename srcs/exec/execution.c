@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 11:40:50 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 16:42:44 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	restore_fds(int *saved_fd)
 }
 
 /*static void		launch_binaries(t_exec **exec, int **pipes_fd, int nb_pipes,
-							t_env *env, int i)
+		t_env *env, int i)
 {
 	while (++i <= nb_pipes)
 	{
@@ -144,7 +144,7 @@ void		pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes)
 	restore_custom_attr(bsh->term);
 }
 
-void			execution(t_bsh *bsh)
+void	execution(t_bsh *bsh)
 {
 	t_exec	*exec;
 	int		**pipes_fd;
@@ -162,11 +162,7 @@ void			execution(t_bsh *bsh)
 			exec->cmd = lst_to_tab(exec->word_list, exec->word_count);
 			expand_words(bsh->exp, exec->cmd);
 			if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
-			{
-				save_fds(bsh->saved_fds);
 				run_builtin(exec->is_builtin, exec->cmd);
-				restore_fds(bsh->saved_fds);
-			}
 			else
 			{
 				if ((pid = fork()) < 0)
@@ -183,9 +179,9 @@ void			execution(t_bsh *bsh)
 		if (WIFEXITED(bsh->exit_status))
 			bsh->exit_status = WEXITSTATUS(bsh->exit_status);
 		if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
-			(exec->cmd_separator == OR_IF && !bsh->exit_status))
+				(exec->cmd_separator == OR_IF && !bsh->exit_status))
 			exec = exec->next;
 		if (exec)
 			exec = exec->next;
+		}
 	}
-}

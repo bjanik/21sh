@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 16:04:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/24 17:46:30 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 16:48:26 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void		clear_exec(t_exec **exec)
 	while (ex)
 	{
 		ft_lstdel(&ex->word_list, del);
+		ft_free_string_tab(&ex->cmd);
 		ex->last_word = NULL;
 		rd = ex->redir_list;
 		ex->prev = NULL;

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 11:42:42 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 14:54:34 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	start_process(t_bsh *bsh, int mode)
 	if (bsh->input->buffer_len > 0)
 		append_history(bsh->history, bsh->input->buffer,
 				bsh->input->buffer_len + 1);
-	(ret == ACCEPTED) ? execution(bsh): 0;
+	(ret == ACCEPTED && bsh->exec->word_list) ? execution(bsh): 0;
 }
 
 static void	file_mode(t_bsh *bsh, char **argv)

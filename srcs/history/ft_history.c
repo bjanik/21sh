@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:14:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 20:40:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 17:03:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int		history_option_d(t_dlst **end, char **cmd, int i)
 	lst = *end;
 	if (!*end)
 		return (1);
-	ft_printf("hist->end = %s, hist->head = %s\n", (*end)->data, get_bsh()->history->head->data);
 	if (!cmd[i])
 		return (history_usage('d', MISSING_ARG));
 	i = (!ft_strcmp("--", cmd[i])) ? i + 1 : i;

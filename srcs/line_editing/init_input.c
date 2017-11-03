@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_input.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/03 16:48:42 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 16:49:10 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "input.h"
 
-t_input *init_input(t_term *term, t_history *history)
+t_input		*init_input(t_term *term, t_history *history)
 {
-	t_input *input;
+	t_input	*input;
 	//int	fd;
 
 	if (!(input = (t_input*)malloc(sizeof(t_input))))

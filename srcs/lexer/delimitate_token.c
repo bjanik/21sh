@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:13:50 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 15:59:28 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 15:23:29 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	delimitate_token(t_lexer *lexer)
 {
 	t_token	*token;
-	
+
 	if (lexer->token_len > 0)
 	{
 		token = init_token_node(lexer);

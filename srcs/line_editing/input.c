@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/23 17:13:12 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 16:49:36 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		realloc_buffer(t_input *input)
 	free(tmp);
 }
 
-int		handle_reg_char(t_input *input, char c)
+int			handle_reg_char(t_input *input, char c)
 {
 	if (input->buffer_len == input->buffer_size)
 		realloc_buffer(input);
@@ -90,7 +90,6 @@ void		cp_history_to_buffer(t_input *input)
 	ft_bzero(input->buffer, input->buffer_size);
 	input->buffer_len = 0;
 	handle_home(input);
-	//ft_printf("IN HIST BUFFER\n");
 	while (str[++i])
 		handle_reg_char(input, str[i]);
 	tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);

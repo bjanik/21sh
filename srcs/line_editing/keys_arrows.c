@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keys_arrows.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/03 15:12:58 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 15:15:13 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "input.h"
 
 int	handle_arrow_left(t_input *input)
@@ -25,17 +37,17 @@ int	handle_arrow_right(t_input *input)
 {
 	if (input->cursor_pos < input->buffer_len)
 	{
-			if (input->term->cursor_col == input->term->width)
-			{
-				tputs(tgetstr("do", NULL), 1, ft_putchar_termcaps);
-				input->term->cursor_col = 1;
-			}
-			else
-			{
-				tputs(tgetstr("nd", NULL), 1, ft_putchar_termcaps);
-				input->term->cursor_col++;
-			}
-			input->cursor_pos++;
+		if (input->term->cursor_col == input->term->width)
+		{
+			tputs(tgetstr("do", NULL), 1, ft_putchar_termcaps);
+			input->term->cursor_col = 1;
+		}
+		else
+		{
+			tputs(tgetstr("nd", NULL), 1, ft_putchar_termcaps);
+			input->term->cursor_col++;
+		}
+		input->cursor_pos++;
 	}
 	return (0);
 }
@@ -57,7 +69,7 @@ int	handle_arrow_down(t_input *input)
 {
 	if (input->history->current != NULL)
 	{
-		input->history->current= input->history->current->prev;
+		input->history->current = input->history->current->prev;
 		if (input->history->current)
 			cp_history_to_buffer(input);
 		else
