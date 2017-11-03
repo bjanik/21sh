@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/03 17:13:23 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 17:13:30 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXPANDER_H
 # define EXPANDER_H
 # include "tools.h"
@@ -43,7 +55,6 @@ typedef struct	s_transit
 }				t_transit;
 
 t_expander		*init_expander(t_env *env);
-void			init_exp_aut(t_expander *exp);
 void			expand_words(t_expander *exp, char **word_tab);
 void			append(t_expander *exp);
 void			skip(t_expander *exp);

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 17:57:44 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 17:13:11 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # define CTRL_UP "\x1B[1;5A"
 # define CTRL_DOWN "\x1B[1;5B"
 
-#define ALT_GREAT "\x1B>"
-#define ALT_LESS "\x1B<"
+# define ALT_GREAT "\x1B>"
+# define ALT_LESS "\x1B<"
 
 # define DELETE "\x1B[3~"
 # define BACKSPACE "\x7F"

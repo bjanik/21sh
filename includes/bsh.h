@@ -6,12 +6,14 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 12:12:13 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 17:14:27 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BSH_H
 # define BSH_H
+
+# include <signal.h>
 # include "libft.h"
 # include "input.h"
 # include "lexer.h"
@@ -54,4 +56,6 @@ int				ft_cmd_not_found(char *cmd);
 int				check_access_exist(char *file);
 int				check_access_writing(char *file);
 int				check_access_reading(char *file);
+
+void			sigint_handler(int signum);
 #endif

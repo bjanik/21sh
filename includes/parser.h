@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/20 16:50:31 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 17:13:58 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define MAX_EVENTS 14
 # define NB_RULES 39
 
-enum e_sym
+enum				e_sym
 {
 	ACCEPT,
 	PROGRAM,
@@ -92,6 +92,7 @@ int					accept(t_parser *parser);
 void				push_token_stack(t_parser *parser);
 void				push_state(t_parser *parser);
 void				pop_stack(t_stack **stack);
+int					get_successor_state(t_parser *parser, int sym_type);
 t_parser			*init_parser(t_token *token_list, int ex);
 t_exec				*init_exec(void);
 t_redir				*init_redir(void);
