@@ -6,24 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 14:18:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 11:42:42 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
-void			waiting_for_input(t_input *input)
-{
-	while (42)
-	{
-		ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
-		if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
-			exit(EXIT_FAILURE);
-		if (get_key(input))
-			break ;
-	}
-	write(STDOUT, RETURN, 1);
-}
 
 /*void			display_token_list(t_input *input, t_token *lst)
 {
@@ -79,51 +66,6 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret,
 			token_lst[1] = lex->last_token;
 		}
 		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 0);
-	}
-}
-
-void			execution(t_bsh *bsh)
-{
-	t_exec	*exec;
-	int		**pipes_fd;
-	int		nb_pipes;
-	int		pid;
-
-	pipes_fd = NULL;
-	exec = bsh->exec;
-	while (exec)
-	{
-		if ((pipes_fd = get_pipes_fd(exec, &nb_pipes)))
-			pipe_sequence(&exec, pipes_fd, nb_pipes);
-		else
-		{
-			if (exec->word_list)
-			{
-				exec->cmd = lst_to_tab(exec->word_list, exec->word_count);
-				expand_words(bsh->exp, exec->cmd);
-			}
-			if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
-				run_builtin(exec->is_builtin, exec->cmd);
-			else
-			{
-				if ((pid = fork()) < 0)
-					exit(EXIT_FAILURE);
-				if (!pid)
-				{
-					restore_initial_attr(bsh->term);
-					run_binary(exec, bsh->env);
-				}
-			}
-			waitpid(pid, &exec->exit_status, 0);
-			restore_custom_attr(get_bsh()->term);
-			if (WIFEXITED(exec->exit_status))
-				bsh->exit_status = WEXITSTATUS(exec->exit_status);
-			if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
-				(exec->cmd_separator == OR_IF && !bsh->exit_status))
-				exec = exec->next;
-			if (exec)
-				exec = exec->next;
-		}
 	}
 }
 
@@ -203,7 +145,6 @@ int		main(int argc, char **argv, char **environ)
 			clear_token_list(&bsh->tokens[0]);
 			bsh->lexer->token_list = NULL;
 			bsh->lexer->last_token = NULL;
-			//clear_token_list(&bsh->lexer->token_list);
 			clear_exec(&(bsh->exec));
 		}
 	}

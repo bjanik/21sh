@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 16:09:03 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 16:12:29 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 15:16:33 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 extern int			g_successor_state[18][MAX_SYM];
 extern int			g_reduce_table[NB_RULES];
 extern t_save_exec	g_save_exec_list[NB_RULES];
+extern int			g_rules_len[NB_RULES];
 
 const t_switch		g_parser[MAX_STATES][MAX_EVENTS] = {
 	{{1, shift},
@@ -781,47 +782,6 @@ const t_switch		g_parser[MAX_STATES][MAX_EVENTS] = {
 		{22, reduce},
 		{22, reduce}},
 };
-
-static const int	g_rules_len[] = {
-	2,
-	2,
-	1,
-	2,
-	1,
-	3,
-	1,
-	1,
-	3,
-	3,
-	1,
-	3,
-	3,
-	2,
-	1,
-	2,
-	1,
-	1,
-	1,
-	1,
-	2,
-	1,
-	2,
-	1,
-	2,
-	1,
-	2,
-	1,
-	2,
-	2,
-	2,
-	2,
-	2,
-	2,
-	1,
-	2,
-	1,
-	1,
-	1};
 
 int					syntax_error(t_parser *parser)
 {

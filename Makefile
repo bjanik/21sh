@@ -32,10 +32,10 @@ SRC_NAME = builtins/ft_env.c \
 	   line_editing/term.c \
 	   lexer/lexer.c \
 	   lexer/init_token.c \
-           main.c \
-           parser/parser.c \
-           parser/parser_tables.c \
-           parser/parser_stack.c \
+	   main.c \
+	   parser/parser.c \
+	   parser/parser_tables.c \
+	   parser/parser_stack.c \
 	   history/history.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)

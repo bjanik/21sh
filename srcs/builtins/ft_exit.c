@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/23 17:37:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/23 19:53:29 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 16:25:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		ft_exit(t_env **env, char **cmd)
 	}
 	if (cmd[1])
 		exit_val = ft_atoi(cmd[1]);
-	ft_printf("exit\n");
+	ft_putendl_fd("exit", STDERR);
 	exit(exit_val % 0x100);
 	return (0);
 }

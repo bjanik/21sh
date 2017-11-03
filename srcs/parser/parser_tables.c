@@ -6,14 +6,55 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:06:59 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/20 16:50:06 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/02 15:15:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "exec.h"
 
-int	g_successor_state[18][MAX_SYM] = {
+const int	g_rules_len[] = {
+	2,
+	2,
+	1,
+	2,
+	1,
+	3,
+	1,
+	1,
+	3,
+	3,
+	1,
+	3,
+	3,
+	2,
+	1,
+	2,
+	1,
+	1,
+	1,
+	1,
+	2,
+	1,
+	2,
+	1,
+	2,
+	1,
+	2,
+	1,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	1,
+	2,
+	1,
+	1,
+	1};
+
+const int	g_successor_state[18][MAX_SYM] = {
 	{0, 10, 11, 12, 13, 14, 15, 16, 17, -1, -1, 18, 19, 20, -1, -1, -1},
 	{3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 21, 22, -1, -1, -1},
 	{4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 24, -1},
@@ -34,7 +75,7 @@ int	g_successor_state[18][MAX_SYM] = {
 	{48, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 50, 19, 20, -1, -1, -1},
 };
 
-int	g_reduce_table[NB_RULES] = {
+const int	g_reduce_table[NB_RULES] = {
 	ACCEPT,
 	PROGRAM,
 	PROGRAM,
@@ -76,7 +117,7 @@ int	g_reduce_table[NB_RULES] = {
 	SEPARATOR_OP,
 };
 
-t_save_exec	g_save_exec_list[NB_RULES] = {
+const t_save_exec	g_save_exec_list[NB_RULES] = {
 	{NULL},
 	{NULL},
 	{NULL},

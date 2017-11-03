@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 15:06:48 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 11:40:50 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,55 +15,17 @@
 void		run_builtin(int builtin, char **cmd)
 {
 	t_bsh	*bsh;
+
 	bsh = get_bsh();
-	
 	if (handle_redirection(bsh->exec))
 	{
 		bsh->exit_status = 1;
 		return ;
 	}
-	bsh->exec->exit_status = g_builtins[builtin].builtin(&(bsh->env), cmd);
+	bsh->exit_status = g_builtins[builtin].builtin(&(bsh->env), cmd);
 }
 
-int		**get_pipes_fd(t_exec *exec, int *nb_pipes)
-{
-	int	**pipes_fd;
-	int	i;
-
-	pipes_fd = NULL;
-	*nb_pipes = 0;
-	while (exec && exec->cmd_separator == PIPE)
-	{
-		exec = exec->next;
-		(*nb_pipes)++;
-	}
-	i = -1;
-	if (*nb_pipes)
-	{
-		if (!(pipes_fd = (int**)malloc(sizeof(int*) * (*nb_pipes))))
-			exit(EXIT_FAILURE);
-		while (++i < (*nb_pipes))
-		{
-			if (!(pipes_fd[i] = (int*)malloc(sizeof(int) * 2)))
-				exit(EXIT_FAILURE);
-		}
-	}
-	return (pipes_fd);
-}
-
-void		close_pipes_fds(int **pipes_fd, int nb_pipes)
-{
-	int	i;
-
-	i = -1;
-	while (++i < nb_pipes)
-	{
-		close(pipes_fd[i][READ]);
-		close(pipes_fd[i][WRITE]);
-	}
-}
-
-static void	connect_pipe(int **pipes_fd, int nb_pipes, int i)
+static void	connect_pipes(int **pipes_fd, int nb_pipes, int i)
 {
 	if (!i)
 	{
@@ -84,15 +46,60 @@ static void	connect_pipe(int **pipes_fd, int nb_pipes, int i)
 	}
 }
 
-void	create_pipes(int **pipes_fd, int nb_pipes)
+void	save_fds(int *saved_fd)
+{
+	saved_fd[0] = dup(STDIN);
+	saved_fd[1] = dup(STDOUT);
+	saved_fd[2] = dup(STDERR);
+}
+
+void	restore_fds(int *saved_fd)
+{
+	dup2(saved_fd[0], STDIN);
+	dup2(saved_fd[1], STDOUT);
+	dup2(saved_fd[2], STDERR);
+}
+
+/*static void		launch_binaries(t_exec **exec, int **pipes_fd, int nb_pipes,
+							t_env *env, int i)
+{
+	while (++i <= nb_pipes)
+	{
+		(*exec)->cmd = lst_to_tab((*exec)->word_list, (*exec)->word_count);
+		expand_words(bsh->exp, (*exec)->cmd);
+		if (((*exec)->is_builtin = cmd_is_builtin((*exec)->cmd)) > -1)
+			;
+		else
+		{
+			((pid[k] = fork()) < 0) ? exit(EXIT_FAILURE) : 0;
+			if (!pid[k++])
+			{
+				restore_initial_attr(bsh->term);
+				connect_pipes(pipes_fd, nb_pipes, i);
+				close_pipes_fds(pipes_fd, nb_pipes);
+				run_binary(*exec, env);
+			}
+		}
+		*exec = (*exec)->next;
+	}
+}*/
+
+static void	launch_builtins(t_exec *ex, int **pipes_fd, int nb_pipes,
+		t_bsh *bsh)
 {
 	int	i;
 
 	i = -1;
-	while (++i < nb_pipes)
+	while (++i <= nb_pipes)
 	{
-		if (pipe(pipes_fd[i]) < 0)
-			exit(EXIT_FAILURE);
+		save_fds(bsh->saved_fds);
+		if (ex->is_builtin > -1 && (!ex->next || ex->next->is_builtin == -1))
+		{
+			connect_pipes(pipes_fd, nb_pipes, i);
+			run_builtin(ex->is_builtin, ex->cmd);
+		}
+		restore_fds(bsh->saved_fds);
+		ex = ex->next;
 	}
 }
 
@@ -103,7 +110,6 @@ void		pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes)
 	int		k;
 	t_bsh	*bsh;
 	t_exec	*ex;
-	int		saved_fd[10];
 
 	bsh = get_bsh();
 	k = 0;
@@ -123,31 +129,63 @@ void		pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes)
 			if (!pid[k++])
 			{
 				restore_initial_attr(bsh->term);
-				connect_pipe(pipes_fd, nb_pipes, i);
+				connect_pipes(pipes_fd, nb_pipes, i);
 				close_pipes_fds(pipes_fd, nb_pipes);
 				run_binary(*exec, bsh->env);
 			}
 		}
-		*exec = (*exec)->next;
+		if (i < nb_pipes)
+			*exec = (*exec)->next;
 	}
-	i = -1;
-	saved_fd[0] = dup(STDIN);
-	saved_fd[1] = dup(STDOUT);
-	saved_fd[2] = dup(STDERR);
-	while (++i <= nb_pipes)
-	{
-		if (ex->is_builtin > -1)
-		{
-			connect_pipe(pipes_fd, nb_pipes, i);
-			run_builtin(ex->is_builtin, ex->cmd);
-		}
-		ex = ex->next;
-	}
-	dup2(saved_fd[0], STDIN);
-	dup2(saved_fd[1], STDOUT);
-	dup2(saved_fd[2], STDERR);
+	launch_builtins(ex, pipes_fd, nb_pipes, bsh);
 	close_pipes_fds(pipes_fd, nb_pipes);
 	while (k)
 		waitpid(pid[--k], &bsh->exit_status, 0);
 	restore_custom_attr(bsh->term);
+}
+
+void			execution(t_bsh *bsh)
+{
+	t_exec	*exec;
+	int		**pipes_fd;
+	int		nb_pipes;
+	int		pid;
+
+	pipes_fd = NULL;
+	exec = bsh->exec;
+	while (exec)
+	{
+		if ((pipes_fd = get_pipes_fd(exec, &nb_pipes)))
+			pipe_sequence(&exec, pipes_fd, nb_pipes);
+		else
+		{
+			exec->cmd = lst_to_tab(exec->word_list, exec->word_count);
+			expand_words(bsh->exp, exec->cmd);
+			if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
+			{
+				save_fds(bsh->saved_fds);
+				run_builtin(exec->is_builtin, exec->cmd);
+				restore_fds(bsh->saved_fds);
+			}
+			else
+			{
+				if ((pid = fork()) < 0)
+					exit(EXIT_FAILURE);
+				if (!pid)
+				{
+					restore_initial_attr(bsh->term);
+					run_binary(exec, bsh->env);
+				}
+			}
+			waitpid(pid, &bsh->exit_status, 0);
+			restore_custom_attr(get_bsh()->term);
+		}
+		if (WIFEXITED(bsh->exit_status))
+			bsh->exit_status = WEXITSTATUS(bsh->exit_status);
+		if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
+			(exec->cmd_separator == OR_IF && !bsh->exit_status))
+			exec = exec->next;
+		if (exec)
+			exec = exec->next;
+	}
 }

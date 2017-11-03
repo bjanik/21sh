@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_exec.c                                        :+:      :+:    :+:   */
+/*   waiting_for_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/28 18:42:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 19:53:56 by bjanik           ###   ########.fr       */
+/*   Created: 2017/11/03 11:41:51 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 11:42:30 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-t_exec	*init_exec(void)
+void			waiting_for_input(t_input *input)
 {
-	t_exec	*exec;
-
-	if (!(exec = (t_exec*)malloc(sizeof(t_exec))))
-		exit(EXIT_FAILURE);
-	exec->word_list = NULL;
-	exec->last_word = NULL;
-	exec->word_count = 0;
-	exec->cmd = NULL;
-	exec->redir_list = NULL;
-	exec->last_redir = NULL;
-	exec->is_builtin = -1;
-	exec->cmd_separator = 0;
-	exec->exit_status = 0;
-	exec->next = NULL;
-	exec->prev = NULL;
-	return (exec);
+	while (42)
+	{
+		ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
+		if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
+			exit(EXIT_FAILURE);
+		if (get_key(input))
+			break ;
+	}
+	write(STDOUT, RETURN, 1);
 }

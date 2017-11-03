@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 12:38:38 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/03 12:12:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ char				**lst_to_tab(t_list *word_list, int word_count);
 void				run_binary(t_exec *exec, t_env *env);
 void				run_builtin(int builtin, char **cmd);
 int					**get_pipes_fd(t_exec *exec, int *nb_pipes);
+void				create_pipes(int **pipes_fd, int nb_pipes);
+void				close_pipes_fds(int **pipes_fd, int nb_pipes);
 void				pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes);
+void				save_fds(int *saved_fds);
+void				restore_fds(int *saved_fds);
 
 void				clear_exec(t_exec **exec);
 # endif
