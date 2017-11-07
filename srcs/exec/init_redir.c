@@ -21,6 +21,8 @@ t_redir		*init_redir(void)
 	redir->next = NULL;
 	redir->filename = NULL;
 	redir->here_end = NULL;
+	redir->heredoc_input[0] = NULL;
+	redir->heredoc_input[1] = NULL;
 	redir->fd = STDOUT;
 	return (redir);
 }
