@@ -64,6 +64,7 @@ void				run_binary(t_exec *exec, t_env *env);
 void				run_builtin(int builtin, char **cmd);
 int					**get_pipes_fd(t_exec *exec, int *nb_pipes);
 void				create_pipes(int **pipes_fd, int nb_pipes);
+void				connect_processes_pipes(int **pipes_fd, int nb_pipes, int i);
 void				close_pipes_fds(int **pipes_fd, int nb_pipes);
 void				pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes);
 void				save_fds(int *saved_fds);
