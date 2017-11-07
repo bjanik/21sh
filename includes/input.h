@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 17:13:11 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/06 16:10:14 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define MAX_KEY_LENGTH 6
 # define MAX_PROMPT_SIZE 256
-# define INITIAL_BUFFER_SIZE 512
+# define INITIAL_BUFFER_SIZE 4096
 
 # define ARROW_RIGHT "\x1B[C"
 # define ARROW_LEFT "\x1B[D"

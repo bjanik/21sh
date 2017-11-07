@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 16:09:03 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 15:48:08 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/06 10:32:26 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -809,17 +809,6 @@ int					get_successor_state(t_parser *parser, int sym_type)
 	node->next = parser->stack;
 	parser->stack = node;
 	return (0);
-}
-
-void				display_prompt(t_input *input)
-{
-	input->term->prompt_len = 2;
-	ft_bzero(input->buffer, input->buffer_len);
-	ft_strcpy(input->term->prompt, "> ");
-	write(STDOUT, "> ", 2);
-	input->cursor_pos = 0;
-	input->buffer_len = 0;
-	input->term->cursor_col = 3;
 }
 
 int					parser(t_exec **exec, t_token *token_list, int ex)

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:22:54 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/27 15:22:09 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/06 12:03:20 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,20 +126,6 @@ void				handle_backslash(t_lexer *lexer)
 	lexer->current_token[lexer->token_len++] = *(lexer->input);
 }
 
-void				get_io_number(t_token *token_lst)
-{
-	t_token *lst;
-
-	lst = token_lst;
-	while (lst)
-	{
-		if (lst->type == WORD && ft_str_isdigit(lst->token) && lst->next
-					&& (lst->next->type >= DLESS && lst->next->type <= GREAT))
-			lst->type = IO_NUMBER;
-		lst = lst->next;
-	}
-}
-
 t_lexer				*lexer(t_lexer *lexer, char *input, int initial_state)
 {
 	lexer = init_lexer(lexer, input, initial_state);
@@ -154,6 +140,5 @@ t_lexer				*lexer(t_lexer *lexer, char *input, int initial_state)
 		get_event(lexer);
 	}
 	delimitate_token(lexer);
-	get_io_number(lexer->token_list);
 	return (lexer);
 }

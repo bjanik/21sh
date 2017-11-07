@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 16:48:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 16:49:10 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/05 16:18:30 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_input		*init_input(t_term *term, t_history *history)
 {
 	t_input	*input;
-	//int	fd;
 
 	if (!(input = (t_input*)malloc(sizeof(t_input))))
 		exit(EXIT_FAILURE);
@@ -26,7 +25,6 @@ t_input		*init_input(t_term *term, t_history *history)
 	input->cursor_pos = 0;
 	input->term = term;
 	input->history = history;
-	//fd = open("/dev/ttys000", O_WRONLY | O_CREAT);
-	//input->fd = fd;
+	input->fd = open("/dev/ttys005", O_WRONLY | O_CREAT);
 	return (input);
 }

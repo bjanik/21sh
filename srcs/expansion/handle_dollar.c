@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:43:22 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 17:07:14 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/06 16:02:53 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void	get_process_pid(t_expander *exp)
 	if (!(s = ft_itoa(get_bsh()->pid)))
 		exit(EXIT_FAILURE);
 	exp->buffer_len += ft_strlen(s);
+	if (exp->buffer_len >= exp->buffer_size)
+		realloc_exp_buffer(exp);
 	ft_strcat(exp->buffer, s);
 	free(s);
 	exp->tmp++;
@@ -31,6 +33,8 @@ static void	get_exit_status(t_expander *exp)
 	if (!(s = ft_itoa(get_bsh()->exit_status)))
 		exit(EXIT_FAILURE);
 	exp->buffer_len += ft_strlen(s);
+	if (exp->buffer_len >= exp->buffer_size)
+		realloc_exp_buffer(exp);
 	ft_strcat(exp->buffer, s);
 	free(s);
 	exp->tmp++;
@@ -40,6 +44,8 @@ static void	get_shell_name(t_expander *exp)
 {
 	ft_strcat(exp->buffer, get_bsh()->shell_name);
 	exp->buffer_len += 4;
+	if (exp->buffer_len >= exp->buffer_size)
+		realloc_exp_buffer(exp);
 	exp->tmp++;
 }
 
@@ -56,9 +62,12 @@ static void	get_env_variable(t_expander *exp, char *s)
 	{
 		ft_strcat(exp->buffer, env_var->var_value);
 		exp->buffer_len += ft_strlen(env_var->var_value);
+		if (exp->buffer_len >= exp->buffer_size)
+			realloc_exp_buffer(exp);
 		free(s);
 	}
 	exp->tmp += len;
+	dprintf(get_bsh()->input->fd, "buf_len = %d  && buf_size = %d\n", exp->buffer_len, exp->buffer_size);
 }
 
 void		handle_dollar(t_expander *exp)

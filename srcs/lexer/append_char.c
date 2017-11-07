@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:15:35 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 16:52:43 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/07 09:39:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	append_char(t_lexer *lexer)
 {
-	if (lexer->token_len + 1 > lexer->token_size)
+	if (lexer->token_len == lexer->token_size)
 		realloc_current_token(lexer);
 	if (is_operator(lexer->current_token) != -1)
 	{

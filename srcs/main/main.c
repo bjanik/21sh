@@ -6,49 +6,53 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 14:54:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/07 11:26:25 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-/*void			display_token_list(t_input *input, t_token *lst)
+void			display_token_list(t_input *input, t_token *lst)
 {
 	while (lst)
 	{
-		ft_printf("[%s] type =  %d\n", lst->token, lst->type);
+		dprintf(input->fd, "[%s] type =  %d\n", lst->token, lst->type);
 		lst = lst->next;
 	}
-	ft_printf("----------------------------------\n");
-}*/
+	dprintf(input->fd, "----------------------------------\n");
+}
 
-void	del_newline_token(t_lexer *lexer, t_token **token_lst)
+void		del_newline_token(t_lexer *lexer, t_token **token_lst)
 {
 	t_token	*tk;
+	t_bsh	*bsh;
 
+	bsh = get_bsh();
 	tk = *token_lst;
 	lexer->state = STD;
 	*token_lst = tk->prev;
 	ft_strdel(&tk->token);
 	ft_memdel((void**)tk);
 	(*token_lst)->next = NULL;
+	bsh->input->buffer[--bsh->input->buffer_len] = '\0';
 }
 
-void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret,
+void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		t_token *token_lst[])
 {
-	while (ret == END_IS_OP || ret == UNCLOSED_QUOTES)
+	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
 	{
-		(ret == END_IS_OP)? del_newline_token(lex, &token_lst[1]): 0;
+		(*ret == END_IS_OP)? del_newline_token(lex, &token_lst[1]): 0;
 		input->buf_tmp = input->buffer;
 		input->buffer = (char*)ft_memalloc(INITIAL_BUFFER_SIZE + 1);
 		display_prompt(input);
 		waiting_for_input(input);
 		lexer(lex, input->buffer, lex->state);
-		ret = parser(NULL, lex->token_list, NO_SAVE_EXEC);
-		if ((ret == UNCLOSED_QUOTES || ret == ACCEPTED) &&
+		*ret = parser(NULL, lex->token_list, NO_SAVE_EXEC);
+		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
 			token_lst[1]->type == WORD)
 		{
+			input->buffer[--input->buffer_len] = '\0';
 			token_lst[1]->token = ft_strjoin_free(token_lst[1]->token,
 					lex->token_list->token, 3);
 			token_lst[1]->pushed = 0;
@@ -60,18 +64,19 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int ret,
 				ft_memdel((void**)&lex->token_list->prev);
 			}
 		}
-		else if (ret != SYNTAX_ERROR)
+		else if (*ret != SYNTAX_ERROR)
 		{
 			token_lst[1]->next = lex->token_list;
 			token_lst[1] = lex->last_token;
 		}
-		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 0);
+		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 1);
+		input->buffer_len = ft_strlen(input->buffer);
 	}
 }
 
 static void	start_process(t_bsh *bsh, int mode)
 {
-	int	ret;
+	int		ret;
 
 	ret = 0;
 	bsh->lexer = lexer(bsh->lexer, bsh->input->buffer, INIT);
@@ -82,14 +87,14 @@ static void	start_process(t_bsh *bsh, int mode)
 	{
 		if (mode == INTERACTIVE)
 		{
-			handle_unclosed_quotes(bsh->lexer, bsh->input, ret, bsh->tokens);
+			handle_unclosed_quotes(bsh->lexer, bsh->input, &ret, bsh->tokens);
 			bsh->tokens[1]->pushed = 0;
-			ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
+			if (ret != SYNTAX_ERROR)
+				ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 		}
 		else
 			ft_printf("Missing closing quotes or end of input is an operator\n");
 	}
-	bsh->input->buffer_len = ft_strlen(bsh->input->buffer);
 	bsh->input->buffer[--bsh->input->buffer_len] = '\0';
 	if (bsh->input->buffer_len > 0)
 		append_history(bsh->history, bsh->input->buffer,
@@ -123,13 +128,11 @@ static void	file_mode(t_bsh *bsh, char **argv)
 	}
 }
 
-int		main(int argc, char **argv, char **environ)
+int			main(int argc, char **argv, char **environ)
 {
-	t_bsh		*bsh;
+	t_bsh	*bsh;
 
-	bsh = get_bsh();
-	bsh->env = env_to_lst(environ);
-	bsh->exp = init_expander(bsh->env);
+	bsh = shell_init(environ);
 	if (argc > 1)
 		file_mode(bsh, argv);
 	else

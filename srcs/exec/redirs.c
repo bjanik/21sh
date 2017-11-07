@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 18:42:41 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/28 18:42:42 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/05 20:38:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-int	redir_great(t_redir *redir)
+int		redir_great(t_redir *redir)
 {
 	int	fd;
 
@@ -27,7 +27,7 @@ int	redir_great(t_redir *redir)
 	return (0);
 }
 
-int	redir_dgreat(t_redir *redir)
+int		redir_dgreat(t_redir *redir)
 {
 	int	fd;
 
@@ -42,7 +42,7 @@ int	redir_dgreat(t_redir *redir)
 	return (0);
 }
 
-int	redir_less(t_redir *redir)
+int		redir_less(t_redir *redir)
 {
 	int	fd;
 

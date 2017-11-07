@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 12:12:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/07 12:05:17 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct		s_redir
 {
 	char			*filename;
 	char			*here_end;
+	int				heredoc_pipe[2];
 	int				fd;
 	int				type;
 	struct s_redir	*next;
@@ -39,6 +40,7 @@ typedef struct		s_exec
 	t_redir			*redir_list;
 	t_redir			*last_redir;
 	int				is_builtin;
+	int				is_heredoc;
 	int				cmd_separator;
 	int				exit_status;
 	struct s_exec	*next;
@@ -50,6 +52,9 @@ int					redir_dgreat(t_redir *redir);
 int					redir_less(t_redir *redir);
 int					redir_greatand(t_redir *redir);
 int					redir_lessand(t_redir *redir);
+int					redir_heredoc(t_redir *redir);
+int					process_heredoc(t_exec *exec);
+void				close_heredoc_pipes(t_redir *redir);
 int					handle_redirection(t_exec *exec);
 
 char				**get_cmd_path(t_env *env);

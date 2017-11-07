@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 17:14:27 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/05 12:59:32 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct	s_bsh
 }				t_bsh;
 
 t_bsh			*get_bsh(void);
+t_bsh			*shell_init(char **environ);
 void			clear_exec(t_exec **exec);
 void			clear_token_list(t_token **token);
 

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:23:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 15:23:43 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/05 20:38:29 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ t_token		*init_token_node(t_lexer *lexer)
 		token->type = NEWLINE;
 	else
 		token->type = WORD;
+	if (ft_str_isdigit(token->token) && (*(lexer->input) == '<' ||
+			*(lexer->input) == '>'))
+		token->type = IO_NUMBER;
 	token->next = NULL;
 	ft_bzero(lexer->current_token, lexer->token_len);
 	lexer->token_len = 0;

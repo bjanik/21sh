@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 16:49:36 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/07 11:20:40 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ void		realloc_buffer(t_input *input)
 	char	*tmp;
 
 	tmp = input->buffer;
-	input->buffer = (char*)ft_malloc((input->buffer_size * 2 + 1)
-			* sizeof(char));
+	if (!(input->buffer = (char*)malloc((input->buffer_size * 2 + 1)
+			* sizeof(char))))
+		exit(EXIT_FAILURE);
 	input->buffer_size *= 2;
 	ft_bzero(input->buffer, input->buffer_size + 1);
 	ft_strcpy(input->buffer, tmp);

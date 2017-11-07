@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 15:00:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 16:43:07 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/07 12:14:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int			exec_current_dir(char **cmd, char **env_tab, int offset)
 	return (ret);
 }
 
-static int	exec_search_in_env_path(char **cmd, t_env *env,  char **env_tab)
+static int	exec_search_in_env_path(char **cmd, t_env *env, char **env_tab)
 {
 	char	**paths;
 	int		ret;

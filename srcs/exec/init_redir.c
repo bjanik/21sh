@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 18:42:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/28 18:42:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/05 17:44:17 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-t_redir	*init_redir(void)
+t_redir		*init_redir(void)
 {
 	t_redir	*redir;
 

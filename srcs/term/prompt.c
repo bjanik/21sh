@@ -6,15 +6,15 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:17:41 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 15:18:31 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/06 10:32:20 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-void				get_prompt(t_term *term)
+void		get_prompt(t_term *term)
 {
-	char			*pwd;
+	char	*pwd;
 
 	if ((pwd = getcwd(NULL, MAX_PROMPT_SIZE)) == NULL)
 	{
@@ -32,7 +32,18 @@ void				get_prompt(t_term *term)
 	term->first_line_len = term->width - term->prompt_len;
 }
 
-void				print_prompt(t_term *term, char *color)
+void		display_prompt(t_input *input)
+{
+	input->term->prompt_len = 2;
+	ft_bzero(input->buffer, input->buffer_len);
+	ft_strcpy(input->term->prompt, "> ");
+	write(STDOUT, "> ", 2);
+	input->cursor_pos = 0;
+	input->buffer_len = 0;
+	input->term->cursor_col = 3;
+}
+
+void		print_prompt(t_term *term, char *color)
 {
 	get_prompt(term);
 	ft_printf("%s%s%s ", color, term->prompt, RESET);

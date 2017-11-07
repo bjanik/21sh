@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 16:59:45 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/06 16:11:15 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,29 @@ static void	save_expanded_word(t_expander *exp, char **word, int i)
 			exit(EXIT_FAILURE);
 		ft_strdel(&tmp);
 	}
-	ft_bzero(exp->buffer, INITIAL_SIZE);
+	ft_bzero(exp->buffer, exp->buffer_size);
 	exp->buffer_len = 0;
 	get_event_exp(exp);
 }
 
+void		realloc_exp_buffer(t_expander *exp)
+{
+	char	*tmp;
+
+	tmp = exp->buffer;
+	if (!(exp->buffer = (char*)malloc((exp->buffer_size * 2)
+			* sizeof(char))))
+		exit(EXIT_FAILURE);
+	exp->buffer_size *= 2;
+	ft_bzero(exp->buffer, exp->buffer_size);
+	ft_strcpy(exp->buffer, tmp);
+	free(tmp);
+}
+
 inline void	append(t_expander *exp)
 {
+	if (exp->buffer_len == exp->buffer_size)
+		realloc_exp_buffer(exp);
 	exp->buffer[exp->buffer_len++] = *(exp->tmp);
 }
 

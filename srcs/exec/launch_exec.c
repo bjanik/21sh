@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:32:49 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/28 15:06:29 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/07 10:56:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int			handle_redirection(t_exec *exec)
 			ret = redir_greatand(redir);
 		else if (redir->type == LESSAND)
 			ret = redir_lessand(redir);
+		else if (redir->type == DLESS)
+			ret = redir_heredoc(redir);
 		redir = redir->next;
 	}
 	return (ret);

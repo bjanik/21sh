@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:27:24 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 14:42:05 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/05 15:02:55 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@ int	ft_echo(t_env **env, char **cmd)
 		new_line = 0;
 		i++;
 	}
-	while ( cmd[i])
+	while (cmd[i])
+	{
 		ft_putstr(cmd[i++]);
+		if (cmd[i])
+			ft_putchar(' ');
+	}
 	(new_line) ? ft_putchar('\n') : 0;
 	return (0);
 }
