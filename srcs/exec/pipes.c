@@ -12,8 +12,6 @@
 
 # include "bsh.h"
 
-
-
 int		**get_pipes_fd(t_exec *exec, int *nb_pipes)
 {
 	int	**pipes_fd;
@@ -50,6 +48,27 @@ void	create_pipes(int **pipes_fd, int nb_pipes)
 		if (pipe(pipes_fd[i]) < 0)
 			exit(EXIT_FAILURE);
 	}
+}
+
+void    connect_processes_pipes(int **pipes_fd, int nb_pipes, int i)
+{
+        if (!i)
+        {
+                if (dup2(pipes_fd[i][WRITE], STDOUT) < 0)
+                        exit(EXIT_FAILURE);
+        }
+        else if (i < nb_pipes)
+        {
+                if (dup2(pipes_fd[i - 1][READ], STDIN) < 0)
+                        exit(EXIT_FAILURE);
+                if (dup2(pipes_fd[i][WRITE], STDOUT) < 0)
+                        exit(EXIT_FAILURE);
+        }
+        else
+        {
+                if (dup2(pipes_fd[i - 1][READ], STDIN) < 0)
+                        exit(EXIT_FAILURE);
+        }
 }
 
 void		close_pipes_fds(int **pipes_fd, int nb_pipes)
