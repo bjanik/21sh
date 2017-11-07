@@ -120,7 +120,6 @@ void		pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes)
 		ex = bsh->exec;
 		(*exec)->cmd = lst_to_tab((*exec)->word_list, (*exec)->word_count);
 		expand_words(bsh->exp, (*exec)->cmd);
-		process_heredoc(*exec);
 		if (((*exec)->is_builtin = cmd_is_builtin((*exec)->cmd)) > -1)
 			;
 		else
@@ -130,12 +129,6 @@ void		pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes)
 			if (!pid[k++])
 			{
 				restore_initial_attr(bsh->term);
-				if (!(*exec)->is_heredoc)
-					while (ex)
-					{
-						close_heredoc_pipes(ex->redir_list);
-						ex = ex->next;
-					}
 				connect_pipes(pipes_fd, nb_pipes, i);
 				close_pipes_fds(pipes_fd, nb_pipes);
 				run_binary(*exec, bsh->env);
@@ -146,11 +139,12 @@ void		pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes)
 	}
 	launch_builtins(ex, pipes_fd, nb_pipes, bsh);
 	close_pipes_fds(pipes_fd, nb_pipes);
-	close_heredoc_pipes(bsh->exec->redir_list);
 	while (k)
 		waitpid(pid[--k], &bsh->exit_status, 0);
 	restore_custom_attr(bsh->term);
 }
+	
+
 
 static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 		t_expander *exp)
@@ -161,7 +155,6 @@ static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 	pid = 0;
 	exec->cmd = lst_to_tab(exec->word_list, exec->word_count);
 	expand_words(exp, exec->cmd);
-	process_heredoc(exec);
 	if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
 		run_builtin(exec->is_builtin, exec->cmd);
 	else
@@ -174,7 +167,6 @@ static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 			run_binary(exec, env);
 		}
 	}
-	close_heredoc_pipes(exec->redir_list);
 	waitpid(pid, &exit_status, 0);
 	restore_custom_attr(term);
 	return (exit_status);
@@ -185,7 +177,14 @@ void	execution(t_bsh *bsh)
 	t_exec	*exec;
 	int		**pipes_fd;
 	int		nb_pipes;
+	t_redir		*rd;
 
+	exec = bsh->exec;
+	while (exec)
+	{
+		save_heredoc_input(exec);
+		exec = exec->next;
+	}
 	exec = bsh->exec;
 	while (exec)
 	{
