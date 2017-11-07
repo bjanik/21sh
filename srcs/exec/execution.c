@@ -25,27 +25,6 @@ void		run_builtin(int builtin, char **cmd)
 	bsh->exit_status = g_builtins[builtin].builtin(&(bsh->env), cmd);
 }
 
-static void	connect_pipes(int **pipes_fd, int nb_pipes, int i)
-{
-	if (!i)
-	{
-		if (dup2(pipes_fd[i][WRITE], STDOUT) < 0)
-			exit(EXIT_FAILURE);
-	}
-	else if (i < nb_pipes)
-	{
-		if (dup2(pipes_fd[i - 1][READ], STDIN) < 0)
-			exit(EXIT_FAILURE);
-		if (dup2(pipes_fd[i][WRITE], STDOUT) < 0)
-			exit(EXIT_FAILURE);
-	}
-	else
-	{
-		if (dup2(pipes_fd[i - 1][READ], STDIN) < 0)
-			exit(EXIT_FAILURE);
-	}
-}
-
 void	save_fds(int *saved_fd)
 {
 	saved_fd[0] = dup(STDIN);
@@ -95,7 +74,7 @@ static void	launch_builtins(t_exec *ex, int **pipes_fd, int nb_pipes,
 		save_fds(bsh->saved_fds);
 		if (ex->is_builtin > -1 && (!ex->next || ex->next->is_builtin == -1))
 		{
-			connect_pipes(pipes_fd, nb_pipes, i);
+			connect_processes_pipes(pipes_fd, nb_pipes, i);
 			run_builtin(ex->is_builtin, ex->cmd);
 		}
 		restore_fds(bsh->saved_fds);
@@ -129,7 +108,7 @@ void		pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes)
 			if (!pid[k++])
 			{
 				restore_initial_attr(bsh->term);
-				connect_pipes(pipes_fd, nb_pipes, i);
+				connect_processes_pipes(pipes_fd, nb_pipes, i);
 				close_pipes_fds(pipes_fd, nb_pipes);
 				run_binary(*exec, bsh->env);
 			}
