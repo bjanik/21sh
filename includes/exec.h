@@ -26,6 +26,7 @@ typedef struct		s_redir
 	char			*filename;
 	char			*here_end;
 	int				heredoc_pipe[2];
+	t_list				*heredoc_input[2];
 	int				fd;
 	int				type;
 	struct s_redir	*next;
