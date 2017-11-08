@@ -71,13 +71,13 @@ static void	launch_builtins(t_exec *ex, int **pipes_fd, int nb_pipes,
 	i = -1;
 	while (++i <= nb_pipes)
 	{
-		save_fds(bsh->saved_fds);
 		if (ex->is_builtin > -1 && (!ex->next || ex->next->is_builtin == -1))
 		{
+			save_fds(bsh->saved_fds);
 			connect_processes_pipes(pipes_fd, nb_pipes, i);
 			run_builtin(ex->is_builtin, ex->cmd);
+			restore_fds(bsh->saved_fds);
 		}
-		restore_fds(bsh->saved_fds);
 		ex = ex->next;
 	}
 }
@@ -135,7 +135,11 @@ static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 	exec->cmd = lst_to_tab(exec->word_list, exec->word_count);
 	expand_words(exp, exec->cmd);
 	if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
+	{
+		save_fds(get_bsh()->saved_fds);
 		run_builtin(exec->is_builtin, exec->cmd);
+		restore_fds(get_bsh()->saved_fds);
+	}
 	else
 	{
 		if ((pid = fork()) < 0)
@@ -156,15 +160,9 @@ void	execution(t_bsh *bsh)
 	t_exec	*exec;
 	int		**pipes_fd;
 	int		nb_pipes;
-	t_redir		*rd;
 
 	exec = bsh->exec;
-	while (exec)
-	{
-		save_heredoc_input(exec);
-		exec = exec->next;
-	}
-	exec = bsh->exec;
+	handle_heredocs(bsh->exec);
 	while (exec)
 	{
 		if ((pipes_fd = get_pipes_fd(exec, &nb_pipes)))
@@ -174,6 +172,8 @@ void	execution(t_bsh *bsh)
 					bsh->exp);
 		if (WIFEXITED(bsh->exit_status))
 			bsh->exit_status = WEXITSTATUS(bsh->exit_status);
+		if (WIFSIGNALED(bsh->exit_status))
+			bsh->exit_status = WTERMSIG(bsh->exit_status) + 128;
 		if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
 				(exec->cmd_separator == OR_IF && !bsh->exit_status))
 		{
