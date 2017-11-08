@@ -1,0 +1,42 @@
+echo TEST '"ls -d |cat -e"'
+ls -d |cat -e
+echo ------------------------
+
+echo TEST '"ls -d |cat -e |cat -e |cat -e"'
+ls -d |cat -e |cat -e |cat -e
+echo ------------------------
+
+echo TEST '"echo tototototot |cat -e |cat -e |cat -e"'
+echo tototototot |cat -e |cat -e |cat -e
+echo ------------------------
+
+echo TEST '"echo tototototot |cat -e |cat -e |cat -e ; echo toto"'
+echo tototototot |cat -e |cat -e |cat -e ; echo toto
+echo ------------------------
+
+echo TEST '"echo tototototot |cat -e |cat -e |cat -e ; echo toto && echo lol"'
+echo tototototot |cat -e |cat -e |cat -e ; echo toto && echo lol
+echo ------------------------
+
+echo TEST '"echo tototototot |cat -e |cat -e |cat -e ; echo toto || echo lol"'
+echo tototototot |cat -e |cat -e |cat -e ; echo toto || echo lol
+echo ------------------------
+
+echo TEST
+echo ------------------------
+
+echo TEST
+echo ------------------------
+
+echo TEST
+echo ------------------------
+
+echo TEST
+echo ------------------------
+
+echo TEST
+echo ------------------------
+
+echo TEST
+echo ------------------------
+

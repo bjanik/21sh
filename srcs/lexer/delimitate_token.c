@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:13:50 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/05 20:38:27 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 15:33:31 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@ void	delimitate_token(t_lexer *lexer)
 	if (lexer->token_len > 0)
 	{
 		token = init_token_node(lexer);
-		if (!lexer->token_list)
+		if (!lexer->token_list[0])
 		{
 			token->prev = NULL;
-			lexer->token_list = token;
+			lexer->token_list[0] = token;
+			lexer->token_list[1] = token;
 		}
 		else
 		{
-			lexer->last_token->next = token;
-			token->prev = lexer->last_token;
+			lexer->token_list[1]->next = token;
+			token->prev = lexer->token_list[1];
 		}
-		lexer->last_token = token;
+		lexer->token_list[1] = token;
 	}
 }

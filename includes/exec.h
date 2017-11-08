@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/07 12:05:17 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 18:48:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct		s_redir
 {
 	char			*filename;
 	char			*here_end;
+	t_list			*heredoc_input[2];
 	int				heredoc_pipe[2];
-	t_list				*heredoc_input[2];
 	int				fd;
 	int				type;
 	struct s_redir	*next;
@@ -41,12 +41,17 @@ typedef struct		s_exec
 	t_redir			*redir_list;
 	t_redir			*last_redir;
 	int				is_builtin;
-	int				is_heredoc;
 	int				cmd_separator;
 	int				exit_status;
 	struct s_exec	*next;
 	struct s_exec	*prev;
 }					t_exec;
+
+typedef struct s_pipes
+{
+	int			**pipes_fd;
+	int			nb_pipes;
+}				t_pipes;
 
 int					redir_great(t_redir *redir);
 int					redir_dgreat(t_redir *redir);
@@ -54,19 +59,20 @@ int					redir_less(t_redir *redir);
 int					redir_greatand(t_redir *redir);
 int					redir_lessand(t_redir *redir);
 int					redir_heredoc(t_redir *redir);
-int					process_heredoc(t_exec *exec);
-void				close_heredoc_pipes(t_redir *redir);
+void				handle_heredocs(t_exec *exec);
 int					handle_redirection(t_exec *exec);
 
 char				**get_cmd_path(t_env *env);
 char				**lst_to_tab(t_list *word_list, int word_count);
 void				run_binary(t_exec *exec, t_env *env);
-void				run_builtin(int builtin, char **cmd);
-int					**get_pipes_fd(t_exec *exec, int *nb_pipes);
-void				create_pipes(int **pipes_fd, int nb_pipes);
-void				connect_processes_pipes(int **pipes_fd, int nb_pipes, int i);
-void				close_pipes_fds(int **pipes_fd, int nb_pipes);
-void				pipe_sequence(t_exec **exec, int **pipes_fd, int nb_pipes);
+void				run_builtin(t_exec *exec);
+t_pipes				*init_pipes(void);
+int					get_pipes_fd(t_exec *exec, t_pipes *pipes);
+void				create_pipes(t_pipes *pipes);
+void				connect_processes_pipes(t_pipes *pipes, int i);
+void				close_pipes_fds(t_pipes *pipes);
+void				clear_pipes(t_pipes *pipes);
+void				pipe_sequence(t_exec **exec, t_pipes *pipes);
 void				save_fds(int *saved_fds);
 void				restore_fds(int *saved_fds);
 

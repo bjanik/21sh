@@ -1,0 +1,16 @@
+echo test : '"ls"'
+ls
+echo --------------------------
+echo test : '"ls -l"'
+ls -l
+echo --------------------------
+echo test : cat basic_tests
+cat basic_tests
+echo --------------------------
+echo test : cat tests/basic_tests
+cat tests/basic_tests
+echo --------------------------
+echo test : '"ls -d ; ls-d"'
+ls -d ; ls -d;
+echo --------------------------
+echo test :

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/07 09:37:13 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 17:05:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ static t_bsh		*init_bsh(void)
 	bsh->term = init_term();
 	bsh->history = init_history();
 	bsh->input = init_input(bsh->term, bsh->history);
-	bsh->lexer = NULL;
+	bsh->lexer = init_lexer(NULL, INIT);
 	bsh->parser = NULL;
 	bsh->exec = NULL;
 	bsh->tokens[0] = NULL;
 	bsh->tokens[1] = NULL;
+	bsh->pipes = init_pipes();
 	bsh->pid = getpid();
 	bsh->exit_status = 0;
 	bsh->shell_name = "-bsh";

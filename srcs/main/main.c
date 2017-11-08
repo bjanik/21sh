@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/07 11:26:25 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 19:31:22 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 void			display_token_list(t_input *input, t_token *lst)
 {
-	while (lst)
+	t_token	*l;
+	l = lst;
+	while (l)
 	{
-		dprintf(input->fd, "[%s] type =  %d\n", lst->token, lst->type);
-		lst = lst->next;
+		dprintf(input->fd, "[%s] type =  %d\n", l->token, l->type);
+		l = l->next;
 	}
-	dprintf(input->fd, "----------------------------------\n");
 }
 
 void		del_newline_token(t_lexer *lexer, t_token **token_lst)
@@ -38,36 +39,36 @@ void		del_newline_token(t_lexer *lexer, t_token **token_lst)
 }
 
 void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
-		t_token *token_lst[])
+		t_token *tokens[])
 {
 	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
 	{
-		(*ret == END_IS_OP)? del_newline_token(lex, &token_lst[1]): 0;
+		(*ret == END_IS_OP)? del_newline_token(lex, &tokens[1]): 0;
 		input->buf_tmp = input->buffer;
 		input->buffer = (char*)ft_memalloc(INITIAL_BUFFER_SIZE + 1);
 		display_prompt(input);
 		waiting_for_input(input);
 		lexer(lex, input->buffer, lex->state);
-		*ret = parser(NULL, lex->token_list, NO_SAVE_EXEC);
+		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
 		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
-			token_lst[1]->type == WORD)
+			tokens[1]->type == WORD)
 		{
 			input->buffer[--input->buffer_len] = '\0';
-			token_lst[1]->token = ft_strjoin_free(token_lst[1]->token,
-					lex->token_list->token, 3);
-			token_lst[1]->pushed = 0;
-			if (lex->token_list->next)
+			tokens[1]->token = ft_strjoin_free(tokens[1]->token,
+					lex->token_list[0]->token, 3);
+			tokens[1]->pushed = 0;
+			if (lex->token_list[0]->next)
 			{
-				token_lst[1]->next = lex->token_list->next;
-				lex->token_list = lex->token_list->next;
-				token_lst[1] = lex->last_token;
-				ft_memdel((void**)&lex->token_list->prev);
+				tokens[1]->next = lex->token_list[0]->next;
+				lex->token_list[0] = lex->token_list[0]->next;
+				tokens[1] = lex->token_list[1];
+				ft_memdel((void**)&lex->token_list[0]->prev);
 			}
 		}
 		else if (*ret != SYNTAX_ERROR)
 		{
-			token_lst[1]->next = lex->token_list;
-			token_lst[1] = lex->last_token;
+			tokens[1]->next = lex->token_list[0];
+			tokens[1] = lex->token_list[1];
 		}
 		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 1);
 		input->buffer_len = ft_strlen(input->buffer);
@@ -79,10 +80,13 @@ static void	start_process(t_bsh *bsh, int mode)
 	int		ret;
 
 	ret = 0;
-	bsh->lexer = lexer(bsh->lexer, bsh->input->buffer, INIT);
-	bsh->tokens[0] = bsh->lexer->token_list;
-	bsh->tokens[1] = bsh->lexer->last_token;
-	ret = parser(&(bsh->exec), bsh->lexer->token_list, SAVE_EXEC);
+	lexer(bsh->lexer, bsh->input->buffer, INIT);
+	bsh->tokens[0] = bsh->lexer->token_list[0];
+	bsh->tokens[1] = bsh->lexer->token_list[1];
+	bsh->lexer->token_list[0] = NULL;
+	bsh->lexer->token_list[1] = NULL;
+	display_token_list(bsh->input, bsh->tokens[0]);
+	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{
 		if (mode == INTERACTIVE)
@@ -122,7 +126,6 @@ static void	file_mode(t_bsh *bsh, char **argv)
 		start_process(bsh, FILE_MODE);
 		ft_bzero(bsh->input->buffer, len + 1);
 		clear_token_list(&bsh->tokens[0]);
-		clear_token_list(&bsh->lexer->token_list);
 		clear_exec(&(bsh->exec));
 		ft_strdel(&line);
 	}
@@ -133,11 +136,11 @@ int			main(int argc, char **argv, char **environ)
 	t_bsh	*bsh;
 
 	bsh = shell_init(environ);
+	init_termcaps(bsh->term);
 	if (argc > 1)
 		file_mode(bsh, argv);
 	else
 	{
-		init_termcaps(bsh->term);
 		while (42)
 		{
 			ft_bzero(bsh->input->buffer, bsh->input->buffer_size);
@@ -146,10 +149,9 @@ int			main(int argc, char **argv, char **environ)
 			waiting_for_input(bsh->input);
 			start_process(bsh, INTERACTIVE);
 			clear_token_list(&bsh->tokens[0]);
-			bsh->lexer->token_list = NULL;
-			bsh->lexer->last_token = NULL;
 			clear_exec(&(bsh->exec));
 		}
 	}
+	restore_initial_attr(bsh->term);
 	return (0);
 }

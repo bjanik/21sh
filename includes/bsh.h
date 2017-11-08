@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/05 12:59:32 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 17:01:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ typedef struct	s_bsh
 	t_token		*tokens[2];
 	t_expander	*exp;
 	pid_t		pid;
+	t_pipes		*pipes;
 	int			exit_status;
 	char		*shell_name;
-	int			saved_fds[10];
+	int			saved_fds[3];
 }				t_bsh;
 
 t_bsh			*get_bsh(void);

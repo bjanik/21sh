@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/07 15:18:37 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 12:03:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-static int		save_heredoc(t_redir *redir)
+static int	save_heredoc(t_redir *redir)
 {
 	t_input	*input;
 	t_list	*here_in;
@@ -41,7 +41,7 @@ static int		save_heredoc(t_redir *redir)
 	return (0);
 }
 
-int		save_heredoc_input(t_exec *exec)
+static void	save_heredoc_input(t_exec *exec)
 {
 	t_redir	*rd;
 
@@ -52,10 +52,21 @@ int		save_heredoc_input(t_exec *exec)
 			save_heredoc(rd);
 		rd = rd->next;
 	}
-	return (0);
 }
 
-int		redir_heredoc(t_redir *redir)
+void	handle_heredocs(t_exec *exec)
+{
+	t_exec	*ex;
+
+	ex = exec;
+	while (ex)
+	{
+		save_heredoc_input(ex);
+		ex = ex->next;
+	}
+}
+
+int			redir_heredoc(t_redir *redir)
 {
 	t_list	*here_data;
 
@@ -75,7 +86,7 @@ int		redir_heredoc(t_redir *redir)
 	return (0);
 }
 
-void	close_heredoc_pipes(t_redir *redir)
+void		close_heredoc_pipes(t_redir *redir)
 {
 	t_redir	*rd;
 

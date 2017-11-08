@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:22:54 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/06 12:03:20 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 16:27:44 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,11 @@ void				handle_backslash(t_lexer *lexer)
 	lexer->current_token[lexer->token_len++] = *(lexer->input);
 }
 
-t_lexer				*lexer(t_lexer *lexer, char *input, int initial_state)
+void			lexer(t_lexer *lexer, char *input, int initial_state)
 {
-	lexer = init_lexer(lexer, input, initial_state);
+	lexer->input = input;
+	lexer->state = initial_state;
+	lexer->event = 0;
 	if (initial_state != INIT)
 		get_event(lexer);
 	while (lexer->state != NWLINE && *(lexer->input) != '\0')
@@ -140,5 +142,5 @@ t_lexer				*lexer(t_lexer *lexer, char *input, int initial_state)
 		get_event(lexer);
 	}
 	delimitate_token(lexer);
-	return (lexer);
+	lexer->input = NULL;
 }

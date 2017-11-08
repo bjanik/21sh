@@ -6,13 +6,13 @@
 #    By: bjanik <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 16:52:33 by bjanik            #+#    #+#              #
-#    Updated: 2017/10/16 16:29:35 by bjanik           ###   ########.fr        #
+#    Updated: 2017/11/06 10:05:39 by bjanik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 CC = gcc
-CFLAGS = -c -Wall -Wextra -Werror -Iincludes
+CFLAGS = -g -c -Wall -Wextra -Werror -Iincludes
 SRCS = ft_putstr.c \
 	   ft_putnstr.c \
 	   ft_putwstr.c \

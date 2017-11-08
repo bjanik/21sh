@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:52:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 20:45:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 16:06:00 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ void			pop_stack(t_stack **stack)
 	if (*stack)
 	{
 		tmp = *stack;
-		*stack = (*stack)->next;
-		tmp->next = NULL;
-		ft_memdel((void**)&tmp);
+		tmp = tmp->next;
+		(*stack)->next = NULL;
+		ft_memdel((void**)stack);
+		*stack = tmp;
 	}
 }
 

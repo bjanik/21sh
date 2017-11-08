@@ -1,0 +1,20 @@
+echo TEST '"ls -d > toto ; echo -n [ ; cat toto ; echo ]; ls -d >> toto ;echo -n [ ;  cat toto; echo ]"'
+ls -d > toto ; echo [ ; cat toto ; echo ]; ls -d >> toto ;echo [ ;  cat toto; echo ]
+
+echo ------------------------
+echo TEST '"wc -c < toto "' # expected 4
+wc -c < toto
+
+echo ------------------------
+echo TEST
+
+echo ------------------------
+echo TEST
+
+echo ------------------------
+echo TEST
+
+echo ------------------------
+echo TEST
+
+echo ------------------------

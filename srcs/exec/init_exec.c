@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 18:42:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/07 12:05:59 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/08 13:41:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_exec	*init_exec(void)
 	exec->redir_list = NULL;
 	exec->last_redir = NULL;
 	exec->is_builtin = -1;
-	exec->is_heredoc = 0;
 	exec->cmd_separator = 0;
 	exec->exit_status = 0;
 	exec->next = NULL;
