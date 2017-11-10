@@ -43,9 +43,13 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 {
 	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
 	{
+		ft_printf("BEgin handle unclosed...\n");
 		(*ret == END_IS_OP)? del_newline_token(lex, &tokens[1]): 0;
+		ft_printf("after del nl token...\n");
 		input->buf_tmp = input->buffer;
-		input->buffer = (char*)ft_memalloc(INITIAL_BUFFER_SIZE + 1);
+		if (!(input->buffer = (char*)malloc((INITIAL_BUFFER_SIZE + 1) 
+			*sizeof(char))))
+			exit(EXIT_FAILURE);
 		display_prompt(input);
 		waiting_for_input(input);
 		lexer(lex, input->buffer, lex->state);
@@ -62,6 +66,7 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 				tokens[1]->next = lex->token_list[0]->next;
 				lex->token_list[0] = lex->token_list[0]->next;
 				tokens[1] = lex->token_list[1];
+				ft_printf("bf memdel...\n");
 				ft_memdel((void**)&lex->token_list[0]->prev);
 			}
 		}
@@ -69,6 +74,8 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		{
 			tokens[1]->next = lex->token_list[0];
 			tokens[1] = lex->token_list[1];
+			lex->token_list[0] = NULL;
+			lex->token_list[1] = NULL;
 		}
 		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 1);
 		input->buffer_len = ft_strlen(input->buffer);
@@ -85,7 +92,7 @@ static void	start_process(t_bsh *bsh, int mode)
 	bsh->tokens[1] = bsh->lexer->token_list[1];
 	bsh->lexer->token_list[0] = NULL;
 	bsh->lexer->token_list[1] = NULL;
-	display_token_list(bsh->input, bsh->tokens[0]);
+	//display_token_list(bsh->input, bsh->tokens[0]);
 	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{

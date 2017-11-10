@@ -23,7 +23,7 @@ int			ft_export(t_env **env, char **cmd)
 		return (display_env(*env));
 	while (cmd[++i] && cmd[i][0] == '-' && ft_strcmp("--", cmd[i]))
 	{
-		if (!cmd[i][1])
+		if (!cmd[i][1] )
 		{
 			ft_putendl_fd("bsh: export: `-': not a valid identifier", STDERR);
 			return (1);

@@ -45,35 +45,40 @@ void		clear_pipes(t_pipes *pipes)
 	pipes->nb_pipes = 0;
 }
 
+static void	clear_redir(t_redir **redir)
+{
+	t_redir	*rd;
+
+	rd = *redir;
+	while (rd)
+	{
+		*redir = rd->next;
+		ft_strdel(&rd->filename);
+		ft_strdel(&rd->here_end);
+		ft_lstdel(&rd->heredoc_input[0], del);
+		rd->heredoc_input[1] = NULL;
+		rd->next = NULL;
+		ft_memdel((void**)&rd);
+		rd = *redir;
+	}
+
+}
+
 void		clear_exec(t_exec **exec)
 {
 	t_exec	*ex;
-	t_redir	*rd;
-	t_list	*wd;
 
 	if (!exec || !*exec)
 		return ;
 	ex = *exec;
-	wd = ex->word_list;
 	while (ex)
 	{
 		ft_lstdel(&ex->word_list, del);
 		ft_free_string_tab(&ex->cmd);
+		clear_redir(&ex->redir_list);
 		ex->last_word = NULL;
-		rd = ex->redir_list;
 		ex->prev = NULL;
 		ex->last_redir = NULL;
-		while (rd)
-		{
-			ex->redir_list = rd->next;
-			ft_strdel(&rd->filename);
-			ft_strdel(&rd->here_end);
-			ft_lstdel(&rd->heredoc_input[0], del);
-			rd->heredoc_input[1] = NULL;
-			rd->next = NULL;
-			ft_memdel((void**)&rd);
-			rd = ex->redir_list;
-		}
 		ex = ex->next;
 		ft_memdel((void**)exec);
 		*exec = ex;

@@ -85,6 +85,7 @@ t_bsh	*shell_init(char **environ)
 
 	bsh = get_bsh();
 	bsh->env = env_to_lst(environ);
+	bsh->mod_env = NULL;
 	bsh->exp = init_expander(bsh->env);
 	update_shlvl(bsh->env);
 	update_shell_name(bsh->env);

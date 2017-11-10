@@ -34,6 +34,7 @@ typedef struct	s_bsh
 	t_parser	*parser;
 	t_exec		*exec;
 	t_env		*env;
+	t_env		*mod_env;
 	t_history	*history;
 	t_token		*tokens[2];
 	t_expander	*exp;

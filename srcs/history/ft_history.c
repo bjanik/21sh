@@ -13,13 +13,25 @@
 #include "bsh.h"
 
 
-static int		display_history(t_history *hist)
+static int		display_history(t_history *hist, char **cmd)
 {
 	t_dlst		*end;
 	int			cpt;
+	int			offset;
 
 	end = hist->end;
-	cpt = 1;
+	cpt = 0;
+	if (cmd[1] && ft_str_isdigit(cmd[1]))
+	{
+		end = hist->head;
+		offset = ft_atoi(cmd[1]);
+		if (hist->len > offset)
+			cpt = hist->len - offset;
+		while (end && --offset)
+			end = end->next;
+	}
+	if (!end)
+		end = hist->end;
 	while (end)
 	{
 		ft_printf("%d  %s\n", cpt++, (char*)end->data);
@@ -83,13 +95,13 @@ int				ft_history(t_env **env, char **cmd)
 	(void)env;
 	hist = get_bsh()->history;
 	i = 0;
-	if (cmd && cmd[0] && !cmd[1])
-		return (display_history(hist));
+	//if (cmd && cmd[0] && !cmd[1])
+	//	return (display_history(hist));
 	while (cmd[++i] && cmd[i][0] == '-' && ft_strcmp("--", cmd[i]))
 	{
 		if (!cmd[i][1])
 		{
-			ft_putendl_fd("bsh: export: `-': not a valid identifier", STDERR);
+			ft_putendl_fd("bsh: history: `-': not a valid identifier", STDERR);
 			return (1);
 		}
 		if ((wrong_opt = check_arg_opt(cmd[i] + 1, HISTORY_OPTIONS, options)))
@@ -102,5 +114,6 @@ int				ft_history(t_env **env, char **cmd)
 	}
 	else if (IS_OPTION(options, 'd'))
 		history_option_d(&hist->end, cmd, i);
+	(i == 1) ? display_history(hist, cmd) : 0;
 	return (0);
 }

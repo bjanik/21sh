@@ -121,7 +121,7 @@ static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 		if (!pid)
 		{
 			restore_initial_attr(term);
-				run_binary(exec, env);
+			run_binary(exec, env);
 		}
 	}
 	(exec->is_builtin == -1) ? waitpid(pid, &exit_status, 0) : 0;
