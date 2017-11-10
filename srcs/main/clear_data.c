@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 16:04:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 19:10:39 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/10 15:47:14 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,17 @@ static void	clear_redir(t_redir **redir)
 	t_redir	*rd;
 
 	rd = *redir;
-	while (rd)
+	while (*redir)
 	{
-		*redir = rd->next;
-		ft_strdel(&rd->filename);
-		ft_strdel(&rd->here_end);
-		ft_lstdel(&rd->heredoc_input[0], del);
-		rd->heredoc_input[1] = NULL;
-		rd->next = NULL;
-		ft_memdel((void**)&rd);
-		rd = *redir;
+		rd = (*redir)->next;
+		ft_strdel(&(*redir)->filename);
+		ft_strdel(&(*redir)->here_end);
+		ft_lstdel(&(*redir)->heredoc_input[0], del);
+		(*redir)->heredoc_input[1] = NULL;
+		(*redir)->next = NULL;
+		ft_memdel((void**)redir);
+		*redir = rd;
 	}
-
 }
 
 void		clear_exec(t_exec **exec)
@@ -83,5 +82,4 @@ void		clear_exec(t_exec **exec)
 		ft_memdel((void**)exec);
 		*exec = ex;
 	}
-	clear_pipes(get_bsh()->pipes);
 }

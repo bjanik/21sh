@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 16:09:03 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 16:06:20 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/10 15:50:15 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -815,7 +815,8 @@ int					parser(t_exec **exec, t_token *token_list, int ex)
 {
 	t_parser		*parse;
 	int				ret;
-
+	
+	//dprintf(get_bsh()->input->fd, "Start parser\n");
 	ret = -1;
 	parse = init_parser(token_list, ex);
 	while (ret < 0)
@@ -825,7 +826,8 @@ int					parser(t_exec **exec, t_token *token_list, int ex)
 	if (ex && ret == ACCEPTED)
 		*exec = parse->exec_list;
 	else
-		clear_exec(exec);
+		clear_exec(&parse->exec_list);
 	ft_memdel((void**)&parse);
+	//dprintf(get_bsh()->input->fd, "end parser\n");
 	return (ret);
 }

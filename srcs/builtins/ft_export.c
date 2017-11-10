@@ -10,12 +10,22 @@ static int	export_usage(char invalid_opt)
 	return (1);
 }
 
+static void	export_option_n(t_env *env, char **cmd, int *i)
+{
+	t_env	*var;
+
+	while (cmd[*i])
+	{
+		if ((var = ft_getenv(env, cmd[(*i)++])))
+			var->exportable = 0;
+	}
+}
+
 int			ft_export(t_env **env, char **cmd)
 {
 	int		i;
 	char	options[3];
 	char	wrong_opt;
-	t_env	*var;
 
 	i = 0;
 	ft_bzero(options, 3);
@@ -23,7 +33,7 @@ int			ft_export(t_env **env, char **cmd)
 		return (display_env(*env));
 	while (cmd[++i] && cmd[i][0] == '-' && ft_strcmp("--", cmd[i]))
 	{
-		if (!cmd[i][1] )
+		if (!cmd[i][1])
 		{
 			ft_putendl_fd("bsh: export: `-': not a valid identifier", STDERR);
 			return (1);
@@ -32,13 +42,7 @@ int			ft_export(t_env **env, char **cmd)
 			return (export_usage(wrong_opt));
 	}
 	if (IS_OPTION(options, 'n'))
-	{
-		while (cmd[i])
-		{
-			if ((var = ft_getenv(*env, cmd[i++])))
-				var->exportable = 0;
-		}
-	}
+		export_option_n(*env, cmd, &i);
 	while (cmd[i])
 		set_var(env, cmd[i++], EXPORT_VAR);
 	return (0);

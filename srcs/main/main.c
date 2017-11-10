@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 19:31:22 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/10 17:17:07 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ void		del_newline_token(t_lexer *lexer, t_token **token_lst)
 	bsh = get_bsh();
 	tk = *token_lst;
 	lexer->state = STD;
-	*token_lst = tk->prev;
-	ft_strdel(&tk->token);
-	ft_memdel((void**)tk);
-	(*token_lst)->next = NULL;
+	tk = (*token_lst)->prev;
+	tk->next = NULL;
+	ft_strdel(&(*token_lst)->token);
+	ft_memdel((void**)token_lst);
+	(*token_lst) = tk;
 	bsh->input->buffer[--bsh->input->buffer_len] = '\0';
 }
 
@@ -43,16 +44,17 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 {
 	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
 	{
-		ft_printf("BEgin handle unclosed...\n");
 		(*ret == END_IS_OP)? del_newline_token(lex, &tokens[1]): 0;
-		ft_printf("after del nl token...\n");
+		display_token_list(input, tokens[0]);
 		input->buf_tmp = input->buffer;
-		if (!(input->buffer = (char*)malloc((INITIAL_BUFFER_SIZE + 1) 
-			*sizeof(char))))
+		if (!(input->buffer = (char*)malloc((input->buffer_size + 1)
+				*sizeof(char))))
 			exit(EXIT_FAILURE);
 		display_prompt(input);
 		waiting_for_input(input);
 		lexer(lex, input->buffer, lex->state);
+		display_token_list(get_bsh()->input, tokens[0]);
+		display_token_list(get_bsh()->input, lex->token_list[0]);
 		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
 		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
 			tokens[1]->type == WORD)
@@ -66,7 +68,6 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 				tokens[1]->next = lex->token_list[0]->next;
 				lex->token_list[0] = lex->token_list[0]->next;
 				tokens[1] = lex->token_list[1];
-				ft_printf("bf memdel...\n");
 				ft_memdel((void**)&lex->token_list[0]->prev);
 			}
 		}
@@ -77,8 +78,9 @@ void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 			lex->token_list[0] = NULL;
 			lex->token_list[1] = NULL;
 		}
-		input->buffer = ft_strjoin_free(input->buf_tmp, input->buffer, 1);
-		input->buffer_len = ft_strlen(input->buffer);
+		ft_strcpy(input->buf_tmp, input->buffer);
+		ft_strdel(&input->buffer);
+		input->buffer = input->buf_tmp;
 	}
 }
 
@@ -150,7 +152,7 @@ int			main(int argc, char **argv, char **environ)
 	{
 		while (42)
 		{
-			ft_bzero(bsh->input->buffer, bsh->input->buffer_size);
+			ft_bzero(bsh->input->buffer, bsh->input->buffer_len);
 			bsh->input->buffer_len = 0;
 			print_prompt(bsh->term, BOLD_CYAN);
 			waiting_for_input(bsh->input);

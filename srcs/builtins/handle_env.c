@@ -63,7 +63,7 @@ int	display_env(t_env *env)
 	while (env)
 	{
 		if (env->exportable)
-			ft_printf("%s=%s\n", env->var_name, env->var_value, env->exportable);
+			ft_printf("%s=%s\n", env->var_name, env->var_value);
 		env = env->next;
 	}
 	return (0);

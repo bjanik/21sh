@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:33:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/23 19:22:08 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/10 13:42:48 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_env				*create_node(char *env_var, int exportable);
 void				push_back_env(t_env **env, char *env_var, int exportable);
 int					env_size(t_env *env);
 int					display_env(t_env *env);
+t_env				*mod_env(t_env *env);
 char				**env_to_tab(t_env *env);
 t_env				*ft_getenv(t_env *env, char *name);
 void				set_var(t_env **env, char *var, int export);
