@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:22:54 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/10 14:58:48 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/11 19:45:55 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,13 @@ char				*g_op_list[MAX_TOKENS + 1] = {
 	NULL,
 };
 
-static inline void	init(t_lexer *lexer)
-{
-	(void)lexer;
-}
-
 static inline void	skip_char(t_lexer *lexer)
 {
 	(void)lexer;
 }
 
 t_transition		g_lexer[MAX_STATE][MAX_EVENT] = {
-	{{STD, init},
+	{{STD, skip_char},
 		{DQUOTE, append_char},
 		{QUOTE, append_char},
 		{BQUOTE, append_char},
@@ -126,12 +121,11 @@ void				handle_backslash(t_lexer *lexer)
 	lexer->current_token[lexer->token_len++] = *(lexer->input);
 }
 
-void			lexer(t_lexer *lexer, char *input, int initial_state)
+void				lexer(t_lexer *lexer, char *input, int initial_state)
 {
 	lexer->input = input;
 	lexer->state = initial_state;
 	lexer->event = 0;
-	//dprintf(get_bsh()->input->fd, "IN LEXER\n");
 	if (initial_state != INIT)
 		get_event(lexer);
 	while (lexer->state != NWLINE && *(lexer->input) != '\0')
@@ -142,8 +136,6 @@ void			lexer(t_lexer *lexer, char *input, int initial_state)
 		lexer->state = g_lexer[lexer->state][lexer->event].new_state;
 		get_event(lexer);
 	}
-	//dprintf(get_bsh()->input->fd, "END LEXER\n");
 	delimitate_token(lexer);
-	//dprintf(get_bsh()->input->fd, "END LEXER2\n");
 	lexer->input = NULL;
 }

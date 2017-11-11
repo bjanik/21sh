@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 12:03:09 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/11 19:45:01 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@ static int	save_heredoc(t_redir *redir)
 	{
 		display_prompt(input);
 		waiting_for_input(input);
-		input->buffer[--input->buffer_len] = '\0';
-		if (!ft_strcmp(input->buffer, redir->here_end))
+		if (!ft_strncmp(input->buffer, redir->here_end, input->buffer_len - 1))
 			break ;
-		input->buffer[input->buffer_len++] = '\n';
 		here_in = ft_lstnew(input->buffer, input->buffer_len);
 		if (redir->heredoc_input[0] == NULL)
 		{
@@ -54,7 +52,7 @@ static void	save_heredoc_input(t_exec *exec)
 	}
 }
 
-void	handle_heredocs(t_exec *exec)
+void		handle_heredocs(t_exec *exec)
 {
 	t_exec	*ex;
 
@@ -76,7 +74,7 @@ int			redir_heredoc(t_redir *redir)
 	while (here_data)
 	{
 		write(redir->heredoc_pipe[WRITE], here_data->content,
-			 here_data->content_size);
+			here_data->content_size);
 		here_data = here_data->next;
 	}
 	if (dup2(redir->heredoc_pipe[READ], STDIN) < 0)

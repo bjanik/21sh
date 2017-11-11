@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:43:43 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 16:25:55 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/11 19:39:53 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	unexpected_token(char *unexpected_token)
 	ft_putendl_fd("'", STDERR);
 }
 
-int		syntax_error(t_parser *parser)
+int			syntax_error(t_parser *parser)
 {
 	int	type;
 

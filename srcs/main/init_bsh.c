@@ -6,18 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 17:05:09 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/11 19:37:21 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
-/*void	set_signals_handlers(void)
-{
-	signal(SIGINT, sigint_handler);
-	//signal(SIGWINCH, window_change);
-	//signal(SIGTSTP, SIG_IGN);
-}*/
 
 static t_bsh		*init_bsh(void)
 {
@@ -40,7 +33,7 @@ static t_bsh		*init_bsh(void)
 	return (bsh);
 }
 
-static void	update_shlvl(t_env *env)
+static void			update_shlvl(t_env *env)
 {
 	t_env	*shlvl;
 	char	*tmp;
@@ -55,7 +48,7 @@ static void	update_shlvl(t_env *env)
 	}
 }
 
-static void	update_shell_name(t_env *env)
+static void			update_shell_name(t_env *env)
 {
 	t_env	*shell_name;
 	char	*tmp;
@@ -79,7 +72,7 @@ t_bsh				*get_bsh(void)
 	return (bsh);
 }
 
-t_bsh	*shell_init(char **environ)
+t_bsh				*shell_init(char **environ)
 {
 	t_bsh	*bsh;
 
@@ -91,4 +84,3 @@ t_bsh	*shell_init(char **environ)
 	update_shell_name(bsh->env);
 	return (bsh);
 }
-
