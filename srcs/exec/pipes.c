@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 16:40:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 19:52:54 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/11 19:43:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "bsh.h"
+#include "bsh.h"
 
 t_pipes	*init_pipes(void)
 {
@@ -35,7 +35,8 @@ int		get_pipes_fd(t_exec *exec, t_pipes *pipes)
 	i = -1;
 	if (pipes->nb_pipes)
 	{
-		if (!(pipes->pipes_fd = (int**)malloc(sizeof(int*) * (pipes->nb_pipes))))
+		if (!(pipes->pipes_fd = (int**)malloc(sizeof(int*) *
+				(pipes->nb_pipes))))
 			exit(EXIT_FAILURE);
 		while (++i < pipes->nb_pipes)
 		{
@@ -71,15 +72,15 @@ void	connect_processes_pipes(t_pipes *pipes, int i)
 			exit(EXIT_FAILURE);
 		if (dup2(pipes->pipes_fd[i][WRITE], STDOUT) < 0)
 			exit(EXIT_FAILURE);
-	 }
-	 else
-	 {
+	}
+	else
+	{
 		if (dup2(pipes->pipes_fd[i - 1][READ], STDIN) < 0)
 			exit(EXIT_FAILURE);
 	}
 }
 
-void		close_pipes_fds(t_pipes *pipes)
+void	close_pipes_fds(t_pipes *pipes)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/10 17:17:07 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/11 19:47:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,72 +15,12 @@
 void			display_token_list(t_input *input, t_token *lst)
 {
 	t_token	*l;
+	
 	l = lst;
 	while (l)
 	{
 		dprintf(input->fd, "[%s] type =  %d\n", l->token, l->type);
 		l = l->next;
-	}
-}
-
-void		del_newline_token(t_lexer *lexer, t_token **token_lst)
-{
-	t_token	*tk;
-	t_bsh	*bsh;
-
-	bsh = get_bsh();
-	tk = *token_lst;
-	lexer->state = STD;
-	tk = (*token_lst)->prev;
-	tk->next = NULL;
-	ft_strdel(&(*token_lst)->token);
-	ft_memdel((void**)token_lst);
-	(*token_lst) = tk;
-	bsh->input->buffer[--bsh->input->buffer_len] = '\0';
-}
-
-void			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
-		t_token *tokens[])
-{
-	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
-	{
-		(*ret == END_IS_OP)? del_newline_token(lex, &tokens[1]): 0;
-		display_token_list(input, tokens[0]);
-		input->buf_tmp = input->buffer;
-		if (!(input->buffer = (char*)malloc((input->buffer_size + 1)
-				*sizeof(char))))
-			exit(EXIT_FAILURE);
-		display_prompt(input);
-		waiting_for_input(input);
-		lexer(lex, input->buffer, lex->state);
-		display_token_list(get_bsh()->input, tokens[0]);
-		display_token_list(get_bsh()->input, lex->token_list[0]);
-		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
-		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
-			tokens[1]->type == WORD)
-		{
-			input->buffer[--input->buffer_len] = '\0';
-			tokens[1]->token = ft_strjoin_free(tokens[1]->token,
-					lex->token_list[0]->token, 3);
-			tokens[1]->pushed = 0;
-			if (lex->token_list[0]->next)
-			{
-				tokens[1]->next = lex->token_list[0]->next;
-				lex->token_list[0] = lex->token_list[0]->next;
-				tokens[1] = lex->token_list[1];
-				ft_memdel((void**)&lex->token_list[0]->prev);
-			}
-		}
-		else if (*ret != SYNTAX_ERROR)
-		{
-			tokens[1]->next = lex->token_list[0];
-			tokens[1] = lex->token_list[1];
-			lex->token_list[0] = NULL;
-			lex->token_list[1] = NULL;
-		}
-		ft_strcpy(input->buf_tmp, input->buffer);
-		ft_strdel(&input->buffer);
-		input->buffer = input->buf_tmp;
 	}
 }
 
@@ -94,7 +34,6 @@ static void	start_process(t_bsh *bsh, int mode)
 	bsh->tokens[1] = bsh->lexer->token_list[1];
 	bsh->lexer->token_list[0] = NULL;
 	bsh->lexer->token_list[1] = NULL;
-	//display_token_list(bsh->input, bsh->tokens[0]);
 	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{
@@ -112,7 +51,7 @@ static void	start_process(t_bsh *bsh, int mode)
 	if (bsh->input->buffer_len > 0)
 		append_history(bsh->history, bsh->input->buffer,
 				bsh->input->buffer_len + 1);
-	(ret == ACCEPTED && bsh->exec->word_list) ? execution(bsh): 0;
+	(ret == ACCEPTED && bsh->exec->word_list) ? execution(bsh) : 0;
 }
 
 static void	file_mode(t_bsh *bsh, char **argv)
