@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:11:38 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 15:12:42 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/12 14:47:56 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
+#include "bsh.h"
 
 t_keys	g_handle_keys[] = {
 	{ARROW_UP, handle_arrow_up},
@@ -21,6 +21,7 @@ t_keys	g_handle_keys[] = {
 	{CTRL_DOWN, handle_ctrl_down},
 	{CTRL_LEFT, handle_ctrl_left},
 	{CTRL_RIGHT, handle_ctrl_right},
+	{CTRL_D, handle_eof},
 	{ALT_GREAT, handle_alt_great},
 	{ALT_LESS, handle_alt_less},
 	{BACKSPACE, handle_backspace},
