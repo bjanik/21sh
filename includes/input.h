@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 14:47:41 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/12 18:09:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define CTRL_UP "\x1B[1;5A"
 # define CTRL_DOWN "\x1B[1;5B"
 # define CTRL_D "\x4"
+# define CTRL_R "\x12"
+# define CTRL_U "\x15"
 # define CLEAR_SCREEN "\xC"
 
 # define ALT_GREAT "\x1B>"
@@ -56,6 +58,7 @@ typedef struct	s_input
 	t_term		*term;
 	t_history	*history;
 	int			fd;
+	int			type;
 }				t_input;
 
 typedef struct	s_keys
@@ -82,10 +85,12 @@ int				handle_reg_char(t_input *input, char c);
 int				handle_alt_less(t_input *input);
 int				handle_alt_great(t_input *input);
 int				handle_clear_screen(t_input *input);
+int				handle_clear_line(t_input *input);
 int				handle_eof(t_input *input);
 void			cp_history_to_buffer(t_input *input);
 void			update_visual_buffer(t_input *input);
 int				cursor_on_last_line(t_input *input);
 int				get_key(t_input *input);
+int				get_displayed_lines(t_input *input);
 void			realloc_buffer(t_input *input);
 #endif

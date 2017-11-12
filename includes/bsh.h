@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/10 12:27:22 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/12 17:59:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # define INTERACTIVE 0
 # define FILE_MODE 1
+# define REGULAR_INPUT 0
+# define HEREDOC_INPUT 1
 
 typedef struct	s_bsh
 {
@@ -50,7 +52,7 @@ t_bsh			*shell_init(char **environ);
 void			clear_exec(t_exec **exec);
 void			clear_token_list(t_token **token);
 
-void			waiting_for_input(t_input *input);
+void			waiting_for_input(t_input *input, int input_type);
 void			execution(t_bsh *bsh);
 
 int				ft_perm_denied_msg(char *file);
