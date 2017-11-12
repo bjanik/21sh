@@ -1,0 +1,10 @@
+total 48
+-rw-r--r--   1 bjanik  2016_paris  1102 Nov 10 10:39 signals.c
+-rw-r--r--   1 bjanik  2016_paris  1398 Nov 10 10:39 errors.c
+drwxr-xr-x  11 bjanik  2016_paris   374 Nov 10 10:39 ..
+-rw-r--r--   1 bjanik  2016_paris  2101 Nov 10 15:47 clear_data.c
+-rw-r--r--   1 bjanik  2016_paris  2908 Nov 11 19:34 unclosed_quotes.c
+-rw-r--r--   1 bjanik  2016_paris  2240 Nov 11 19:37 init_bsh.c
+-rw-r--r--   1 bjanik  2016_paris  3093 Nov 11 19:47 main.c
+-rw-r--r--   1 bjanik  2016_paris     0 Nov 12 13:27 toto
+drwxr-xr-x   9 bjanik  2016_paris   306 Nov 12 13:27 .

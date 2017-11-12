@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/07 11:20:40 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/12 17:58:40 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int			handle_reg_char(t_input *input, char c)
 		input->buffer[input->cursor_pos] = c;
 	}
 	tputs(tgetstr("im", NULL), 1, ft_putchar_termcaps);
-	write(STDIN, &c, 1);
+	write(STDOUT, &c, 1);
 	tputs(tgetstr("ei", NULL), 1, ft_putchar_termcaps);
 	if (input->term->cursor_col == input->term->width)
 	{

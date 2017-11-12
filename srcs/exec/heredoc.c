@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/11 19:45:01 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/12 18:06:33 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ static int	save_heredoc(t_redir *redir)
 	while (42)
 	{
 		display_prompt(input);
-		waiting_for_input(input);
-		if (!ft_strncmp(input->buffer, redir->here_end, input->buffer_len - 1))
+		waiting_for_input(input, HEREDOC_INPUT);
+		if (input->buffer_len > 1)
+			if (!ft_strncmp(input->buffer, redir->here_end,
+						input->buffer_len - 1))
 			break ;
 		here_in = ft_lstnew(input->buffer, input->buffer_len);
 		if (redir->heredoc_input[0] == NULL)

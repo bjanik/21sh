@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:38:51 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 15:16:14 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/12 15:02:20 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	delete_char(t_input *input)
 				input->buffer + input->cursor_pos + 1);
 	input->buffer_len--;
 	tputs(tgetstr("dc", NULL), 1, ft_putchar_termcaps);
+	tputs(tgetstr("ed", NULL), 1, ft_putchar_termcaps);
 	update_visual_buffer(input);
 }
 
