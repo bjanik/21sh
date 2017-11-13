@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:16:44 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/06 14:25:25 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 15:00:43 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
+#include "bsh.h"
 
 int	handle_home(t_input *input)
 {
@@ -36,5 +36,5 @@ int	handle_return(t_input *input)
 	if (input->buffer_len == input->buffer_size)
 		realloc_buffer(input);
 	input->buffer[input->buffer_len++] = '\n';
-	return (1);
+	return (RETURN);
 }

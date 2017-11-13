@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 17:59:29 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 14:31:31 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,21 @@ void			display_token_list(t_input *input, t_token *lst)
 	}
 }
 
+static void connect_tokens(t_bsh *bsh)
+{
+	bsh->tokens[0] = bsh->lexer->token_list[0];
+	bsh->tokens[1] = bsh->lexer->token_list[1];
+	bsh->lexer->token_list[0] = NULL;
+	bsh->lexer->token_list[1] = NULL;
+}
+
 static void	start_process(t_bsh *bsh, int mode)
 {
 	int		ret;
 
 	ret = 0;
 	lexer(bsh->lexer, bsh->input->buffer, INIT);
-	bsh->tokens[0] = bsh->lexer->token_list[0];
-	bsh->tokens[1] = bsh->lexer->token_list[1];
-	bsh->lexer->token_list[0] = NULL;
-	bsh->lexer->token_list[1] = NULL;
+	connect_tokens(bsh);
 	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{
@@ -41,7 +46,7 @@ static void	start_process(t_bsh *bsh, int mode)
 		{
 			handle_unclosed_quotes(bsh->lexer, bsh->input, &ret, bsh->tokens);
 			bsh->tokens[1]->pushed = 0;
-			if (ret != SYNTAX_ERROR)
+			if (ret == ACCEPTED)
 				ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 		}
 		else

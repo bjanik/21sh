@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 14:46:47 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 17:11:27 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 13:41:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ int		handle_clear_line(t_input *input)
 
 int		handle_eof(t_input *input)
 {
-	(void)input;
-	if (input->buffer_len == 0)
+	if (input->buffer_len == 0 && input->type == REGULAR_INPUT)
 	{
 		ft_putendl_fd("exit", STDERR);
 		exit(0);
 	}
+	if (input->buffer_len == 0 && input->type == HEREDOC_INPUT)
+		return (STOP_HEREDOC);
+	if (input->buffer_len == 0 && input->type == UNCLOSED_QUOTES)
+		return (UNEXPECTED_EOF);
 	return (0);
 }

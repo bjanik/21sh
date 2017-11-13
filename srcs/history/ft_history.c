@@ -6,12 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:14:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 17:03:12 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 14:48:16 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
 
 static int		display_history(t_history *hist, char **cmd)
 {

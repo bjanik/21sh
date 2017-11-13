@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 18:09:38 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 14:55:54 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define HOME "\x1B[H"
 # define END "\x1B[F"
 
-# define RETURN "\n"
+# define RETURN_C "\n"
 
 typedef struct	s_input
 {

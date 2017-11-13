@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:11:38 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 15:01:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 14:56:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_keys	g_handle_keys[] = {
 	{DELETE, handle_delete},
 	{END, handle_end},
 	{HOME, handle_home},
-	{RETURN, handle_return},
+	{RETURN_C, handle_return},
 	{CLEAR_SCREEN, handle_clear_screen},
 	{NULL, NULL},
 };

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 14:39:25 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 18:07:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 14:50:00 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,18 @@ static void	update_input_buffer(t_input *input)
 	input->buffer = input->buf_tmp;
 }
 
-void		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
+int		handle_unexpected_eof(t_input *input, t_token *tokens[])
+{
+	ft_putendl_fd("bash : syntax error: unexpected end of file", STDERR);
+	clear_token_list(&tokens[0]);
+	ft_strdel(&input->buffer);
+	input->buffer = input->buf_tmp;
+	input->buf_tmp = NULL;
+	input->buffer[input->buffer_len++] = '\0';
+	return (UNEXPECTED_EOF);
+}
+
+int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		t_token *tokens[])
 {
 	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
@@ -67,7 +78,8 @@ void		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 				* sizeof(char))))
 			exit(EXIT_FAILURE);
 		display_prompt(input);
-		waiting_for_input(input, REGULAR_INPUT);
+		if ((*ret = waiting_for_input(input, UNCLOSED_QUOTES) == UNEXPECTED_EOF))
+			return (handle_unexpected_eof(input, &tokens[0]));
 		lexer(lex, input->buffer, lex->state);
 		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
 		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
@@ -84,4 +96,5 @@ void		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		lex->token_list[1] = NULL;
 		update_input_buffer(input);
 	}
+	return (0);
 }

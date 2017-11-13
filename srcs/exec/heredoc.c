@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 18:06:33 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/13 15:07:18 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,18 @@ static int	save_heredoc(t_redir *redir)
 	while (42)
 	{
 		display_prompt(input);
-		waiting_for_input(input, HEREDOC_INPUT);
+		if (waiting_for_input(input, HEREDOC_INPUT) == STOP_HEREDOC)
+		{
+			ft_lstdel(&redir->heredoc_input[0], del);
+			redir->heredoc_input[1] = NULL;
+			break ;
+		}
 		if (input->buffer_len > 1)
+		{
 			if (!ft_strncmp(input->buffer, redir->here_end,
 						input->buffer_len - 1))
 			break ;
+		}
 		here_in = ft_lstnew(input->buffer, input->buffer_len);
 		if (redir->heredoc_input[0] == NULL)
 		{
@@ -41,27 +48,20 @@ static int	save_heredoc(t_redir *redir)
 	return (0);
 }
 
-static void	save_heredoc_input(t_exec *exec)
-{
-	t_redir	*rd;
-
-	rd = exec->redir_list;
-	while (rd)
-	{
-		if (rd->here_end)
-			save_heredoc(rd);
-		rd = rd->next;
-	}
-}
-
 void		handle_heredocs(t_exec *exec)
 {
 	t_exec	*ex;
+	t_redir	*rd;
 
 	ex = exec;
 	while (ex)
 	{
-		save_heredoc_input(ex);
+		rd = ex->redir_list;
+		while (rd)
+		{
+			if (rd->here_end)
+				save_heredoc(rd);
+			rd = rd->next;
 		ex = ex->next;
 	}
 }
