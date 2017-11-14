@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 12:17:45 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/14 14:56:58 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,8 @@ t_transit	g_expander[MAX_STATE1][MAX_EVENT1] = {
 
 static void	save_expanded_word(t_expander *exp, char **word, int i)
 {
-	char	*tmp;
-
-	tmp = word[i];
-	if (ft_strcmp(exp->buffer, word[i]))
-	{
-		if (!(word[i] = ft_strdup(exp->buffer)))
-			exit(EXIT_FAILURE);
-		ft_strdel(&tmp);
-	}
+	if (!(word[i] = ft_strdup(exp->buffer)))
+		exit(EXIT_FAILURE);
 	ft_bzero(exp->buffer, exp->buffer_size);
 	exp->buffer_len = 0;
 	get_event_exp(exp);
@@ -94,27 +87,57 @@ inline void	handle_bckslsh(t_expander *exp)
 	exp->buffer[exp->buffer_len++] = *(exp->tmp);
 }
 
-void		expand_words(t_expander *exp, char **word_tab)
+static void	expand(t_expander *exp)
 {
-	char	*s;
+	while (*(exp->tmp))
+	{
+		g_expander[exp->state][exp->event].p_transit(exp);
+		(exp->state != INIT1) ? exp->tmp++ : 0;
+		exp->state = g_expander[exp->state][exp->event].new_state;
+		get_event_exp(exp);
+	}
+}
+
+char	**expand_words(t_expander *exp, t_exec *exec)
+{
 	int		i;
+	char	**word_tab;
+	t_list	*words;
 
 	i = -1;
-	while (word_tab[++i])
+	words = exec->word_list;
+	word_tab = (char**)malloc(sizeof(char*) * (exec->word_count + 1));
+	word_tab[exec->word_count] = NULL;
+	while (words)
 	{
 		exp->state = INIT1;
 		exp->event = START1;
-		exp->tmp = word_tab[i];
-		s = word_tab[i];
-		while (*(exp->tmp))
+		exp->tmp = words->content;
+		expand(exp);
+		save_expanded_word(exp, word_tab, ++i);
+		words = words->next;
+	}
+	return (word_tab);
+}
+
+void	expand_filenames(t_expander *exp, t_exec *exec)
+{
+	t_redir	*rd;
+
+	rd = exec->redir_list;
+	while (rd)
+	{
+		if (rd->filename)
 		{
-			g_expander[exp->state][exp->event].p_transit(exp);
-			(exp->state != INIT1) ? exp->tmp++ : 0;
-			exp->state = g_expander[exp->state][exp->event].new_state;
-			if (*(exp->tmp) == '\0')
-				break ;
-			get_event_exp(exp);
+			exp->tmp = rd->filename;
+			exp->state = INIT1;
+			exp->event = START1;
+			expand(exp);
+			ft_strdel(&rd->filename);
+			rd->filename = ft_strdup(exp->buffer);
+			exp->buffer_len = 0;
+			ft_bzero(exp->buffer, exp->buffer_size);
 		}
-		save_expanded_word(exp, word_tab, i);
+		rd = rd->next;
 	}
 }

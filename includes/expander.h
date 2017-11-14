@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 17:13:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 17:24:41 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/14 14:50:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ typedef struct	s_transit
 }				t_transit;
 
 t_expander		*init_expander(t_env *env);
-void			expand_words(t_expander *exp, char **word_tab);
+char			**expand_words(t_expander *exp, t_exec *exec);
+void			expand_filenames(t_expander *exp, t_exec *exec);
 void			append(t_expander *exp);
 void			skip(t_expander *exp);
 void			handle_tilde(t_expander *exp);
