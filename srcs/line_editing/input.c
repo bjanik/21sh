@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 17:58:40 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/14 21:06:37 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			handle_reg_char(t_input *input, char c)
 	else
 	{
 		ft_memmove((char*)input->buffer + input->cursor_pos + 1,
-		(char *)input->buffer + input->cursor_pos,
+		(char*)input->buffer + input->cursor_pos,
 		ft_strlen(input->buffer + input->cursor_pos));
 		input->buffer[input->cursor_pos] = c;
 	}

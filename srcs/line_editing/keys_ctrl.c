@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 16:33:58 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 14:39:28 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/16 14:07:11 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
+#include "bsh.h"
 
 int		handle_ctrl_down(t_input *input)
 {
@@ -82,10 +82,22 @@ int		handle_ctrl_left(t_input *input)
 
 int		handle_clear_screen(t_input *input)
 {
+	int	cursor_pos;
+	int	i;
+
+	cursor_pos = input->cursor_pos;
 	tputs(tgetstr("cl", NULL), 1, ft_putchar_termcaps);
-	print_prompt(input->term, BOLD_CYAN);
-	ft_bzero(input->buffer, input->buffer_len);
+	if (input->type == REGULAR_INPUT)
+		print_prompt(input->term, BOLD_CYAN);
+	else
+		display_basic_prompt(input->term);
 	input->buffer_len = 0;
 	input->cursor_pos = 0;
+	i = 0;
+	while (input->buffer[i])
+		handle_reg_char(input, input->buffer[i++]);
+	i = input->buffer_len + 1;
+	while (--i > cursor_pos)
+		handle_arrow_left(input);
 	return (0);
 }

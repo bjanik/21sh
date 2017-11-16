@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/13 14:31:31 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/16 19:11:41 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-void			display_token_list(t_input *input, t_token *lst)
+void		display_token_list(t_input *input, t_token *lst)
 {
 	t_token	*l;
 	
@@ -24,7 +24,7 @@ void			display_token_list(t_input *input, t_token *lst)
 	}
 }
 
-static void connect_tokens(t_bsh *bsh)
+static void	connect_tokens(t_bsh *bsh)
 {
 	bsh->tokens[0] = bsh->lexer->token_list[0];
 	bsh->tokens[1] = bsh->lexer->token_list[1];
@@ -56,8 +56,7 @@ static void	start_process(t_bsh *bsh, int mode)
 	if (bsh->input->buffer_len > 0)
 		append_history(bsh->history, bsh->input->buffer,
 				bsh->input->buffer_len + 1);
-	(ret == ACCEPTED && bsh->exec->word_list &&
-		ft_strlen(bsh->exec->word_list->content) > 0) ? execution(bsh) : 0;
+	(ret == ACCEPTED) ? execution(bsh) : 0;
 }
 
 static void	file_mode(t_bsh *bsh, char **argv)
@@ -97,11 +96,13 @@ int			main(int argc, char **argv, char **environ)
 	{
 		while (42)
 		{
+			//dprintf(bsh->input->fd, "Start_loop\n");
 			ft_bzero(bsh->input->buffer, bsh->input->buffer_len);
 			bsh->input->buffer_len = 0;
 			print_prompt(bsh->term, BOLD_CYAN);
 			waiting_for_input(bsh->input, REGULAR_INPUT);
 			start_process(bsh, INTERACTIVE);
+			display_token_list(bsh->input, bsh->tokens[0]);
 			clear_token_list(&bsh->tokens[0]);
 			clear_exec(&(bsh->exec));
 		}

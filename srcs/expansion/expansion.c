@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/14 14:56:58 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/14 16:43:33 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ char	**expand_words(t_expander *exp, t_exec *exec)
 
 	i = -1;
 	words = exec->word_list;
+	word_tab = NULL;
+	if (!exec->word_list)
+		return (NULL);
 	word_tab = (char**)malloc(sizeof(char*) * (exec->word_count + 1));
 	word_tab[exec->word_count] = NULL;
 	while (words)
@@ -134,7 +137,8 @@ void	expand_filenames(t_expander *exp, t_exec *exec)
 			exp->event = START1;
 			expand(exp);
 			ft_strdel(&rd->filename);
-			rd->filename = ft_strdup(exp->buffer);
+			if (!(rd->filename = ft_strdup(exp->buffer)))
+				exit(EXIT_FAILURE);
 			exp->buffer_len = 0;
 			ft_bzero(exp->buffer, exp->buffer_size);
 		}

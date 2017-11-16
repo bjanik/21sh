@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/13 13:43:12 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/16 20:35:35 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void		run_builtin(t_exec *exec)
 		bsh->exit_status = 1;
 		return ;
 	}
-	bsh->exit_status = g_builtins[exec->is_builtin].builtin(&(bsh->env),
+	if (exec->cmd)
+		bsh->exit_status = g_builtins[exec->is_builtin].builtin(&(bsh->env),
 			exec->cmd);
 }
 
@@ -73,8 +74,8 @@ void		pipe_sequence(t_exec **exec, t_pipes *pipes)
 	ex = *exec;
 	while (++i <= pipes->nb_pipes)
 	{
-		(*exec)->cmd = lst_to_tab((*exec)->word_list, (*exec)->word_count);
-		expand_words(bsh->exp, (*exec)->cmd);
+		(*exec)->cmd = expand_words(bsh->exp, *exec);
+		expand_filenames(bsh->exp, *exec);
 		if (((*exec)->is_builtin = cmd_is_builtin((*exec)->cmd)) > -1)
 			;
 		else
@@ -94,8 +95,10 @@ void		pipe_sequence(t_exec **exec, t_pipes *pipes)
 	}
 	launch_builtins(ex, bsh);
 	close_pipes_fds(bsh->pipes);
+	signal(SIGINT, SIG_IGN);
 	while (k)
 		waitpid(pid[--k], &bsh->exit_status, 0);
+	signal(SIGINT, sigint_handler);
 	restore_custom_attr(bsh->term);
 }
 
@@ -103,11 +106,10 @@ static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 		t_expander *exp)
 {
 	int	exit_status;
-	int	pid;
 
 	exit_status = 0;
-	exec->cmd = lst_to_tab(exec->word_list, exec->word_count);
-	expand_words(exp, exec->cmd);
+	exec->cmd = expand_words(exp, exec);
+	expand_filenames(exp, exec);
 	if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
 	{
 		save_fds(get_bsh()->saved_fds);
@@ -116,15 +118,17 @@ static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 	}
 	else
 	{
-		if ((pid = fork()) < 0)
+		if ((g_pid = fork()) < 0)
 			exit(EXIT_FAILURE);
-		if (!pid)
+		if (!g_pid)
 		{
 			restore_initial_attr(term);
 			run_binary(exec, env);
 		}
 	}
-	(exec->is_builtin == -1) ? waitpid(pid, &exit_status, 0) : 0;
+	signal(SIGINT, SIG_IGN);
+	(exec->is_builtin == -1) ? waitpid(g_pid, &exit_status, 0) : 0;
+	signal(SIGINT, sigint_handler);
 	restore_custom_attr(term);
 	return (exit_status);
 }
@@ -135,7 +139,7 @@ void	execution(t_bsh *bsh)
 
 	exec = bsh->exec;
 	handle_heredocs(bsh->exec);
-	while (exec && exec->word_list)
+	while (exec)
 	{
 		if (get_pipes_fd(exec, bsh->pipes))
 		{
@@ -148,7 +152,11 @@ void	execution(t_bsh *bsh)
 		if (WIFEXITED(bsh->exit_status) && exec->is_builtin == -1)
 			bsh->exit_status = WEXITSTATUS(bsh->exit_status);
 		if (WIFSIGNALED(bsh->exit_status) && exec->is_builtin == -1)
+		{
 			bsh->exit_status = WTERMSIG(bsh->exit_status) + 128;
+			//signal(SIGUSR1, SIG_IGN);
+			//kill(-2, SIGUSR1);
+		}
 		if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
 				(exec->cmd_separator == OR_IF && !bsh->exit_status))
 		{

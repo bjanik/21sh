@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 14:39:25 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/13 14:50:00 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/16 11:41:46 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		if (!(input->buffer = (char*)ft_memalloc((input->buffer_size + 1)
 				* sizeof(char))))
 			exit(EXIT_FAILURE);
-		display_prompt(input);
+		display_basic_prompt(input->term);
 		if ((*ret = waiting_for_input(input, UNCLOSED_QUOTES) == UNEXPECTED_EOF))
 			return (handle_unexpected_eof(input, &tokens[0]));
 		lexer(lex, input->buffer, lex->state);

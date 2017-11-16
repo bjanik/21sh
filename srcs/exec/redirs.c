@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 18:42:41 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 18:37:01 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/14 16:26:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int		redir_great(t_redir *redir)
 		return (1);
 	dup2(fd, redir->fd);
 	close(fd);
+	dprintf(get_bsh()->input->fd, "REDIR_GREAT\n" );
 	return (0);
 }
 

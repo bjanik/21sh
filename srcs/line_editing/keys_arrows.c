@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:12:58 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 16:06:12 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/14 19:46:13 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_arrow_left(t_input *input)
 		}
 		input->cursor_pos--;
 	}
-	dprintf(input->fd, "------ARROW LEFT----------\ncursor->pos = %d\nbuffer_len = %d\ncursor->col = %d\nterm->width = %d\nfirst_line_len = %d\n-------------------------\n", input->cursor_pos, input->buffer_len, input->term->cursor_col, input->term->width, input->term->first_line_len);
+	//dprintf(input->fd, "------ARROW LEFT----------\ncursor->pos = %d\nbuffer_len = %d\ncursor->col = %d\nterm->width = %d\nfirst_line_len = %d\n-------------------------\n", input->cursor_pos, input->buffer_len, input->term->cursor_col, input->term->width, input->term->first_line_len);
 	return (0);
 }
 
@@ -50,7 +50,7 @@ int	handle_arrow_right(t_input *input)
 		}
 		input->cursor_pos++;
 	}
-	dprintf(input->fd, "------ARROW RIGHT----------\ncursor->pos = %d\nbuffer_len = %d\n cursor->col = %d\n term->width = %d\n-------------------------\n", input->cursor_pos, input->buffer_len, input->term->cursor_col, input->term->width);
+	//dprintf(input->fd, "------ARROW RIGHT----------\ncursor->pos = %d\nbuffer_len = %d\n cursor->col = %d\n term->width = %d\n-------------------------\n", input->cursor_pos, input->buffer_len, input->term->cursor_col, input->term->width);
 	return (0);
 }
 

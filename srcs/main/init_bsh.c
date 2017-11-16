@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/11 19:37:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/16 11:34:56 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ t_bsh				*shell_init(char **environ)
 	bsh->exp = init_expander(bsh->env);
 	update_shlvl(bsh->env);
 	update_shell_name(bsh->env);
+	set_signals();
 	return (bsh);
 }

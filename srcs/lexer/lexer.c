@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:22:54 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/11 19:45:55 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/14 15:40:20 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,14 @@ t_transition		g_lexer[MAX_STATE][MAX_EVENT] = {
 
 void				handle_backslash(t_lexer *lexer)
 {
-	lexer->current_token[lexer->token_len++] = *(lexer->input);
-	lexer->input++;
-	lexer->current_token[lexer->token_len++] = *(lexer->input);
+	if (is_operator(lexer->current_token) == -1)
+	{
+		lexer->current_token[lexer->token_len++] = *(lexer->input);
+		lexer->input++;
+		lexer->current_token[lexer->token_len++] = *(lexer->input);
+	}
+	else
+		delimitate_token(lexer);
 }
 
 void				lexer(t_lexer *lexer, char *input, int initial_state)

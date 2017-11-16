@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:17:41 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 16:39:06 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/16 20:35:40 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,22 @@ void		get_prompt(t_term *term)
 	term->first_line_len = term->width - term->prompt_len;
 }
 
-void		display_prompt(t_input *input)
+void		display_basic_prompt(t_term *term)
 {
-	input->term->prompt_len = 2;
+	t_input	*input;
+
+	input = get_bsh()->input;
+	term->prompt_len = 2;
 	ft_bzero(input->buffer, input->buffer_len);
-	ft_strcpy(input->term->prompt, "> ");
-	write(STDOUT, "> ", 2);
+	ft_strcpy(term->prompt, "> ");
+	write(STDOUT, term->prompt, term->prompt_len);
 	input->cursor_pos = 0;
 	input->buffer_len = 0;
-	input->term->cursor_col = 3;
+	term->cursor_col = 3;
 }
 
 void		print_prompt(t_term *term, char *color)
 {
 	get_prompt(term);
-	ft_printf("%s%s%s ", color, term->prompt, RESET);
+	ft_printf("\n%s%s%s ", color, term->prompt, RESET);
 }
