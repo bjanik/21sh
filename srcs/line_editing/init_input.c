@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 16:48:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/14 20:23:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/17 13:59:22 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ t_input		*init_input(t_term *term, t_history *history)
 	input->term = term;
 	input->history = history;
 	input->fd = open("/dev/ttys003", O_WRONLY | O_CREAT);
+	input->state = STANDARD;
+	input->pivot = NULL;
 	return (input);
 }

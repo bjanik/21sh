@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/16 19:11:41 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/17 11:22:26 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,10 @@ int			main(int argc, char **argv, char **environ)
 	{
 		while (42)
 		{
-			//dprintf(bsh->input->fd, "Start_loop\n");
 			ft_bzero(bsh->input->buffer, bsh->input->buffer_len);
 			bsh->input->buffer_len = 0;
 			print_prompt(bsh->term, BOLD_CYAN);
-			waiting_for_input(bsh->input, REGULAR_INPUT);
+			wait_for_input(bsh->input, REGULAR_INPUT);
 			start_process(bsh, INTERACTIVE);
 			display_token_list(bsh->input, bsh->tokens[0]);
 			clear_token_list(&bsh->tokens[0]);

@@ -6,23 +6,17 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 13:38:26 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/16 20:27:33 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/17 12:02:58 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
-void	signals(int signum)
-{
-	exit(0);
-}
 
 void	set_signals(void)
 {
 	signal(SIGWINCH, winsize_change);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINT, sigint_handler);
-	signal(SIGUSR1, signals);
 }
 
 void	winsize_change(int signum)

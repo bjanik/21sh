@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waiting_for_input.c                                :+:      :+:    :+:   */
+/*   swap_previous.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/03 11:41:51 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/17 11:21:38 by bjanik           ###   ########.fr       */
+/*   Created: 2017/11/17 15:09:29 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/17 15:16:16 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-int		wait_for_input(t_input *input, int input_type)
+int	swap_previous(t_input *input)
 {
-	int	ret;
+	char	tmp;
 
-	input->type = input_type;
-	while (42)
+	if (input->cursor_pos > 0 && input->buffer_len > 1)
 	{
-		ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
-		if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
-			exit(EXIT_FAILURE);
-		if ((ret = get_key(input)))
-			break ;
+		
 	}
-	write(STDOUT, RETURN_C, 1);
-	return (ret);
 }

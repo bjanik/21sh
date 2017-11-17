@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/13 14:55:54 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/17 15:08:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,22 @@
 # define MAX_KEY_LENGTH 6
 # define MAX_PROMPT_SIZE 256
 # define INITIAL_BUFFER_SIZE 4096
+# define STANDARD 0
+# define SELECTION 1
 
 # define ARROW_RIGHT "\x1B[C"
 # define ARROW_LEFT "\x1B[D"
 # define ARROW_UP "\x1B[A"
 # define ARROW_DOWN "\x1B[B"
 
-# define CTRL_RIGHT "\x1B[1;5C"
-# define CTRL_LEFT "\x1B[1;5D"
-# define CTRL_UP "\x1B[1;5A"
-# define CTRL_DOWN "\x1B[1;5B"
+# define CTRL_RIGHT "\x1B[1;2C"
+# define CTRL_LEFT "\x1B[1;2D"
+# define CTRL_UP "\x1B[1;2A"
+# define CTRL_DOWN "\x1B[1;2B"
+# define CTRL_A "\x1"
 # define CTRL_D "\x4"
 # define CTRL_R "\x12"
+# define CTRL_T "\x14"
 # define CTRL_U "\x15"
 # define CLEAR_SCREEN "\xC"
 
@@ -59,12 +63,14 @@ typedef struct	s_input
 	t_history	*history;
 	int			fd;
 	int			type;
+	int			state;
+	char		*pivot;
 }				t_input;
 
 typedef struct	s_keys
 {
 	char		*key;
-	int			(*handle_keystroke)(t_input *input);
+	int			(*handle_keystroke[2])(t_input *input);
 }				t_keys;
 
 t_input			*init_input(t_term *term, t_history *history);
@@ -87,6 +93,11 @@ int				handle_alt_great(t_input *input);
 int				handle_clear_screen(t_input *input);
 int				handle_clear_line(t_input *input);
 int				handle_eof(t_input *input);
+int				switch_input_state(t_input *input);
+int				select_right(t_input *input);
+int				select_left(t_input *input);
+int				skip_key(t_input *input);
+
 void			cp_history_to_buffer(t_input *input);
 void			update_visual_buffer(t_input *input);
 int				cursor_on_last_line(t_input *input);

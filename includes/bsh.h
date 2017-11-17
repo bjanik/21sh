@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/13 14:56:32 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/17 11:24:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define UNEXPECTED_EOF 3
 # define RETURN 4
 
+pid_t	g_pid;
 typedef struct	s_bsh
 {
 	t_input		*input;
@@ -58,8 +59,10 @@ t_bsh			*shell_init(char **environ);
 void			clear_exec(t_exec **exec);
 void			clear_token_list(t_token **token);
 void			del(void *content, size_t size);
+int				handle_unclosed_quotes(t_lexer *lexer, t_input *input, int *ret,
+				t_token *tokens[]);
 
-int				waiting_for_input(t_input *input, int input_type);
+int				wait_for_input(t_input *input, int input_type);
 void			execution(t_bsh *bsh);
 
 int				ft_perm_denied_msg(char *file);
@@ -69,5 +72,7 @@ int				check_access_exist(char *file);
 int				check_access_writing(char *file);
 int				check_access_reading(char *file);
 
+void			set_signals(void);
+void			winsize_change(int signum);
 void			sigint_handler(int signum);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 14:39:25 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/16 11:41:46 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/17 11:49:13 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,18 @@ int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 				* sizeof(char))))
 			exit(EXIT_FAILURE);
 		display_basic_prompt(input->term);
-		if ((*ret = waiting_for_input(input, UNCLOSED_QUOTES) == UNEXPECTED_EOF))
+		if ((*ret = wait_for_input(input, UNCLOSED_QUOTES) == UNEXPECTED_EOF))
 			return (handle_unexpected_eof(input, &tokens[0]));
 		lexer(lex, input->buffer, lex->state);
+		display_token_list(input, lex->token_list[0]);
+		if (lex->token_list[0]->type == NEWLINE)
+		{
+			clear_token_list(&lex->token_list[0]);
+			lex->token_list[1] = NULL;
+			lex->state = STD;
+			*ret = UNCLOSED_QUOTES;
+			continue ;
+		}
 		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
 		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
 				tokens[1]->type == WORD)

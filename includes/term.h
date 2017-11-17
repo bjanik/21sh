@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:58:09 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/06 10:36:02 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/16 11:40:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,5 @@ int					restore_custom_attr(t_term *term);
 void				get_term_size(t_term *term);
 void				get_prompt(t_term *term);
 void				print_prompt(t_term *term, char *color);
-//void				display_prompt(t_input *input);
+void				display_basic_prompt(t_term *term);
 #endif
