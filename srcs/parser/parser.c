@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 16:09:03 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/11 19:40:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/18 13:18:40 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -816,6 +816,7 @@ int					parser(t_exec **exec, t_token *token_list, int ex)
 	t_parser		*parse;
 	int				ret;
 
+	//display_token_list(get_bsh()->input, token_list);
 	ret = -1;
 	parse = init_parser(token_list, ex);
 	while (ret < 0)

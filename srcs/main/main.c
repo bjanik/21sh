@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/17 11:22:26 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/18 15:06:05 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	start_process(t_bsh *bsh, int mode)
 		{
 			handle_unclosed_quotes(bsh->lexer, bsh->input, &ret, bsh->tokens);
 			bsh->tokens[1]->pushed = 0;
+			display_token_list(bsh->input, bsh->tokens[0]);
 			if (ret == ACCEPTED)
 				ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 		}
@@ -101,7 +102,7 @@ int			main(int argc, char **argv, char **environ)
 			print_prompt(bsh->term, BOLD_CYAN);
 			wait_for_input(bsh->input, REGULAR_INPUT);
 			start_process(bsh, INTERACTIVE);
-			display_token_list(bsh->input, bsh->tokens[0]);
+			//display_token_list(bsh->input, bsh->tokens[0]);
 			clear_token_list(&bsh->tokens[0]);
 			clear_exec(&(bsh->exec));
 		}

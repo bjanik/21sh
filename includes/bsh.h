@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/17 11:24:19 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/18 16:33:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define BSH_H
 
 # include <signal.h>
+# include <pwd.h>
+# include <sys/types.h>
+# include <uuid/uuid.h>
 # include "libft.h"
 # include "input.h"
 # include "lexer.h"

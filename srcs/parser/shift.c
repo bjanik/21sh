@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:33:56 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 15:34:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/18 15:02:01 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int					shift(t_parser *parser)
 		parser->last_exec = parser->last_exec->next;
 	}
 	if (parser->cur_token->pushed == 1)
+	{
+		parser->cur_token->pushed = 0;
 		return (UNCLOSED_QUOTES);
+	}
 	push_token_stack(parser);
 	push_state(parser);
 	parser->cur_token->pushed = 1;

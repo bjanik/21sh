@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:14:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/13 14:48:16 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/18 16:56:32 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int		display_history(t_history *hist, char **cmd)
 		end = hist->end;
 	while (end)
 	{
-		ft_printf("%d  %s\n", cpt++, (char*)end->data);
+		ft_printf("%d  %s\n", ++cpt, (char*)end->data);
 		end = end->prev;
 	}
 	return (0);
@@ -94,8 +94,6 @@ int				ft_history(t_env **env, char **cmd)
 	(void)env;
 	hist = get_bsh()->history;
 	i = 0;
-	//if (cmd && cmd[0] && !cmd[1])
-	//	return (display_history(hist));
 	while (cmd[++i] && cmd[i][0] == '-' && ft_strcmp("--", cmd[i]))
 	{
 		if (!cmd[i][1])

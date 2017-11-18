@@ -6,11 +6,27 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/23 17:37:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/02 16:25:47 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/18 17:40:52 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "bsh.h"
+
+void	save_history_to_hist_file(void)
+{
+	t_history	*history;
+	int	fd;
+
+	history = get_bsh()->history;
+	fd = open(history->hist_file, O_RDWR | O_APPEND);
+	while (history->end)
+	{
+		write(fd, history->end->data, ft_strlen(history->end->data));
+		write(fd, "\n", 1);
+		history->end = history->end->prev;
+	}
+	close(fd);
+}
 
 int		ft_exit(t_env **env, char **cmd)
 {
@@ -28,6 +44,7 @@ int		ft_exit(t_env **env, char **cmd)
 	if (cmd[1])
 		exit_val = ft_atoi(cmd[1]);
 	ft_putendl_fd("exit", STDERR);
+	save_history_to_hist_file();
 	exit(exit_val % 0x100);
 	return (0);
 }

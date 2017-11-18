@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 19:32:35 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/18 16:42:36 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct	s_history
 	t_dlst		*head;
 	t_dlst		*end;
 	t_dlst		*current;
+	char		*hist_file;
 	int			fd;
 }				t_history;
 
