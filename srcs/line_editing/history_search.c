@@ -17,13 +17,12 @@ int	handle_history_search(t_input *input)
 	t_dlst	*h;
 
 	handle_home(input);
-	ft_bzero(input->buffer, input->buffer_size);
-	input->cursor_pos = 0;
-	input->buffer_len = 0;
+	reset_buffer(input);
 	tputs(tgetstr("cr", NULL), 1, ft_putchar_termcaps);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar_termcaps);
 	ft_printf("History Search> ");
 	input->term->prompt_len = 16;
+	input->term->cursor_col = 17;
 	wait_for_input(input, REGULAR_INPUT);
 	input->buffer[--input->buffer_len] = '\0';
 	h = input->history->head;
@@ -42,8 +41,7 @@ int	handle_history_search(t_input *input)
 		h = h->next;
 	}
 	ft_printf("No matches...\n");
-	ft_bzero(input->buffer, input->buffer_size);
-	input->cursor_pos = 0;
-	input->buffer_len = 0;
+	print_prompt(input->term, BOLD_CYAN);
+	reset_buffer(input);
 	return (0);
 }

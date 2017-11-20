@@ -45,6 +45,7 @@ int		ft_exit(t_env **env, char **cmd)
 		exit_val = ft_atoi(cmd[1]);
 	ft_putendl_fd("exit", STDERR);
 	save_history_to_hist_file();
+	restore_initial_attr(get_bsh()->term);
 	exit(exit_val % 0x100);
 	return (0);
 }

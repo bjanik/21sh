@@ -64,7 +64,7 @@ typedef struct	s_input
 	int			fd;
 	int			type;
 	int			state;
-	char		*pivot;
+	int		pivot;
 }				t_input;
 
 typedef struct	s_keys
@@ -105,4 +105,5 @@ int				cursor_on_last_line(t_input *input);
 int				get_key(t_input *input);
 int				get_displayed_lines(t_input *input);
 void			realloc_buffer(t_input *input);
+void			reset_buffer(t_input *input);
 #endif

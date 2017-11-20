@@ -12,6 +12,13 @@
 
 #include "bsh.h"
 
+void	reset_buffer(t_input *input)
+{
+	ft_bzero(input->buffer, input->buffer_size);
+	input->buffer_len = 0;
+	input->cursor_pos = 0;
+}
+
 int			cursor_on_last_line(t_input *input)
 {
 	int		i;
@@ -42,22 +49,11 @@ void		update_visual_buffer(t_input *input)
 	}
 }
 
-void		realloc_buffer(t_input *input)
-{
-	char	*tmp;
-
-	tmp = input->buffer;
-	if (!(input->buffer = (char*)malloc((input->buffer_size * 2 + 1)
-			* sizeof(char))))
-		exit(EXIT_FAILURE);
-	input->buffer_size *= 2;
-	ft_bzero(input->buffer, input->buffer_size + 1);
-	ft_strcpy(input->buffer, tmp);
-	free(tmp);
-}
-
 int			handle_reg_char(t_input *input, char c)
 {
+	int	i;
+	int	save_curs;
+
 	if (input->buffer_len == input->buffer_size)
 		realloc_buffer(input);
 	if (input->cursor_pos == input->buffer_len)
@@ -69,18 +65,14 @@ int			handle_reg_char(t_input *input, char c)
 		ft_strlen(input->buffer + input->cursor_pos));
 		input->buffer[input->cursor_pos] = c;
 	}
-	tputs(tgetstr("im", NULL), 1, ft_putchar_termcaps);
-	write(STDOUT, &c, 1);
-	tputs(tgetstr("ei", NULL), 1, ft_putchar_termcaps);
-	if (input->term->cursor_col == input->term->width)
-	{
-		tputs(tgetstr("do", NULL), 1, ft_putchar_termcaps);
-		input->term->cursor_col = 0;
-	}
-	input->cursor_pos++;
 	input->buffer_len++;
-	input->term->cursor_col++;
-	update_visual_buffer(input);
+	save_curs = input->cursor_pos + 1;
+	handle_home(input);
+	tputs(tgetstr("ce", NULL), 1, ft_putchar_termcaps);
+	display_buffer(input);
+	i = input->buffer_len;
+	while (i-- > save_curs)
+              handle_arrow_left(input);
 	return (0);
 }
 
@@ -92,10 +84,10 @@ void		cp_history_to_buffer(t_input *input)
 	i = -1;
 	str = input->history->current->data;
 	ft_bzero(input->buffer, input->buffer_size);
-	input->buffer_len = 0;
 	handle_home(input);
-	while (str[++i])
-		handle_reg_char(input, str[i]);
+	ft_strcpy(input->buffer, str);
+	input->buffer_len = ft_strlen(input->buffer);
+	display_buffer(input);
 	tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
 	tputs(tgetstr("nw", NULL), 1, ft_putchar_termcaps);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar_termcaps);

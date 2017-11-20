@@ -47,6 +47,7 @@ int		handle_eof(t_input *input)
 	{
 		ft_putendl_fd("exit", STDERR);
 		save_history_to_hist_file();
+		restore_initial_attr(get_bsh()->term);
 		exit(0);
 	}
 	if (input->buffer_len == 0 && input->type == HEREDOC_INPUT)

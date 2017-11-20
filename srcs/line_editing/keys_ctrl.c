@@ -91,13 +91,10 @@ int		handle_clear_screen(t_input *input)
 		print_prompt(input->term, BOLD_CYAN);
 	else
 		display_basic_prompt(input->term);
-	input->buffer_len = 0;
 	input->cursor_pos = 0;
-	i = 0;
-	while (input->buffer[i])
-		handle_reg_char(input, input->buffer[i++]);
-	i = input->buffer_len + 1;
-	while (--i > cursor_pos)
+	display_buffer(input);	
+	i = input->buffer_len;
+	while (i-- > cursor_pos)
 		handle_arrow_left(input);
 	return (0);
 }
