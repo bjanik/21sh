@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:33:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/10 13:42:48 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/20 11:09:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # define IS_OPTION(x, y) ft_strchr(x, y)
 # define EXPORT_OPTIONS "np"
-# define HISTORY_OPTIONS "cdan"
+# define HISTORY_OPTIONS "canw"
 # define LOCAL_VAR 0
 # define EXPORT_VAR 1
 

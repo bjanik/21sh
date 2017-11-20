@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 14:46:47 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/16 14:07:25 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/20 15:02:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int		handle_clear_line(t_input *input)
 		tputs(tgetstr("cd", NULL), 1, ft_putchar_termcaps);
 		ft_bzero(input->buffer, input->buffer_size);
 		input->buffer_len = 0;
+		input->history->current = NULL;
 	}
 	return (0);
 }
@@ -45,6 +46,7 @@ int		handle_eof(t_input *input)
 	if (input->buffer_len == 0 && input->type == REGULAR_INPUT)
 	{
 		ft_putendl_fd("exit", STDERR);
+		save_history_to_hist_file();
 		exit(0);
 	}
 	if (input->buffer_len == 0 && input->type == HEREDOC_INPUT)

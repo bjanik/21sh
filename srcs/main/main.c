@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/18 15:06:05 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/20 11:16:23 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int			main(int argc, char **argv, char **environ)
 		while (42)
 		{
 			ft_bzero(bsh->input->buffer, bsh->input->buffer_len);
+			get_term_size(bsh->term);
 			bsh->input->buffer_len = 0;
 			print_prompt(bsh->term, BOLD_CYAN);
 			wait_for_input(bsh->input, REGULAR_INPUT);

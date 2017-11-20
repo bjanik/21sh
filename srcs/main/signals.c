@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 13:38:26 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/17 12:02:58 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/20 11:38:16 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,4 @@ void	sigint_handler(int signum)
 	ft_bzero(bsh->input->buffer, bsh->input->buffer_size);
 	bsh->input->buffer_len = 0;
 	bsh->input->cursor_pos = 0;
-
 }

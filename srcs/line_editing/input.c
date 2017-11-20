@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/17 16:24:03 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/20 14:15:30 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ int			cursor_on_last_line(t_input *input)
 
 void		update_visual_buffer(t_input *input)
 {
+	int	i;
+
+	i = input->cursor_pos;
 	if (!cursor_on_last_line(input))
 	{
 		tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
@@ -76,8 +79,8 @@ int			handle_reg_char(t_input *input, char c)
 	}
 	input->cursor_pos++;
 	input->buffer_len++;
-	update_visual_buffer(input);
 	input->term->cursor_col++;
+	update_visual_buffer(input);
 	return (0);
 }
 

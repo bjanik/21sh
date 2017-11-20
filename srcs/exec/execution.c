@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/18 16:51:13 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/20 11:21:32 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ static int	simple_command(t_exec *exec, t_env *env, t_term *term,
 		}
 	}
 	signal(SIGINT, SIG_IGN);
+	signal(SIGWINCH, SIG_IGN);
 	(exec->is_builtin == -1) ? waitpid(g_pid, &exit_status, 0) : 0;
 	signal(SIGINT, sigint_handler);
+	signal(SIGWINCH, winsize_change);
 	restore_custom_attr(term);
 	return (exit_status);
 }
