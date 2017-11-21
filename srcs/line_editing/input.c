@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 14:15:30 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/21 15:20:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,6 @@ int			cursor_on_last_line(t_input *input)
 	return (0);
 }
 
-void		update_visual_buffer(t_input *input)
-{
-	int	i;
-
-	i = input->cursor_pos;
-	if (!cursor_on_last_line(input))
-	{
-		tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
-		tputs(tgetstr("nw", NULL), 1, ft_putchar_termcaps);
-		tputs(tgetstr("cd", NULL), 1, ft_putchar_termcaps);
-		tputs(tgetstr("rc", NULL), 1, ft_putchar_termcaps);
-		tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
-		ft_putstr_fd(input->buffer + input->cursor_pos, STDIN);
-		tputs(tgetstr("rc", NULL), 1, ft_putchar_termcaps);
-	}
-}
-
 int			handle_reg_char(t_input *input, char c)
 {
 	int	i;
@@ -68,11 +51,10 @@ int			handle_reg_char(t_input *input, char c)
 	input->buffer_len++;
 	save_curs = input->cursor_pos + 1;
 	handle_home(input);
-	tputs(tgetstr("ce", NULL), 1, ft_putchar_termcaps);
-	display_buffer(input);
+	display_buffer(input, save_curs);
 	i = input->buffer_len;
 	while (i-- > save_curs)
-              handle_arrow_left(input);
+		handle_arrow_left(input);
 	return (0);
 }
 
@@ -87,7 +69,7 @@ void		cp_history_to_buffer(t_input *input)
 	handle_home(input);
 	ft_strcpy(input->buffer, str);
 	input->buffer_len = ft_strlen(input->buffer);
-	display_buffer(input);
+	display_buffer(input, 0);
 	tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
 	tputs(tgetstr("nw", NULL), 1, ft_putchar_termcaps);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar_termcaps);

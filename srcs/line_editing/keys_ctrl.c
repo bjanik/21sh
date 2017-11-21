@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 16:33:58 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/16 14:07:11 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/21 12:14:41 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		handle_clear_screen(t_input *input)
 	else
 		display_basic_prompt(input->term);
 	input->cursor_pos = 0;
-	display_buffer(input);	
+	display_buffer(input, 0);
 	i = input->buffer_len;
 	while (i-- > cursor_pos)
 		handle_arrow_left(input);

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:38:51 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 15:02:20 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/21 12:14:05 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,29 @@
 
 static void	delete_char(t_input *input)
 {
+	int	cursor_pos;
+	int	cursor_col;
+	int	i;
+
 	if (input->cursor_pos == input->buffer_len)
 		return ;
-	tputs(tgetstr("dm", NULL), 1, ft_putchar_termcaps);
 	ft_strcpy(input->buffer + input->cursor_pos,
 				input->buffer + input->cursor_pos + 1);
-	input->buffer_len--;
-	tputs(tgetstr("dc", NULL), 1, ft_putchar_termcaps);
-	tputs(tgetstr("ed", NULL), 1, ft_putchar_termcaps);
-	update_visual_buffer(input);
+	cursor_pos = input->cursor_pos;
+	cursor_col = input->term->cursor_col;
+	handle_home(input);
+	tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
+	tputs(tgetstr("ce", NULL), 1, ft_putchar_termcaps);
+	if (input->buffer_len > input->term->first_line_len)
+	{
+		tputs(tgetstr("do", NULL), 1, ft_putchar_termcaps);
+		tputs(tgetstr("cd", NULL), 1, ft_putchar_termcaps);
+	}
+	tputs(tgetstr("rc", NULL), 1, ft_putchar_termcaps);
+	display_buffer(input, 0);
+	i = --input->buffer_len;
+	while (i-- > cursor_pos)
+		handle_arrow_left(input);
 }
 
 int			handle_backspace(t_input *input)

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:11:38 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 14:41:43 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/21 15:35:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,20 @@ t_keys	g_handle_keys[] = {
 	{CTRL_DOWN, {handle_ctrl_down, skip_key}},
 	{CTRL_LEFT, {handle_ctrl_left, skip_key}},
 	{CTRL_RIGHT, {handle_ctrl_right, skip_key}},
+	{CTRL_A, {switch_input_state, switch_input_state}},
+	{CTRL_B, {cut_selection, cut_selection}},
 	{CTRL_D, {handle_eof, handle_eof}},
+	{CTRL_E, {skip_key, paste_selection}},
+	{CTRL_F, {skip_key, copy_selection}},
 	{CTRL_R, {handle_history_search, handle_history_search}},
 	{CTRL_U, {handle_clear_line, skip_key}},
-	{CTRL_A, {switch_input_state, switch_input_state}},
+	{CTRL_X, {skip_key, cut_selection}},
 	{ALT_GREAT, {handle_alt_great, skip_key}},
 	{ALT_LESS, {handle_alt_less, skip_key}},
 	{BACKSPACE, {handle_backspace, skip_key}},
 	{DELETE, {handle_delete, skip_key}},
-	{END, {handle_end, skip_key}},
-	{HOME, {handle_home, skip_key}},
+	{END, {handle_end, handle_end}},
+	{HOME, {handle_home, handle_home}},
 	{RETURN_C, {handle_return, handle_return}},
 	{CLEAR_SCREEN, {handle_clear_screen, handle_clear_screen}},
 	{NULL, {NULL, NULL}},

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 14:19:06 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/21 15:14:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,16 @@
 # define CTRL_UP "\x1B[1;2A"
 # define CTRL_DOWN "\x1B[1;2B"
 # define CTRL_A "\x1"
+# define CTRL_B "\x2"
 # define CTRL_D "\x4"
+# define CTRL_E "\x5"
+# define CTRL_F "\x6"
+# define CTRL_O "\xF"
+# define CTRL_P "\x10"
 # define CTRL_R "\x12"
 # define CTRL_T "\x14"
 # define CTRL_U "\x15"
+# define CTRL_X "\x18"
 # define CLEAR_SCREEN "\xC"
 
 # define ALT_GREAT "\x1B>"
@@ -64,7 +70,7 @@ typedef struct	s_input
 	int			fd;
 	int			type;
 	int			state;
-	int		pivot;
+	int			pivot;
 }				t_input;
 
 typedef struct	s_keys
@@ -100,10 +106,13 @@ int				select_left(t_input *input);
 int				skip_key(t_input *input);
 
 void			cp_history_to_buffer(t_input *input);
-void			update_visual_buffer(t_input *input);
 int				cursor_on_last_line(t_input *input);
 int				get_key(t_input *input);
 int				get_displayed_lines(t_input *input);
+void			display_buffer(t_input *input, int cursor);
 void			realloc_buffer(t_input *input);
 void			reset_buffer(t_input *input);
+int				copy_selection(t_input *input);
+int				cut_selection(t_input *input);
+int				paste_selection(t_input *input);
 #endif
