@@ -26,12 +26,7 @@ int	switch_input_state(t_input *input)
 	else
 	{
 		input->pivot = -1;
-		curs = input->cursor_pos;
-		handle_home(input);
-		display_buffer(input, 0);
-		i = input->buffer_len;
-		while (i-- > curs)
-			handle_arrow_left(input);
+		display_line(input, input->cursor_pos);
 	}
 	return (0);
 }

@@ -49,12 +49,13 @@ int			handle_reg_char(t_input *input, char c)
 		input->buffer[input->cursor_pos] = c;
 	}
 	input->buffer_len++;
-	save_curs = input->cursor_pos + 1;
+	display_line(input, input->cursor_pos + 1);
+	/*save_curs = input->cursor_pos + 1;
 	handle_home(input);
 	display_buffer(input, save_curs);
 	i = input->buffer_len;
 	while (i-- > save_curs)
-		handle_arrow_left(input);
+		handle_arrow_left(input);*/
 	return (0);
 }
 
