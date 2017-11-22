@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/10 12:31:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/10 14:09:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 15:51:31 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	env_usage(char invalid_opt)
 	return (1);
 }
 
-int		size_env(t_env *env)
+int			size_env(t_env *env)
 {
 	int	size;
 
@@ -50,7 +50,7 @@ char		**env_to_tab(t_env *env)
 		{
 			if (!(tab[i] = (char*)malloc(sizeof(char) *
 				(ft_strlen(env->var_value) + ft_strlen(env->var_name) + 2))))
-			exit(EXIT_FAILURE);
+				exit(EXIT_FAILURE);
 			ft_strcpy(tab[i], env->var_name);
 			ft_strcat(tab[i], "=");
 			ft_strcat(tab[i++], env->var_value);
@@ -78,7 +78,7 @@ static void	env_u_option(t_env *env, char **cmd, int *index)
 	}
 }
 
-int		ft_env(t_env **env, char **cmd)
+int			ft_env(t_env **env, char **cmd)
 {
 	char	wrong_opt;
 	char	options[3];

@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:18 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/21 15:20:19 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 16:52:18 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-void	reset_buffer(t_input *input)
+void		reset_buffer(t_input *input)
 {
 	ft_bzero(input->buffer, input->buffer_size);
 	input->buffer_len = 0;
@@ -34,9 +34,6 @@ int			cursor_on_last_line(t_input *input)
 
 int			handle_reg_char(t_input *input, char c)
 {
-	int	i;
-	int	save_curs;
-
 	if (input->buffer_len == input->buffer_size)
 		realloc_buffer(input);
 	if (input->cursor_pos == input->buffer_len)
@@ -50,12 +47,6 @@ int			handle_reg_char(t_input *input, char c)
 	}
 	input->buffer_len++;
 	display_line(input, input->cursor_pos + 1);
-	/*save_curs = input->cursor_pos + 1;
-	handle_home(input);
-	display_buffer(input, save_curs);
-	i = input->buffer_len;
-	while (i-- > save_curs)
-		handle_arrow_left(input);*/
 	return (0);
 }
 

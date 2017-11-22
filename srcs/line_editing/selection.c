@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:36:10 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/21 14:00:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 19:06:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	switch_input_state(t_input *input)
 {
-	int	i;
-	int	curs;
-
 	if (input->state)
 		input->state = STANDARD;
 	else
@@ -26,6 +23,7 @@ int	switch_input_state(t_input *input)
 	else
 	{
 		input->pivot = -1;
+		tputs(tgetstr("me", NULL), 1, ft_putchar_termcaps);
 		display_line(input, input->cursor_pos);
 	}
 	return (0);
@@ -39,34 +37,16 @@ int	skip_key(t_input *input)
 
 int	select_right(t_input *input)
 {
-	int	cursor;
-	int	i;
-
+	tputs(tgetstr("me", NULL), 1, ft_putchar_termcaps);
 	if (input->cursor_pos != input->buffer_len)
-	{
-		cursor = input->cursor_pos + 1;
-		handle_home(input);
-		display_buffer(input, cursor);
-		i = input->buffer_len;
-		while (i-- > cursor)
-			handle_arrow_left(input);
-	}
+		display_line(input, input->cursor_pos + 1);
 	return (0);
 }
 
 int	select_left(t_input *input)
 {
-	int	i;
-	int	cursor;
-
+	tputs(tgetstr("me", NULL), 1, ft_putchar_termcaps);
 	if (input->cursor_pos > 0)
-	{
-		cursor = input->cursor_pos - 1;
-		handle_home(input);
-		display_buffer(input, cursor);
-		i = input->buffer_len;
-		while (i-- > cursor)
-			handle_arrow_left(input);
-	}
+		display_line(input, input->cursor_pos - 1);
 	return (0);
 }

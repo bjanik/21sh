@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/18 16:33:47 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 17:23:26 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,6 @@ int				check_access_reading(char *file);
 void			set_signals(void);
 void			winsize_change(int signum);
 void			sigint_handler(int signum);
+
+void			save_history_to_hist_file(void);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:11:38 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/21 15:35:19 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 19:51:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_keys	g_handle_keys[] = {
 	{CTRL_E, {paste_selection, paste_selection}},
 	{CTRL_F, {skip_key, copy_selection}},
 	{CTRL_R, {handle_history_search, handle_history_search}},
-	{CTRL_U, {handle_clear_line, skip_key}},
+	{CTRL_U, {handle_clear_line, handle_clear_line}},
 	{CTRL_X, {skip_key, cut_selection}},
 	{ALT_GREAT, {handle_alt_great, skip_key}},
 	{ALT_LESS, {handle_alt_less, skip_key}},
@@ -34,7 +34,7 @@ t_keys	g_handle_keys[] = {
 	{DELETE, {handle_delete, skip_key}},
 	{END, {handle_end, handle_end}},
 	{HOME, {handle_home, handle_home}},
-	{RETURN_C, {handle_return, handle_return}},
+	{RETURN_C, {handle_return, skip_key}},
 	{CLEAR_SCREEN, {handle_clear_screen, handle_clear_screen}},
 	{NULL, {NULL, NULL}},
 };
@@ -49,6 +49,6 @@ int		get_key(t_input *input)
 		if (!ft_strcmp(g_handle_keys[i].key, input->read_buffer))
 			return (g_handle_keys[i].handle_keystroke[input->state](input));
 	}
-	return (ft_isprint(input->read_buffer[0])) ?
+	return (ft_isprint(input->read_buffer[0]) && input->state == STANDARD) ?
 	handle_reg_char(input, input->read_buffer[0]) : 0;
 }

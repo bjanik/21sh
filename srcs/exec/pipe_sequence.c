@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 15:08:24 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/18 15:36:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 14:55:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	pipes_loop(t_bsh *bsh, t_exec **exec, int pid[], int *k)
 void		pipe_sequence(t_exec **exec, t_pipes *pipes)
 {
 	int		i;
-	int		pid[100];
+	int		pid[10000];
 	int		k;
 	t_bsh	*bsh;
 	t_exec	*ex;

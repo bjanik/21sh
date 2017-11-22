@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/21 15:14:38 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 17:22:30 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int				cursor_on_last_line(t_input *input);
 int				get_key(t_input *input);
 int				get_displayed_lines(t_input *input);
 void			display_buffer(t_input *input, int cursor);
+void			display_line(t_input *input, int cursor);
 void			realloc_buffer(t_input *input);
 void			reset_buffer(t_input *input);
 int				copy_selection(t_input *input);

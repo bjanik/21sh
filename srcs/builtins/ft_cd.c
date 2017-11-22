@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:57:47 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/14 19:21:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 15:52:10 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static void	update_working_directories(char *dir, t_env *env)
+static void		update_working_directories(char *dir, t_env *env)
 {
 	char	*wd[2];
 	t_env	*e;
@@ -67,7 +67,7 @@ static int		check_and_change_dir(char *dir, t_env *env)
 	return (1);
 }
 
-int	ft_cd(t_env **env, char **cmd)
+int				ft_cd(t_env **env, char **cmd)
 {
 	t_env	*e;
 

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/23 17:37:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 11:55:43 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 15:48:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	save_history_to_hist_file(void)
 {
 	t_history	*history;
-	int	fd;
+	int			fd;
 
 	history = get_bsh()->history;
 	fd = open(history->hist_file, O_CREAT | O_TRUNC | O_WRONLY, 0644);

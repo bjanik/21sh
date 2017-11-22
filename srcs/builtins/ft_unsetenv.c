@@ -6,20 +6,20 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:56:24 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/10 14:31:28 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 15:51:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	free_env(t_env **env)
+void		free_env(t_env **env)
 {
 	ft_strdel(&(*env)->var_name);
 	ft_strdel(&(*env)->var_value);
 	ft_memdel((void**)env);
 }
 
-void	clear_env(t_env **env)
+void		clear_env(t_env **env)
 {
 	t_env	*ptr;
 
@@ -36,7 +36,7 @@ void	clear_env(t_env **env)
 	}
 }
 
-void	unset_var(t_env **env, t_env **ptr, t_env *prev)
+void		unset_var(t_env **env, t_env **ptr, t_env *prev)
 {
 	if (*env == *ptr)
 	{
@@ -58,17 +58,17 @@ void	unset_var(t_env **env, t_env **ptr, t_env *prev)
 	}
 }
 
-static int		ft_unsetenv_error(void)
+static int	ft_unsetenv_error(void)
 {
 	ft_putendl_fd("unsetenv: not enough arguments", STDERR);
 	return (-1);
 }
 
-int				ft_unsetenv(t_env **env, char **args)
+int			ft_unsetenv(t_env **env, char **args)
 {
-	int			i;
-	t_env		*prev;
-	t_env		*ptr;
+	int		i;
+	t_env	*prev;
+	t_env	*ptr;
 
 	i = 1;
 	if (args[0] && !args[1])

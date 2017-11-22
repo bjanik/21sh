@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:16:44 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/21 13:34:55 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 16:52:25 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,30 @@ int	handle_home(t_input *input)
 {
 	while (input->cursor_pos > 0)
 		handle_arrow_left(input);
+	if (input->state == SELECTION)
+	{
+		tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
+		display_buffer(input, 0);
+		tputs(tgetstr("rc", NULL), 1, ft_putchar_termcaps);
+		input->cursor_pos = 0;
+		input->term->cursor_col = input->term->prompt_len + 1;
+	}
 	return (0);
 }
 
 int	handle_end(t_input *input)
 {
-	while (input->cursor_pos < input->buffer_len)
-		handle_arrow_right(input);
+	if (input->state == SELECTION)
+	{
+		while (input->cursor_pos > 0)
+			handle_arrow_left(input);
+		display_buffer(input, input->buffer_len);
+	}
+	else
+	{
+		while (input->cursor_pos < input->buffer_len)
+			handle_arrow_right(input);
+	}
 	return (0);
 }
 

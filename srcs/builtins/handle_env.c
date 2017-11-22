@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_env.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/22 15:47:39 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/22 15:50:09 by bjanik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 
-t_env	*env_to_lst(char **environ)
+t_env		*env_to_lst(char **environ)
 {
 	t_env	*env;
-	int	i;
+	int		i;
 
 	env = NULL;
 	i = 0;
@@ -21,7 +33,7 @@ t_env		*create_node(char *env_var, int export)
 {
 	t_env	*env;
 	char	**splitted_env_var;
-	
+
 	if (!env_var)
 		return (NULL);
 	if (!(splitted_env_var = ft_strsplit(env_var, '=')))
@@ -58,7 +70,7 @@ void		push_back_env(t_env **env, char *env_var, int export)
 		*env = create_node(env_var, export);
 }
 
-int	display_env(t_env *env)
+int			display_env(t_env *env)
 {
 	while (env)
 	{
@@ -69,7 +81,7 @@ int	display_env(t_env *env)
 	return (0);
 }
 
-t_env	*ft_getenv(t_env *env, char *name)
+t_env		*ft_getenv(t_env *env, char *name)
 {
 	t_env	*e;
 

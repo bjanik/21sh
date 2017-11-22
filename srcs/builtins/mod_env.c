@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/10 10:55:53 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/10 13:51:30 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 15:50:29 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_env	*copy_content(t_env *env)
 	return (mod_env);
 }
 
-t_env		*mod_env(t_env *env)
+t_env			*mod_env(t_env *env)
 {
 	t_env	*modif_env[2];
 

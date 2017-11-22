@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 16:04:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/13 14:45:25 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/22 15:44:44 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void		clear_token_list(t_token **token)
 	}
 }
 
-void	del(void *content, size_t size)
+void		del(void *content, size_t size)
 {
 	(void)size;
 	ft_memdel(&content);
