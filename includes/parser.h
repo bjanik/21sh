@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/03 17:13:58 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/23 12:29:59 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,12 @@ typedef struct		s_switch
 	int				(*p_switch)(t_parser *parser);
 }					t_switch;
 
-typedef struct		s_save_exec
+typedef struct		s_reduce_table
 {
+	int				symbol;
+	int				rule_len;
 	void			(*save)(t_exec *exec_list, t_stack *stack);
-}					t_save_exec;
+}					t_reduce_table;
 
 int					parser(t_exec **exec, t_token *list, int ex);
 int					shift(t_parser *parser);
@@ -96,7 +98,6 @@ int					get_successor_state(t_parser *parser, int sym_type);
 t_parser			*init_parser(t_token *token_list, int ex);
 t_exec				*init_exec(void);
 t_redir				*init_redir(void);
-
 void				append_wordlist(t_exec *exec, t_stack *stack);
 void				set_io_number(t_exec *exec, t_stack *stack);
 void				set_here_end(t_exec *exec, t_stack *stack);

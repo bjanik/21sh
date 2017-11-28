@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:25:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 18:19:25 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/25 16:26:50 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static int	set_new_var(t_env *ptr, char **spvar)
 	{
 		ft_strdel(&ptr->var_value);
 		ptr->var_value = (spvar[1]) ? ft_strdup(spvar[1]) : ft_strdup("");
+		if (!ptr->var_value)
+			ft_error_msg("Malloc failed\n");
 		ft_free_string_tab(&spvar);
 		return (1);
 	}
@@ -52,7 +54,8 @@ void		set_var(t_env **env, char *var, int export)
 	t_env	*ptr;
 
 	ptr = *env;
-	spvar = ft_strsplit(var, '=');
+	if (!(spvar = ft_strsplit(var, '=')))
+		ft_error_msg("Strsplit failed\n");
 	if (!spvar || !spvar[0] || var[0] == '=')
 	{
 		ft_free_string_tab(&spvar);
@@ -77,8 +80,8 @@ int			ft_setenv(t_env **env, char **cmd)
 	i = 1;
 	if (cmd[0] && !cmd[1])
 	{
-		ft_putendl_fd("setenv : not enough arguments", 2);
-		return (-1);
+		ft_putendl_fd("setenv: not enough arguments", STDERR);
+		return (1);
 	}
 	while (cmd[i])
 		set_var(env, cmd[i++], LOCAL_VAR);

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/14 16:43:33 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 13:37:17 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_transit	g_expander[MAX_STATE1][MAX_EVENT1] = {
 static void	save_expanded_word(t_expander *exp, char **word, int i)
 {
 	if (!(word[i] = ft_strdup(exp->buffer)))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Expand failed\n");
 	ft_bzero(exp->buffer, exp->buffer_size);
 	exp->buffer_len = 0;
 	get_event_exp(exp);
@@ -62,7 +62,7 @@ void		realloc_exp_buffer(t_expander *exp)
 	tmp = exp->buffer;
 	if (!(exp->buffer = (char*)malloc((exp->buffer_size * 2)
 			* sizeof(char))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Realloc_exp_buffer failed\n");
 	exp->buffer_size *= 2;
 	ft_bzero(exp->buffer, exp->buffer_size);
 	ft_strcpy(exp->buffer, tmp);
@@ -109,7 +109,8 @@ char	**expand_words(t_expander *exp, t_exec *exec)
 	word_tab = NULL;
 	if (!exec->word_list)
 		return (NULL);
-	word_tab = (char**)malloc(sizeof(char*) * (exec->word_count + 1));
+	if (!(word_tab = (char**)malloc(sizeof(char*) * (exec->word_count + 1))))
+		ft_error_msg("Malloc failed\n");
 	word_tab[exec->word_count] = NULL;
 	while (words)
 	{
@@ -138,7 +139,7 @@ void	expand_filenames(t_expander *exp, t_exec *exec)
 			expand(exp);
 			ft_strdel(&rd->filename);
 			if (!(rd->filename = ft_strdup(exp->buffer)))
-				exit(EXIT_FAILURE);
+				ft_error_msg("Malloc failed\n");
 			exp->buffer_len = 0;
 			ft_bzero(exp->buffer, exp->buffer_size);
 		}

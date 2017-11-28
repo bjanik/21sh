@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/10 12:31:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 15:51:31 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 16:55:18 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ char		**env_to_tab(t_env *env)
 	i = 0;
 	tab = NULL;
 	if (!(tab = (char**)malloc((size_env(env) + 1) * sizeof(char*))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	while (env)
 	{
 		if (env->exportable)
 		{
 			if (!(tab[i] = (char*)malloc(sizeof(char) *
 				(ft_strlen(env->var_value) + ft_strlen(env->var_name) + 2))))
-				exit(EXIT_FAILURE);
+				ft_error_msg("Malloc failed\n");
 			ft_strcpy(tab[i], env->var_name);
 			ft_strcat(tab[i], "=");
 			ft_strcat(tab[i++], env->var_value);
@@ -67,7 +67,8 @@ static void	env_u_option(t_env *env, char **cmd, int *index)
 	t_env	*envvar;
 
 	bsh = get_bsh();
-	bsh->mod_env = mod_env(env);
+	if (!bsh->mod_env)
+		bsh->mod_env = mod_env(env);
 	while (cmd[*index])
 	{
 		if ((envvar = ft_getenv(bsh->mod_env, cmd[*index])))
@@ -83,23 +84,41 @@ int			ft_env(t_env **env, char **cmd)
 	char	wrong_opt;
 	char	options[3];
 	int		i;
+	t_bsh	*bsh;
 
 	i = 0;
+	bsh = get_bsh();
 	ft_bzero(options, 3);
-	if (cmd && cmd[0] && !cmd[1])
-		return (display_env(*env));
+	if (cmd && (!cmd[0] || !cmd[1]))
+	{
+		bsh->env_index = (bsh->env_index == -1) ? 1 : bsh->env_index + 1;
+		return (display_env((IS_OPTION(bsh->env_options, 'i')) ? bsh->mod_env :
+						*env));
+	}
 	while (cmd[++i] && cmd[i][0] == '-' && ft_strcmp("--", cmd[i]))
 	{
 		(!cmd[i][1]) ? options[0] = 'i' : 0;
 		if ((wrong_opt = check_arg_opt(cmd[i] + 1, "iu", options)))
 			return (env_usage(wrong_opt));
 	}
-	if (IS_OPTION(options, 'i'))
+	bsh->env_options[0] = options[0];
+	bsh->env_options[1] = options[1];
+	if (IS_OPTION(bsh->env_options, 'i'))
 	{
+		clear_env(&bsh->mod_env);
 		while (cmd[i] && ft_strchr(cmd[i], '='))
-			set_var(&get_bsh()->mod_env, cmd[i++], EXPORT_VAR);
+			set_var(&bsh->mod_env, cmd[i++], EXPORT_VAR);
 	}
-	else if (IS_OPTION(options, 'u'))
+	else if (IS_OPTION(bsh->env_options, 'u'))
 		env_u_option(*env, cmd, &i);
+	else
+	{
+		bsh->mod_env = (!bsh->mod_env) ? mod_env(*env) : bsh->mod_env;
+		while (cmd[i] && ft_strchr(cmd[i], '='))
+			set_var(&bsh->mod_env, cmd[i++], EXPORT_VAR);
+	}
+	bsh->env_index = (bsh->env_index > -1) ? bsh->env_index += i : i;
+	if (!cmd[i])
+		return (display_env(bsh->mod_env));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:32:49 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 13:42:33 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 12:36:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ char		**lst_to_tab(t_list *word_list, int word_count)
 	i = 0;
 	wd = word_list;
 	if (!(tab = (char**)malloc(sizeof(char*) * (word_count + 1))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	while (wd)
 	{
 		if (!(tab[i++] = ft_strdup(wd->content)))
-			exit(EXIT_FAILURE);
+			ft_error_msg("Malloc failed\n");
 		wd = wd->next;
 	}
 	tab[i] = NULL;
@@ -67,6 +67,6 @@ char		**get_cmd_path(t_env *env)
 	if (!(path = ft_getenv(env, "PATH")))
 		return (NULL);
 	if (!(paths = ft_strsplit(path->var_value, ':')))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed");
 	return (paths);
 }

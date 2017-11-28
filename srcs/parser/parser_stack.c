@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:52:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 16:06:00 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/23 12:32:10 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void			push_token_stack(t_parser *parser)
 	t_stack		*node;
 
 	if ((node = (t_stack*)malloc(sizeof(t_stack))) == NULL)
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	node->sym.type = parser->cur_token->type;
 	node->sym.value = parser->cur_token->token;
 	node->state = -1;
@@ -47,7 +47,7 @@ void			push_state(t_parser *parser)
 	int			state;
 
 	if ((node = (t_stack*)malloc(sizeof(t_stack))) == NULL)
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	state = g_parser[parser->state][parser->cur_token->type].transition;
 	node->state = state;
 	node->sym.type = -1;

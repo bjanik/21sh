@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 17:23:26 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 16:37:21 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include "parser.h"
 # include "exec.h"
 # include "history.h"
-# include "builtins.h"
 # include "expander.h"
+# include "builtins.h"
 
 # define INTERACTIVE 0
 # define FILE_MODE 1
@@ -55,6 +55,8 @@ typedef struct	s_bsh
 	int			exit_status;
 	char		*shell_name;
 	int			saved_fds[3];
+	int			env_index;
+	char		env_options[3];
 }				t_bsh;
 
 t_bsh			*get_bsh(void);
@@ -64,20 +66,19 @@ void			clear_token_list(t_token **token);
 void			del(void *content, size_t size);
 int				handle_unclosed_quotes(t_lexer *lexer, t_input *input, int *ret,
 				t_token *tokens[]);
-
 int				wait_for_input(t_input *input, int input_type);
 void			execution(t_bsh *bsh);
-
 int				ft_perm_denied_msg(char *file);
 int				ft_no_file_msg(char *file);
 int				ft_cmd_not_found(char *cmd);
 int				check_access_exist(char *file);
 int				check_access_writing(char *file);
 int				check_access_reading(char *file);
-
 void			set_signals(void);
 void			winsize_change(int signum);
 void			sigint_handler(int signum);
-
 void			save_history_to_hist_file(void);
+
+void			simple_command(t_bsh *bsh, t_exec *exec);
+void			launch_builtin(t_bsh *bsh, t_exec *exec, int index);
 #endif

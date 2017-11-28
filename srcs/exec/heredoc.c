@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/17 11:22:09 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/25 11:38:44 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ static int	save_heredoc(t_redir *redir)
 	{
 		display_basic_prompt(input->term);
 		if (wait_for_input(input, HEREDOC_INPUT) == STOP_HEREDOC)
-		{
-			ft_lstdel(&redir->heredoc_input[0], del);
-			redir->heredoc_input[1] = NULL;
 			break ;
-		}
 		input->buffer[--input->buffer_len] = '\0';
 		if (input->buffer_len > 1)
 		{

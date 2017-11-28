@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 17:13:36 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/27 19:52:36 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,13 @@ static void	start_process(t_bsh *bsh, int mode)
 		else
 			ft_printf("Missing closing quotes or end of input is an operator\n");
 	}
-	bsh->input->buffer[--bsh->input->buffer_len] = '\0';
+	//dprintf(bsh->input->fd, "{%s}\n", bsh->input->buffer);
+	(bsh->input->buffer[bsh->input->buffer_len - 1] == '\n') ?
+		bsh->input->buffer[--bsh->input->buffer_len] = '\0': 0;
 	replace_newlines(bsh->input->buffer);
 	if (bsh->input->buffer_len > 0)
 		append_history(bsh->history, bsh->input->buffer,
-				bsh->input->buffer_len + 1);
+				bsh->input->buffer_len);
 	(ret == ACCEPTED) ? execution(bsh) : 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/14 14:47:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 12:04:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct		s_exec
 	t_redir			*last_redir;
 	int				is_builtin;
 	int				cmd_separator;
-	int				exit_status;
 	struct s_exec	*next;
 	struct s_exec	*prev;
 }					t_exec;
@@ -64,8 +63,9 @@ int					handle_redirection(t_exec *exec);
 
 char				**get_cmd_path(t_env *env);
 char				**lst_to_tab(t_list *word_list, int word_count);
-void				run_binary(t_exec *exec, t_env *env);
-void				run_builtin(t_exec *exec);
+void				run_binary(t_exec *exec, t_env *env, int offset);
+int					run_builtin(t_exec *exec, int offset);
+//void				simple_command(t_bsh *bsh, t_exec *exec);
 t_pipes				*init_pipes(void);
 int					get_pipes_fd(t_exec *exec, t_pipes *pipes);
 void				create_pipes(t_pipes *pipes);
@@ -75,6 +75,5 @@ void				clear_pipes(t_pipes *pipes);
 void				pipe_sequence(t_exec **exec, t_pipes *pipes);
 void				save_fds(int *saved_fds);
 void				restore_fds(int *saved_fds);
-
 void				clear_exec(t_exec **exec);
 # endif

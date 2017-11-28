@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:43:22 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 17:30:26 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 13:35:00 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	get_process_pid(t_expander *exp)
 	char	*s;
 
 	if (!(s = ft_itoa(get_bsh()->pid)))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Itoa failed\n");
 	exp->buffer_len += ft_strlen(s);
 	if (exp->buffer_len >= exp->buffer_size)
 		realloc_exp_buffer(exp);
@@ -31,7 +31,7 @@ static void	get_exit_status(t_expander *exp)
 	char	*s;
 
 	if (!(s = ft_itoa(get_bsh()->exit_status)))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Itoa failed\n");
 	exp->buffer_len += ft_strlen(s);
 	if (exp->buffer_len >= exp->buffer_size)
 		realloc_exp_buffer(exp);
@@ -57,11 +57,12 @@ static void	get_env_variable(t_expander *exp, char *s)
 	len = 0;
 	while (ft_isdigit(*(s + len)) || ft_isalpha(*(s + len)))
 		len++;
-	s = ft_strndup(exp->tmp + 1, len);
+	if (!(s = ft_strndup(exp->tmp + 1, len)))
+		ft_error_msg("Get_env_variable failed\n");
 	if ((env_var = ft_getenv(exp->env, s)))
 	{
 		exp->buffer_len += ft_strlen(env_var->var_value);
-		if (exp->buffer_len >= exp->buffer_size)
+		while (exp->buffer_len >= exp->buffer_size)
 			realloc_exp_buffer(exp);
 		ft_strcat(exp->buffer, env_var->var_value);
 	}

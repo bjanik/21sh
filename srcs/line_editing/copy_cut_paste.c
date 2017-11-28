@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 13:32:04 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 19:55:10 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/25 14:47:54 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,22 @@ int	copy_selection(t_input *input)
 {
 	if (input->pivot < 0)
 		return (0);
-	ft_strdel(&input->buf_tmp);
+	ft_strdel(&input->buf_copy);
 	if (input->cursor_pos > input->pivot)
 	{
-		input->buf_tmp = ft_strndup(input->buffer + input->pivot,
-				input->cursor_pos - input->pivot + 1);
+		if (!(input->buf_copy = ft_strndup(input->buffer + input->pivot,
+				input->cursor_pos - input->pivot + 1)))
+			ft_error_msg("Malloc failed");
 	}
 	else if (input->cursor_pos < input->pivot)
 	{
-		input->buf_tmp = ft_strndup(input->buffer + input->cursor_pos,
-				input->pivot - input->cursor_pos);
+		if (!(input->buf_copy = ft_strndup(input->buffer + input->cursor_pos,
+					input->pivot - input->cursor_pos)))
+			ft_error_msg("Malloc failed");
 	}
 	else
-		input->buf_tmp = ft_strndup(input->buffer + input->pivot, 1);
+		if (!(input->buf_copy = ft_strndup(input->buffer + input->pivot, 1)))
+			ft_error_msg("Malloc failed");
 	return (0);
 }
 
@@ -40,6 +43,7 @@ static void	cut_from_buffer(t_input *input)
 	else
 		ft_strcpy(input->buffer + input->cursor_pos,
 				input->buffer + input->pivot);
+	input->buffer_len -= ft_strlen(input->buf_copy);
 	ft_memset(input->buffer + input->buffer_len, 0,
 			input->buffer_size - input->buffer_len);
 }
@@ -52,12 +56,12 @@ int	cut_selection(t_input *input)
 	cursor = input->cursor_pos;
 	copy_selection(input);
 	cut_from_buffer(input);
-	input->buffer_len = ft_strlen(input->buffer);
 	tputs(tgetstr("me", NULL), 1, ft_putchar_termcaps);
 	input->pivot = -1;
 	input->state = STANDARD;
 	handle_home(input);
-	if (input->buffer_len + (int)ft_strlen(input->buf_tmp) > input->term->first_line_len)
+	if (input->buffer_len + (int)ft_strlen(input->buf_copy) >
+			input->term->first_line_len)
 	{
 		tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
 		tputs(tgetstr("nw", NULL), 1, ft_putchar_termcaps);
@@ -76,15 +80,15 @@ int	paste_selection(t_input *input)
 {
 	int	len;
 
-	if (input->buf_tmp)
+	if (input->buf_copy)
 	{
-		len = ft_strlen(input->buf_tmp);
+		len = ft_strlen(input->buf_copy);
 		while (input->buffer_len + len > input->buffer_size)
 			realloc_buffer(input);
 		ft_memmove((char*)input->buffer + input->cursor_pos + len,
 				(char*)input->buffer + input->cursor_pos,
 				input->buffer_len - input->cursor_pos);
-		ft_memcpy(input->buffer + input->cursor_pos, input->buf_tmp, len);
+		ft_memcpy(input->buffer + input->cursor_pos, input->buf_copy, len);
 		input->buffer_len += len;
 		display_line(input, input->cursor_pos + len);
 	}

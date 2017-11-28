@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 17:22:30 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/24 11:36:46 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct	s_input
 {
 	char		*buffer;
 	char		*buf_tmp;
+	char		*buf_copy;
 	int			buffer_len;
 	int			buffer_size;
 	int			cursor_pos;
@@ -104,7 +105,6 @@ int				switch_input_state(t_input *input);
 int				select_right(t_input *input);
 int				select_left(t_input *input);
 int				skip_key(t_input *input);
-
 void			cp_history_to_buffer(t_input *input);
 int				cursor_on_last_line(t_input *input);
 int				get_key(t_input *input);

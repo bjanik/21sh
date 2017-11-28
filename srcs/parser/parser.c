@@ -6,18 +6,16 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 16:09:03 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/18 13:18:40 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/23 12:26:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-extern int			g_successor_state[18][MAX_SYM];
-extern int			g_reduce_table[NB_RULES];
-extern t_save_exec	g_save_exec_list[NB_RULES];
-extern int			g_rules_len[NB_RULES];
+extern int				g_successor_state[18][MAX_SYM];
+extern t_reduce_table	g_reduce_table[NB_RULES];
 
-const t_switch		g_parser[MAX_STATES][MAX_EVENTS] = {
+const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 	{{1, shift},
 		{2, shift},
 		{3, shift},
@@ -802,7 +800,7 @@ int					get_successor_state(t_parser *parser, int sym_type)
 	}
 	parser->state = g_successor_state[i][sym_type];
 	if ((node = (t_stack*)malloc(sizeof(t_stack))) == NULL)
-		return (-1);
+		ft_error_msg("Malloc failed\n");
 	node->state = parser->state;
 	node->sym.type = -1;
 	node->sym.value = NULL;
@@ -816,7 +814,6 @@ int					parser(t_exec **exec, t_token *token_list, int ex)
 	t_parser		*parse;
 	int				ret;
 
-	//display_token_list(get_bsh()->input, token_list);
 	ret = -1;
 	parse = init_parser(token_list, ex);
 	while (ret < 0)

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 18:42:41 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/18 15:41:00 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/27 19:58:06 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ int		redir_great(t_redir *redir)
 		return (1);
 	if ((fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644)) < 0)
 		return (1);
-	dup2(fd, redir->fd);
+	if (dup2(fd, redir->fd) < 0)
+	{
+		ft_putendl_fd("dup2 failed\n", STDERR);
+		return (1);
+	}
 	close(fd);
 	return (0);
 }
@@ -37,7 +41,11 @@ int		redir_dgreat(t_redir *redir)
 		return (1);
 	if ((fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644)) < 0)
 		return (1);
-	dup2(fd, redir->fd);
+	if (dup2(fd, redir->fd) < 0)
+	{
+		ft_putendl_fd("dup2 failed\n", STDERR);
+		return (1);
+	}
 	close(fd);
 	return (0);
 }
@@ -53,6 +61,11 @@ int		redir_less(t_redir *redir)
 	if ((fd = open(redir->filename, O_RDONLY, 0644)) < 0)
 		return (1);
 	dup2(fd, STDIN);
+	if (dup2(fd, STDIN) < 0)
+	{
+		ft_putendl_fd("dup2 failed\n", STDERR);
+		return (1);
+	}
 	close(fd);
 	return (0);
 }

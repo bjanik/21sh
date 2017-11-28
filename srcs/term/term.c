@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/12 17:48:18 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 14:58:05 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int					init_termcaps(t_term *term)
 	char			*termtype;
 
 	if (!isatty(STDIN))
-		exit(EXIT_FAILURE);
+		ft_error_msg("$TERM isn't a tty\n");
 	if (!(termtype = getenv("TERM")))
 		ft_error_msg("Missing $TERM variable");
-	if (!tgetent(NULL, termtype))
-		exit(EXIT_FAILURE);
+	if (tgetent(NULL, termtype) == 0 || tgetent(NULL, termtype) == -1)
+		ft_error_msg("tgetent failed\n");
 	if (tcgetattr(STDIN, &term->initial_attr) == -1)
 		exit(EXIT_FAILURE);
 	if (tcgetattr(STDIN, &term->custom_attr) == -1)

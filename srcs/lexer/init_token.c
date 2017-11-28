@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:23:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/05 20:38:29 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/23 11:54:06 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ t_token		*init_token_node(t_lexer *lexer)
 
 	op = 0;
 	if (!(token = (t_token*)malloc(sizeof(t_token))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	if (!(token->token = ft_strdup(lexer->current_token)))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	token->pushed = 0;
 	if ((op = is_operator(token->token)) != -1)
 		token->type = op;

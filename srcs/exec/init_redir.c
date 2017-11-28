@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 18:42:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/05 17:44:17 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 12:35:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_redir		*init_redir(void)
 	t_redir	*redir;
 
 	if (!(redir = (t_redir*)malloc(sizeof(t_redir))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	redir->next = NULL;
 	redir->filename = NULL;
 	redir->here_end = NULL;

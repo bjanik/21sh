@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 14:47:08 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/23 18:15:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/23 19:19:37 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "bsh.h"
 
 int			cmd_is_builtin(char **cmd)
 {

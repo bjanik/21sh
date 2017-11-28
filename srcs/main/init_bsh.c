@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/16 11:34:56 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 16:55:20 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_bsh		*init_bsh(void)
 	t_bsh			*bsh;
 
 	if (!(bsh = (t_bsh*)malloc(sizeof(t_bsh))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed");
 	bsh->term = init_term();
 	bsh->history = init_history();
 	bsh->input = init_input(bsh->term, bsh->history);
@@ -30,6 +30,7 @@ static t_bsh		*init_bsh(void)
 	bsh->pid = getpid();
 	bsh->exit_status = 0;
 	bsh->shell_name = "-bsh";
+	bsh->env_index = -1;
 	return (bsh);
 }
 

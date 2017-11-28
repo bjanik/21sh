@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/05 15:17:35 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/06 14:39:07 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 12:47:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ void		set_here_end(t_exec *exec, t_stack *stack)
 	t_redir	*redir;
 
 	if (!(redir = init_redir()))
-		exit(EXIT_FAILURE);
-	redir->here_end = ft_strdup(stack->next->sym.value);
+		ft_error_msg("Init redir failed\n");
+	if (!(redir->here_end = ft_strdup(stack->next->sym.value)))
+		ft_error_msg("Malloc failed\n");
 	redir->type = DLESS;
 	if (exec->redir_list == NULL)
 	{
@@ -56,8 +57,9 @@ void		set_filename(t_exec *exec, t_stack *stack)
 	t_redir	*redir;
 
 	if (!((redir = init_redir())))
-		exit(EXIT_FAILURE);
-	redir->filename = ft_strdup(stack->next->sym.value);
+		ft_error_msg("Init redir failed\n");
+	if (!(redir->filename = ft_strdup(stack->next->sym.value)))
+		ft_error_msg("Malloc failed\n");
 	redir->type = stack->next->next->next->sym.type;
 	if (exec->redir_list == NULL)
 	{

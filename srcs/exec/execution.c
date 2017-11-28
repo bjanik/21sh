@@ -6,65 +6,34 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 11:21:32 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 12:07:54 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-void		run_builtin(t_exec *exec)
+int		run_builtin(t_exec *exec, int offset)
 {
 	t_bsh	*bsh;
+	t_env	*e;
 
 	bsh = get_bsh();
+	e = (bsh->mod_env) ? bsh->mod_env : bsh->env;
 	if (handle_redirection(exec))
 	{
 		bsh->exit_status = 1;
-		return ;
+		return (1);
 	}
-	if (exec->cmd)
-		bsh->exit_status = g_builtins[exec->is_builtin].builtin(&(bsh->env),
-			exec->cmd);
-}
-
-static int	simple_command(t_exec *exec, t_env *env, t_term *term,
-		t_expander *exp)
-{
-	int	exit_status;
-
-	exit_status = 0;
-	exec->cmd = expand_words(exp, exec);
-	expand_filenames(exp, exec);
-	if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
-	{
-		save_fds(get_bsh()->saved_fds);
-		run_builtin(exec);
-		restore_fds(get_bsh()->saved_fds);
-	}
-	else
-	{
-		if ((g_pid = fork()) < 0)
-			exit(EXIT_FAILURE);
-		if (!g_pid)
-		{
-			restore_initial_attr(term);
-			run_binary(exec, env);
-		}
-	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGWINCH, SIG_IGN);
-	(exec->is_builtin == -1) ? waitpid(g_pid, &exit_status, 0) : 0;
-	signal(SIGINT, sigint_handler);
-	signal(SIGWINCH, winsize_change);
-	restore_custom_attr(term);
-	return (exit_status);
+	if (exec->cmd + offset)
+		return (g_builtins[exec->is_builtin].builtin(&e, exec->cmd + offset));
+	return (0);
 }
 
 static void	get_exit_status(t_bsh *bsh, t_exec *exec)
 {
 	if (WIFEXITED(bsh->exit_status) && exec->is_builtin == -1)
 		bsh->exit_status = WEXITSTATUS(bsh->exit_status);
-	if (WIFSIGNALED(bsh->exit_status) && exec->is_builtin == -1)
+	else if (WIFSIGNALED(bsh->exit_status) && exec->is_builtin == -1)
 		bsh->exit_status = WTERMSIG(bsh->exit_status) + 128;
 }
 
@@ -74,6 +43,7 @@ void		execution(t_bsh *bsh)
 
 	exec = bsh->exec;
 	handle_heredocs(bsh->exec);
+	restore_initial_attr(bsh->term);
 	while (exec)
 	{
 		if (get_pipes_fd(exec, bsh->pipes))
@@ -82,9 +52,8 @@ void		execution(t_bsh *bsh)
 			clear_pipes(bsh->pipes);
 		}
 		else
-			bsh->exit_status = simple_command(exec, bsh->env, bsh->term,
-					bsh->exp);
-		get_exit_status(bsh, exec);
+			simple_command(bsh, exec);
+		(exec->is_builtin < 0) ? get_exit_status(bsh, exec) : 0;
 		if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
 				(exec->cmd_separator == OR_IF && !bsh->exit_status))
 		{
@@ -92,7 +61,7 @@ void		execution(t_bsh *bsh)
 			while (exec && exec->cmd_separator == PIPE)
 				exec = exec->next;
 		}
-		if (exec)
-			exec = exec->next;
+		exec = (exec) ? exec->next : exec;
 	}
+	restore_custom_attr(bsh->term);
 }

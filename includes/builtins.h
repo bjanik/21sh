@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:33:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 11:09:04 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/27 12:48:48 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int					env_size(t_env *env);
 int					display_env(t_env *env);
 t_env				*mod_env(t_env *env);
 char				**env_to_tab(t_env *env);
+void				clear_env(t_env **env);
 t_env				*ft_getenv(t_env *env, char *name);
 void				set_var(t_env **env, char *var, int export);
 int					ft_export(t_env **env, char **cmd);
@@ -57,14 +58,14 @@ int					ft_history(t_env **env, char **cmd);
 char				check_arg_opt(char *arg_opt, char *avail_opt, char *opts);
 
 static t_builtins	g_builtins[] = {
-	{ "cd", ft_cd},
-	{ "echo", ft_echo},
-	{ "env", ft_env},
-	{ "setenv", ft_setenv},
-	{ "unsetenv", ft_unsetenv},
-	{ "export", ft_export},
-	{ "history", ft_history},
-	{ "exit", ft_exit},
-	{ NULL, NULL},
+	{"cd", ft_cd},
+	{"echo", ft_echo},
+	{"env", ft_env},
+	{"setenv", ft_setenv},
+	{"unsetenv", ft_unsetenv},
+	{"export", ft_export},
+	{"history", ft_history},
+	{"exit", ft_exit},
+	{NULL, NULL},
 };
 #endif

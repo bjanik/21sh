@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 15:08:24 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 14:55:04 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/11/28 11:28:00 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-static void	launch_builtins(t_exec *ex, t_bsh *bsh)
+/*static void	launch_builtins(t_exec *ex, t_bsh *bsh)
 {
 	int	i;
 
@@ -28,9 +28,37 @@ static void	launch_builtins(t_exec *ex, t_bsh *bsh)
 		}
 		ex = ex->next;
 	}
-}
+}*/
 
 static void	pipes_loop(t_bsh *bsh, t_exec **exec, int pid[], int *k)
+{
+	int	i;
+
+	i = -1;
+	while (++i <= bsh->pipes->nb_pipes)
+	{
+		(*exec)->cmd = expand_words(bsh->exp, *exec);
+		expand_filenames(bsh->exp, *exec);
+		if ((pid[*k] = fork()) < 0)
+			ft_error_msg("Fork failed\n");
+		if (!pid[(*k)++])
+		{
+			connect_processes_pipes(bsh->pipes, i);
+			close_pipes_fds(bsh->pipes);
+			if (((*exec)->is_builtin = cmd_is_builtin((*exec)->cmd)) > -1)
+			{
+				launch_builtin(bsh, *exec, 0);
+				exit(bsh->exit_status);
+			}
+			else
+				run_binary(*exec, bsh->env, 0);
+		}
+		if (i < bsh->pipes->nb_pipes)
+			*exec = (*exec)->next;
+	}
+}
+
+/*static void	pipes_loop(t_bsh *bsh, t_exec **exec, int pid[], int *k)
 {
 	int	i;
 
@@ -56,7 +84,7 @@ static void	pipes_loop(t_bsh *bsh, t_exec **exec, int pid[], int *k)
 		if (i < bsh->pipes->nb_pipes)
 			*exec = (*exec)->next;
 	}
-}
+}*/
 
 void		pipe_sequence(t_exec **exec, t_pipes *pipes)
 {
@@ -68,15 +96,13 @@ void		pipe_sequence(t_exec **exec, t_pipes *pipes)
 
 	bsh = get_bsh();
 	k = 0;
-	i = -1;
 	create_pipes(pipes);
 	ex = *exec;
 	pipes_loop(bsh, exec, pid, &k);
-	launch_builtins(ex, bsh);
 	close_pipes_fds(bsh->pipes);
 	signal(SIGINT, SIG_IGN);
-	while (k)
-		waitpid(pid[--k], &bsh->exit_status, 0);
+	i = 0;
+	while (i <= k)
+		waitpid(pid[i++], &bsh->exit_status, 0);
 	signal(SIGINT, sigint_handler);
-	restore_custom_attr(bsh->term);
 }
