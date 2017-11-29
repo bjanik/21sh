@@ -16,6 +16,9 @@ extern int				g_successor_state[18][MAX_SYM];
 extern t_reduce_table	g_reduce_table[NB_RULES];
 
 const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
+/*
+** accept : . program
+*/
 	{{1, shift},
 		{2, shift},
 		{3, shift},
@@ -30,7 +33,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error},
 		{-1, syntax_error}},
-
+/*
+** cmd_name : WORD .
+*/
 	{{17, reduce},
 		{17, reduce},
 		{17, reduce},
@@ -45,6 +50,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{17, reduce},
 		{17, reduce},
 		{17, reduce}},
+/*
+** program : NEWLINE .
+*/
 
 	{{2, reduce},
 		{2, reduce},
@@ -61,6 +69,10 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{2, reduce},
 		{2, reduce}},
 
+/*
+** io_redirect : IO_NUMBER . io_file  (26)
+** io_redirect : IO_NUMBER . io_here  (28)
+*/
 	{{-1, syntax_error},
 		{-1, syntax_error},
 		{-1, syntax_error},
@@ -76,6 +88,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
+/*
+** io_here : DLESS . here_end
+*/
 	{{23, shift},
 		{-1, syntax_error},
 		{-1, syntax_error},
@@ -90,6 +105,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error},
 		{-1, syntax_error}},
+/*
+** io_file : DGREAT . filename
+*/
 
 	{{25, shift},
 		{-1, syntax_error},
@@ -106,6 +124,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
+/*
+** io_file : LESSAND . filename
+*/
 	{{25, shift},
 		{-1, syntax_error},
 		{-1, syntax_error},
@@ -120,6 +141,45 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error},
 		{-1, syntax_error}},
+
+/*
+** io_file : GREATAND . filename
+*/
+	{{25, shift},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error}},
+
+/*
+**  io_file : '<' . filename
+*/
+	{{25, shift},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error},
+		{-1, syntax_error}},
+/*
+** io_file : '>' . filename
+*/
 
 	{{25, shift},
 		{-1, syntax_error},
@@ -136,36 +196,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
-	{{25, shift},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error}},
-
-	{{25, shift},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error},
-		{-1, syntax_error}},
-
+/*
+** accept : program . $end
+*/
 	{{-1, accept},
 		{-1, accept},
 		{-1, accept},
@@ -181,6 +214,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, accept},
 		{-1, accept}},
 
+/*
+** program : complete_command . NEWLINE 
+*/
 	{{-1, syntax_error},
 		{31, shift},
 		{-1, syntax_error},
@@ -196,6 +232,11 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
+/*
+** complete_command : list . separator_op  (3)
+** complete_command : list .  (4)
+** list : list . separator_op and_or
+*/
 	{{-1, NULL},
 		{4, reduce},
 		{-1, NULL},
@@ -211,6 +252,11 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{32, shift},
 		{-1, NULL}},
 
+/*
+** list : and_or .  (6)
+** and_or : and_or . AND_IF pipeline  (8)
+** and_or : and_or . OR_IF pipeline  (9
+*/
 	{{-1, NULL},
 		{6, reduce},
 		{-1, NULL},
@@ -226,6 +272,10 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{6, reduce},
 		{-1, NULL}},
 
+/*
+** and_or : pipeline .  (7)
+** pipeline : pipeline . '|' command  (11)
+*/
 	{{-1, NULL},
 		{7, reduce},
 		{-1, NULL},
@@ -240,6 +290,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{7, reduce},
 		{37, shift},
 		{37, shift}},
+/*
+** pipeline : command .
+*/
 
 	{{10, reduce},
 		{10, reduce},
@@ -255,6 +308,12 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{10, reduce},
 		{10, reduce},
 		{10, reduce}},
+/*
+** command : cmd_prefix . cmd_word cmd_suffix  (12)
+** command : cmd_prefix . cmd_word  (13)
+** command : cmd_prefix .  (14)
+** cmd_prefix : cmd_prefix . io_redirect 
+*/
 
 	{{38, shift},
 		{14, reduce},
@@ -270,6 +329,10 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{14, reduce},
 		{14, reduce},
 		{14, reduce}},
+/*
+** command : cmd_name . cmd_suffix  (15)
+** command : cmd_name .
+*/
 
 	{{41, shift},
 		{16, reduce},
@@ -286,6 +349,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{16, reduce},
 		{16, reduce}},
 
+/*
+** cmd_prefix : io_redirect .
+*/
 	{{19, reduce},
 		{19, reduce},
 		{19, reduce},
@@ -300,6 +366,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{19, reduce},
 		{19, reduce},
 		{19, reduce}},
+/*
+** io_redirect : io_file .
+*/
 
 	{{25, reduce},
 		{25, reduce},
@@ -316,6 +385,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{25, reduce},
 		{25, reduce}},
 
+/*
+** io_redirect : io_here .
+*/
 	{{27, reduce},
 		{27, reduce},
 		{27, reduce},
@@ -331,6 +403,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{27, reduce},
 		{27, reduce}},
 
+/*
+** io_redirect : IO_NUMBER io_file .
+*/
 	{{26, reduce},
 		{26, reduce},
 		{26, reduce},
@@ -346,6 +421,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{26, reduce},
 		{26, reduce}},
 
+/*
+** io_redirect : IO_NUMBER io_here .
+*/
 	{{28, reduce},
 		{28, reduce},
 		{28, reduce},
@@ -361,6 +439,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{28, reduce},
 		{28, reduce}},
 
+/*
+** here_end : WORD .
+*/
 	{{36, reduce},
 		{36, reduce},
 		{36, reduce},
@@ -376,6 +457,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{36, reduce},
 		{36, reduce}},
 
+/*
+** io_here : DLESS here_end .
+*/
 	{{35, reduce},
 		{35, reduce},
 		{35, reduce},
@@ -391,6 +475,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{35, reduce},
 		{35, reduce}},
 
+/*
+** filename : WORD .
+*/
 	{{34, reduce},
 		{34, reduce},
 		{34, reduce},
@@ -406,6 +493,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{34, reduce},
 		{34, reduce}},
 
+/*
+** io_file : DGREAT filename .
+*/
 	{{33, reduce},
 		{33, reduce},
 		{33, reduce},
@@ -421,6 +511,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{33, reduce},
 		{33, reduce}},
 
+/*
+** io_file : LESSAND filename .
+*/
 	{{30, reduce},
 		{30, reduce},
 		{30, reduce},
@@ -436,6 +529,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{30, reduce},
 		{30, reduce}},
 
+/*
+** io_file : GREATAND filename .
+*/
 	{{32, reduce},
 		{32, reduce},
 		{32, reduce},
@@ -451,6 +547,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{32, reduce},
 		{32, reduce}},
 
+/*
+** io_file : '<' filename .
+*/
 	{{29, reduce},
 		{29, reduce},
 		{29, reduce},
@@ -465,6 +564,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{29, reduce},
 		{29, reduce},
 		{29, reduce}},
+/*
+** io_file : '>' filename .
+*/
 
 	{{31, reduce},
 		{31, reduce},
@@ -481,6 +583,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{31, reduce},
 		{31, reduce}},
 
+/*
+** program : complete_command NEWLINE .
+*/
 	{{1, reduce},
 		{1, reduce},
 		{1, reduce},
@@ -496,6 +601,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{1, reduce},
 		{1, reduce}},
 
+/*
+** separator_op : '&' .
+*/
 	{{37, reduce},
 		{37, reduce},
 		{37, reduce},
@@ -510,6 +618,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{37, reduce},
 		{37, reduce}},
 
+/*
+** separator_op : ';' .
+*/
 	{{38, reduce},
 		{38, reduce},
 		{38, reduce},
@@ -525,6 +636,10 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{38, reduce},
 		{38, reduce}},
 
+/*
+** complete_command : list separator_op .  (3)
+** list : list separator_op . and_or
+*/
 	{{1, shift},
 		{3, reduce},
 		{3, shift},
@@ -540,6 +655,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
+/*
+** and_or : and_or AND_IF . pipeline
+*/
 	{{1, shift},
 		{-1, syntax_error},
 		{3, shift},
@@ -555,6 +673,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
+/*
+** and_or : and_or OR_IF . pipeline
+*/
 	{{1, shift},
 		{-1, syntax_error},
 		{3, shift},
@@ -570,6 +691,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
+/*
+** pipeline : pipeline '|' . command
+*/
 	{{1, shift},
 		{-1, syntax_error},
 		{3, shift},
@@ -585,6 +709,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{-1, syntax_error},
 		{-1, syntax_error}},
 
+/*
+** cmd_word : WORD .
+*/
 	{{18, reduce},
 		{18, reduce},
 		{18, reduce},
@@ -599,6 +726,10 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{18, reduce},
 		{18, reduce},
 		{18, reduce}},
+/*
+** command : cmd_prefix cmd_word . cmd_suffix  (12)
+** command : cmd_prefix cmd_word .
+*/
 
 	{{41, shift},
 		{13, reduce},
@@ -615,6 +746,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{13, reduce},
 		{13, reduce}},
 
+/*
+** cmd_prefix : cmd_prefix io_redirect .
+*/
 	{{20, reduce},
 		{20, reduce},
 		{20, reduce},
@@ -629,6 +763,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{20, reduce},
 		{20, reduce},
 		{20, reduce}},
+/*
+** cmd_suffix : WORD .
+*/
 
 	{{23, reduce},
 		{23, reduce},
@@ -645,6 +782,11 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{23, reduce},
 		{23, reduce}},
 
+/*
+** command : cmd_name cmd_suffix .  (15)
+** cmd_suffix : cmd_suffix . io_redirect  (22)
+** cmd_suffix : cmd_suffix . WORD
+*/
 	{{49, shift},
 		{15, reduce},
 		{3, shift},
@@ -659,6 +801,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{15, reduce},
 		{15, reduce},
 		{15, reduce}},
+/*
+** cmd_suffix : io_redirect .
+*/
 
 	{{21, reduce},
 		{21, reduce},
@@ -675,6 +820,11 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{21, reduce},
 		{21, reduce}},
 
+/*
+** list : list separator_op and_or . 
+** and_or : and_or . AND_IF pipeline 
+** and_or : and_or . OR_IF pipeline
+*/
 	{{-1, NULL},
 		{5, reduce},
 		{-1, NULL},
@@ -689,6 +839,10 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{5, reduce},
 		{5, reduce},
 		{-1, NULL}},
+/*
+** and_or : and_or AND_IF pipeline .  (8)
+** pipeline : pipeline . '|' command
+*/
 
 	{{-1, NULL},
 		{8, reduce},
@@ -704,6 +858,10 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{8, reduce},
 		{8, reduce},
 		{37, shift}},
+/*
+** and_or : and_or OR_IF pipeline .  (9)
+** pipeline : pipeline . '|' command
+*/
 
 	{{-1, NULL},
 		{9, reduce},
@@ -719,6 +877,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{9, reduce},
 		{9, reduce},
 		{37, shift}},
+/*
+** pipeline : pipeline '|' command .
+*/
 
 	{{11, reduce},
 		{11, reduce},
@@ -735,6 +896,11 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{11, reduce},
 		{11, reduce}},
 
+/*
+** command : cmd_prefix cmd_word cmd_suffix .  (12)
+** cmd_suffix : cmd_suffix . io_redirect  (22)
+** cmd_suffix : cmd_suffix . WORD
+*/
 	{{49, shift},
 		{12, reduce},
 		{3, shift},
@@ -750,6 +916,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{12, reduce},
 		{12, reduce}},
 
+/*
+** cmd_suffix : cmd_suffix WORD .
+*/
 	{{24, reduce},
 		{24, reduce},
 		{24, reduce},
@@ -765,6 +934,9 @@ const t_switch			g_parser[MAX_STATES][MAX_EVENTS] = {
 		{24, reduce},
 		{24, reduce}},
 
+/*
+** cmd_suffix : cmd_suffix io_redirect .
+*/
 	{{22, reduce},
 		{22, reduce},
 		{22, reduce},
