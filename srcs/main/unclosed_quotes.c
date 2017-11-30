@@ -20,12 +20,16 @@ static void	del_newline_token(t_lexer *lexer, t_token **token_lst)
 	bsh = get_bsh();
 	tk = *token_lst;
 	lexer->state = STD;
-	tk = (*token_lst)->prev;
-	tk->next = NULL;
-	ft_strdel(&(*token_lst)->token);
-	ft_memdel((void**)token_lst);
-	(*token_lst) = tk;
-	bsh->input->buffer[--bsh->input->buffer_len] = '\0';
+	lexer->prev_state = STD;
+	//if (tk->prev)
+	//{
+		tk = (*token_lst)->prev;
+		tk->next = NULL;
+		ft_strdel(&(*token_lst)->token);
+		ft_memdel((void**)token_lst);
+		(*token_lst) = tk;
+		bsh->input->buffer[--bsh->input->buffer_len] = '\0';
+	//}
 }
 
 static void	concat_tokens(t_lexer *lexer, t_token *tokens[], t_input *input)
@@ -70,6 +74,8 @@ int		handle_unexpected_eof(t_input *input, t_token *tokens[])
 int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		t_token *tokens[])
 {
+	int	lexer_prev_state;
+
 	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
 	{
 		(*ret == END_IS_OP) ? del_newline_token(lex, &tokens[1]) : 0;
@@ -80,6 +86,7 @@ int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		display_basic_prompt(input->term);
 		if ((*ret = wait_for_input(input, UNCLOSED_QUOTES) == UNEXPECTED_EOF))
 			return (handle_unexpected_eof(input, &tokens[0]));
+		lexer_prev_state = lex->state;
 		lexer(lex, input->buffer, lex->state);
 		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
 		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&

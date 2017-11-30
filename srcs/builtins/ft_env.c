@@ -79,6 +79,14 @@ static void	env_u_option(t_env *env, char **cmd, int *index)
 	}
 }
 
+static void	env_i_option(t_env **mod_env, char **cmd, int *i)
+{
+	if (*mod_env)
+		clear_env(mod_env);
+	while (cmd[*i] && ft_strchr(cmd[*i], '='))
+		set_var(mod_env, cmd[(*i)++], EXPORT_VAR);
+}
+
 int			ft_env(t_env **env, char **cmd)
 {
 	char	wrong_opt;
@@ -101,24 +109,18 @@ int			ft_env(t_env **env, char **cmd)
 		if ((wrong_opt = check_arg_opt(cmd[i] + 1, "iu", options)))
 			return (env_usage(wrong_opt));
 	}
-	bsh->env_options[0] = options[0];
-	bsh->env_options[1] = options[1];
+	(options[0]) ? bsh->env_options[0] = options[0] : 0;
+	(options[1]) ? bsh->env_options[1] = options[1] : 0;
 	if (IS_OPTION(bsh->env_options, 'i'))
-	{
-		clear_env(&bsh->mod_env);
-		while (cmd[i] && ft_strchr(cmd[i], '='))
-			set_var(&bsh->mod_env, cmd[i++], EXPORT_VAR);
-	}
+		env_i_option(&bsh->mod_env, cmd, &i);
 	else if (IS_OPTION(bsh->env_options, 'u'))
 		env_u_option(*env, cmd, &i);
 	else
 	{
-		bsh->mod_env = (!bsh->mod_env) ? mod_env(*env) : bsh->mod_env;
+		(!bsh->mod_env) ? bsh->mod_env = mod_env(*env) : 0;
 		while (cmd[i] && ft_strchr(cmd[i], '='))
 			set_var(&bsh->mod_env, cmd[i++], EXPORT_VAR);
 	}
 	bsh->env_index = (bsh->env_index > -1) ? bsh->env_index += i : i;
-	if (!cmd[i])
-		return (display_env(bsh->mod_env));
-	return (0);
+	return ((!cmd[i]) ? display_env(bsh->mod_env): 0); 
 }

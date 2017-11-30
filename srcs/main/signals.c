@@ -17,6 +17,7 @@ void	set_signals(void)
 	signal(SIGWINCH, winsize_change);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINT, sigint_handler);
+	signal(SIGPIPE, SIG_DFL);
 }
 
 void	winsize_change(int signum)

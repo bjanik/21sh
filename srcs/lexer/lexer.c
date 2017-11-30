@@ -116,19 +116,20 @@ t_transition		g_lexer[MAX_STATE][MAX_EVENT] = {
 
 void				handle_backslash(t_lexer *lexer)
 {
+	if (is_operator(lexer->current_token) > 0)
+		delimitate_token(lexer);
 	if (is_operator(lexer->current_token) == -1)
 	{
 		lexer->current_token[lexer->token_len++] = *(lexer->input);
 		lexer->input++;
 		lexer->current_token[lexer->token_len++] = *(lexer->input);
 	}
-	else
-		delimitate_token(lexer);
 }
 
 void				lexer(t_lexer *lexer, char *input, int initial_state)
 {
 	lexer->input = input;
+	lexer->prev_state = lexer->state;
 	lexer->state = initial_state;
 	lexer->event = 0;
 	if (initial_state != INIT)

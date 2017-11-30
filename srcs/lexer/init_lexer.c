@@ -25,6 +25,7 @@ t_lexer		*init_lexer(char *input, int initial_state)
 	lexer->token_size = INITIAL_TOKEN_SIZE;
 	lexer->token_len = 0;
 	lexer->state = initial_state;
+	lexer->prev_state = initial_state;
 	lexer->event = START;
 	lexer->token_list[0] = NULL;
 	lexer->token_list[1] = NULL;

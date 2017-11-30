@@ -14,6 +14,7 @@
 # define BSH_H
 
 # include <signal.h>
+# include <limits.h>
 # include <pwd.h>
 # include <sys/types.h>
 # include <uuid/uuid.h>

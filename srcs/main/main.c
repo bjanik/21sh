@@ -51,6 +51,7 @@ static void	start_process(t_bsh *bsh, int mode)
 	ret = 0;
 	lexer(bsh->lexer, bsh->input->buffer, INIT);
 	connect_tokens(bsh);
+	display_token_list(bsh->input, bsh->tokens[0]);
 	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{

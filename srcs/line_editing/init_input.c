@@ -26,7 +26,7 @@ t_input		*init_input(t_term *term, t_history *history)
 	input->cursor_pos = 0;
 	input->term = term;
 	input->history = history;
-	input->fd = open("/dev/ttys004", O_WRONLY | O_CREAT);
+	input->fd = open("/dev/pts/2", O_WRONLY | O_CREAT);
 	input->state = STANDARD;
 	input->pivot = -1;
 	return (input);

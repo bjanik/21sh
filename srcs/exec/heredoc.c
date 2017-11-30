@@ -12,6 +12,8 @@
 
 #include "bsh.h"
 
+#define PIPE_MAX 65536
+
 static void	append_to_heredoc_data(t_redir *redir, t_list *here_in)
 {
 	if (redir->heredoc_input[0] == NULL)
@@ -68,22 +70,35 @@ void		handle_heredocs(t_exec *exec)
 		ex = ex->next;
 	}
 }
+static int	pipe_too_short(void)
+{
+	ft_putstr_fd("Pipe too short\n", STDERR);
+	return (1);
+}
 
 int			redir_heredoc(t_redir *redir)
 {
 	t_list	*here_data;
+	int	total;
 
 	here_data = redir->heredoc_input[0];
+	total = 0;
 	if (pipe(redir->heredoc_pipe))
 		exit(EXIT_FAILURE);
 	while (here_data)
 	{
-		write(redir->heredoc_pipe[WRITE], here_data->content,
-			here_data->content_size);
-		here_data = here_data->next;
+		if (total + here_data->content_size < PIPE_MAX)
+		{
+			write(redir->heredoc_pipe[WRITE], here_data->content,
+				here_data->content_size);
+			total += here_data->content_size;
+			here_data = here_data->next;
+		}
+		else
+			return (pipe_too_short());
 	}
 	if (dup2(redir->heredoc_pipe[READ], STDIN) < 0)
-		exit(EXIT_FAILURE);
+		return (1);
 	close(redir->heredoc_pipe[WRITE]);
 	close(redir->heredoc_pipe[READ]);
 	return (0);

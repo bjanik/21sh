@@ -53,6 +53,7 @@ typedef struct		s_lexer
 	int				token_len;
 	int				token_size;
 	int				state;
+	int				prev_state;
 	int				event;
 	t_token			*token_list[2];
 }					t_lexer;

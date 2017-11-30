@@ -27,7 +27,7 @@ int					init_termcaps(t_term *term)
 		ft_error_msg("$TERM isn't a tty\n");
 	if (!(termtype = getenv("TERM")))
 		ft_error_msg("Missing $TERM variable");
-	if (tgetent(NULL, termtype) == 0 || tgetent(NULL, termtype) == -1)
+	if (tgetent(NULL, termtype) < 1)
 		ft_error_msg("tgetent failed\n");
 	if (tcgetattr(STDIN, &term->initial_attr) == -1)
 		exit(EXIT_FAILURE);
