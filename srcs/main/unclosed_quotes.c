@@ -6,30 +6,27 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 14:39:25 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 12:28:57 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/01 14:43:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-static void	del_newline_token(t_lexer *lexer, t_token **token_lst)
+static void	del_newline_token(t_lexer *lexer, t_token **tokens)
 {
 	t_token	*tk;
 	t_bsh	*bsh;
 
 	bsh = get_bsh();
-	tk = *token_lst;
+	tk = *tokens;
 	lexer->state = STD;
 	lexer->prev_state = STD;
-	//if (tk->prev)
-	//{
-		tk = (*token_lst)->prev;
-		tk->next = NULL;
-		ft_strdel(&(*token_lst)->token);
-		ft_memdel((void**)token_lst);
-		(*token_lst) = tk;
-		bsh->input->buffer[--bsh->input->buffer_len] = '\0';
-	//}
+	tk = (*tokens)->prev;
+	tk->next = NULL;
+	ft_strdel(&(*tokens)->token);
+	ft_memdel((void**)tokens);
+	(*tokens) = tk;
+	bsh->input->buffer[--bsh->input->buffer_len] = '\0';
 }
 
 static void	concat_tokens(t_lexer *lexer, t_token *tokens[], t_input *input)
@@ -78,7 +75,8 @@ int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 
 	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
 	{
-		(*ret == END_IS_OP) ? del_newline_token(lex, &tokens[1]) : 0;
+		(*ret == END_IS_OP) ?
+			del_newline_token(lex, &tokens[1]) : 0;
 		input->buf_tmp = input->buffer;
 		if (!(input->buffer = (char*)ft_memalloc((input->buffer_size + 1)
 				* sizeof(char))))
@@ -87,6 +85,7 @@ int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		if ((*ret = wait_for_input(input, UNCLOSED_QUOTES) == UNEXPECTED_EOF))
 			return (handle_unexpected_eof(input, &tokens[0]));
 		lexer_prev_state = lex->state;
+		//dprintf(input->fd, "prev_state = %d\n", lexer_prev_state);
 		lexer(lex, input->buffer, lex->state);
 		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
 		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&

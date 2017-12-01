@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 15:00:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/27 19:49:22 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/01 15:43:30 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		run_binary(t_exec *exec, t_env *env, int offset)
 	int		ret;
 
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	(handle_redirection(exec)) ? exit(EXIT_FAILURE) : 0;
 	env_tab = env_to_tab(env);
 	if (exec->cmd[offset][0] == '/')

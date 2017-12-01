@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 11:38:44 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/01 17:02:07 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void		handle_heredocs(t_exec *exec)
 	t_exec	*ex;
 	t_redir	*rd;
 
+	remove_quotes_heredoc(get_bsh()->exp, exec);
 	ex = exec;
 	while (ex)
 	{

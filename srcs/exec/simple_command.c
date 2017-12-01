@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 16:32:52 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/28 16:55:33 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/01 15:43:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static void	fork_and_exec(t_bsh *bsh, t_exec *exec, int offset)
 					bsh->mod_env : bsh->env, offset);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGWINCH, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	(exec->is_builtin == -1) ? waitpid(g_pid, &bsh->exit_status, 0) : 0;
 	bsh->env_index = -1;
 	clear_env(&bsh->mod_env);
-	signal(SIGINT, sigint_handler);
-	signal(SIGWINCH, winsize_change);
+	set_signals();
 }
 
 void	launch_builtin(t_bsh *bsh, t_exec *exec, int offset)

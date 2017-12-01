@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 13:38:26 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 11:38:16 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/01 15:40:59 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	set_signals(void)
 {
 	signal(SIGWINCH, winsize_change);
 	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 	signal(SIGPIPE, SIG_DFL);
 }
