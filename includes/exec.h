@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/28 12:04:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/03 18:07:23 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int					redir_less(t_redir *redir);
 int					redir_greatand(t_redir *redir);
 int					redir_lessand(t_redir *redir);
 int					redir_heredoc(t_redir *redir);
-void				handle_heredocs(t_exec *exec);
+int					handle_heredocs(t_exec *exec);
 int					handle_redirection(t_exec *exec);
 
 char				**get_cmd_path(t_env *env);

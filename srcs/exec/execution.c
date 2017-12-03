@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 17:06:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/03 18:09:03 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void		execution(t_bsh *bsh)
 	t_exec	*exec;
 
 	exec = bsh->exec;
-	handle_heredocs(bsh->exec);
+	if (handle_heredocs(bsh->exec) == CATCH_SIGINT)
+		return ;
 	restore_initial_attr(bsh->term);
 	while (exec)
 	{

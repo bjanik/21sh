@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waiting_for_input.c                                :+:      :+:    :+:   */
+/*   unexpected_eof.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/03 11:41:51 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 19:15:28 by bjanik           ###   ########.fr       */
+/*   Created: 2017/12/03 17:23:38 by bjanik            #+#    #+#             */
+/*   Updated: 2017/12/03 17:24:01 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-int		wait_for_input(t_input *input, int input_type)
+int		handle_unexpected_eof(t_input *input, t_token *tokens[])
 {
-	int	ret;
-
-	input->type = input_type;
-	while (42)
-	{
-		ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
-		if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
-			exit(EXIT_FAILURE);
-		if ((ret = get_key(input)))
-			break ;
-	}
-	write(STDOUT, RETURN_C, 1);
-	return (ret);
+	ft_putendl_fd("bash : syntax error: unexpected end of file", STDERR);
+	clear_token_list(&tokens[0]);
+	ft_strdel(&input->buffer);
+	input->buffer = input->buf_tmp;
+	input->buf_tmp = NULL;
+	reset_buffer(input);
+	return (UNEXPECTED_EOF);
 }

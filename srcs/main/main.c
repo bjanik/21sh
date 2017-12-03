@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/27 19:52:36 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/03 18:51:46 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,19 @@ static void	start_process(t_bsh *bsh, int mode)
 	ret = 0;
 	lexer(bsh->lexer, bsh->input->buffer, INIT);
 	connect_tokens(bsh);
-	display_token_list(bsh->input, bsh->tokens[0]);
 	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{
 		if (mode == INTERACTIVE)
 		{
-			handle_unclosed_quotes(bsh->lexer, bsh->input, &ret, bsh->tokens);
-			bsh->tokens[1]->pushed = 0;
+			if (handle_unclosed_quotes(bsh->lexer, bsh->input, &ret,
+						bsh->tokens) == CATCH_SIGINT)
+			{
+				display_token_list(bsh->input, bsh->tokens[0]);
+				return ;
+			}
 			display_token_list(bsh->input, bsh->tokens[0]);
+			bsh->tokens[1]->pushed = 0;
 			if (ret == ACCEPTED)
 				ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 		}
@@ -119,7 +123,7 @@ int			main(int argc, char **argv, char **environ)
 			print_prompt(bsh->term, BOLD_CYAN);
 			wait_for_input(bsh->input, REGULAR_INPUT);
 			start_process(bsh, INTERACTIVE);
-			//display_token_list(bsh->input, bsh->tokens[0]);
+			display_token_list(bsh->input, bsh->tokens[0]);
 			clear_token_list(&bsh->tokens[0]);
 			clear_exec(&(bsh->exec));
 		}

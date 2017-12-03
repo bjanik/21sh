@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 17:02:07 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/03 18:12:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static int	save_heredoc(t_redir *redir)
 		display_basic_prompt(input->term);
 		if (wait_for_input(input, HEREDOC_INPUT) == STOP_HEREDOC)
 			break ;
+		if (input->type == REGULAR_INPUT)
+			return (CATCH_SIGINT);
 		input->buffer[--input->buffer_len] = '\0';
 		if (input->buffer_len > 1)
 		{
@@ -52,7 +54,7 @@ static int	save_heredoc(t_redir *redir)
 	return (0);
 }
 
-void		handle_heredocs(t_exec *exec)
+int		handle_heredocs(t_exec *exec)
 {
 	t_exec	*ex;
 	t_redir	*rd;
@@ -65,11 +67,13 @@ void		handle_heredocs(t_exec *exec)
 		while (rd)
 		{
 			if (rd->here_end)
-				save_heredoc(rd);
+				if (save_heredoc(rd) == CATCH_SIGINT)
+					return (CATCH_SIGINT);
 			rd = rd->next;
 		}
 		ex = ex->next;
 	}
+	return (0);
 }
 static int	pipe_too_short(void)
 {

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 13:38:26 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 15:40:59 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/03 17:41:54 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,10 @@ void	sigint_handler(int signum)
 	ft_bzero(bsh->input->buffer, bsh->input->buffer_size);
 	bsh->input->buffer_len = 0;
 	bsh->input->cursor_pos = 0;
+	bsh->input->type = REGULAR_INPUT;
+	bsh->lexer->state = INIT;
+	clear_token_list(&bsh->tokens[0]);
+	bsh->tokens[1] = NULL;
+	clear_token_list(&bsh->lexer->token_list[0]);
+	bsh->lexer->token_list[1] = NULL;
 }

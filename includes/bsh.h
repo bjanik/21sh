@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/28 16:37:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/03 17:59:05 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define UNCLOSED_QUOTES 2
 # define UNEXPECTED_EOF 3
 # define RETURN 4
+# define CATCH_SIGINT 5
 
 pid_t	g_pid;
 typedef struct	s_bsh

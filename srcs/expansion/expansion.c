@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 15:23:52 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/03 13:38:02 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ void		realloc_exp_buffer(t_expander *exp)
 	char	*tmp;
 
 	tmp = exp->buffer;
-	if (!(exp->buffer = (char*)malloc((exp->buffer_size * 2)
-			* sizeof(char))))
+	if (!(exp->buffer = (char*)malloc((exp->buffer_size * 2) * sizeof(char))))
 		ft_error_msg("Realloc_exp_buffer failed\n");
 	exp->buffer_size *= 2;
 	ft_bzero(exp->buffer, exp->buffer_size);
