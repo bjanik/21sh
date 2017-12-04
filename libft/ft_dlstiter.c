@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 15:02:48 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/16 15:06:15 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 14:18:44 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dlstiter(t_dlst *elem, void(*f)(t_dlst *elem))
+void	ft_dlstiter(t_dlst *elem, void (*f)(t_dlst *elem))
 {
 	if (!elem || !f)
 		return ;

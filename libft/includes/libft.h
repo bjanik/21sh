@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 16:51:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/16 16:30:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 14:16:51 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <sys/ioctl.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-
 
 # define BLK "\x1B[30m"
 # define RED "\x1B[31m"
@@ -41,7 +40,6 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
 
 typedef struct		s_dlst
 {
