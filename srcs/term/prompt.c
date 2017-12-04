@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:17:41 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/24 12:12:55 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 12:23:10 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void		display_basic_prompt(t_term *term)
 void		print_prompt(t_term *term, char *color)
 {
 	get_prompt(term);
-	ft_putchar_fd('\n', STDERR);
+	if (get_bsh()->input->type != HISTORY_SEARCH)
+		ft_putchar_fd('\n', STDERR);
 	ft_putstr_fd(color, STDERR);
 	ft_putstr_fd(term->prompt, STDERR);
 	ft_putstr_fd(RESET, STDERR);
 	ft_putchar_fd(' ', STDERR);
-	//ft_printf("\n%s%s%s ", color, term->prompt, RESET);
 }

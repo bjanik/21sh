@@ -6,13 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:46:36 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 18:12:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:09:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
-#define PIPE_MAX 65536
 
 static void	append_to_heredoc_data(t_redir *redir, t_list *here_in)
 {
@@ -54,7 +52,7 @@ static int	save_heredoc(t_redir *redir)
 	return (0);
 }
 
-int		handle_heredocs(t_exec *exec)
+int			handle_heredocs(t_exec *exec)
 {
 	t_exec	*ex;
 	t_redir	*rd;
@@ -73,39 +71,6 @@ int		handle_heredocs(t_exec *exec)
 		}
 		ex = ex->next;
 	}
-	return (0);
-}
-static int	pipe_too_short(void)
-{
-	ft_putstr_fd("Pipe too short\n", STDERR);
-	return (1);
-}
-
-int			redir_heredoc(t_redir *redir)
-{
-	t_list	*here_data;
-	int	total;
-
-	here_data = redir->heredoc_input[0];
-	total = 0;
-	if (pipe(redir->heredoc_pipe))
-		exit(EXIT_FAILURE);
-	while (here_data)
-	{
-		if (total + here_data->content_size < PIPE_MAX)
-		{
-			write(redir->heredoc_pipe[WRITE], here_data->content,
-				here_data->content_size);
-			total += here_data->content_size;
-			here_data = here_data->next;
-		}
-		else
-			return (pipe_too_short());
-	}
-	if (dup2(redir->heredoc_pipe[READ], STDIN) < 0)
-		return (1);
-	close(redir->heredoc_pipe[WRITE]);
-	close(redir->heredoc_pipe[READ]);
 	return (0);
 }
 

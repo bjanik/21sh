@@ -6,23 +6,23 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 18:51:46 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 19:26:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-void		display_token_list(t_input *input, t_token *lst)
+/*void		display_token_list(t_input *input, t_token *lst)
 {
 	t_token	*l;
-	
+
 	l = lst;
 	while (l)
 	{
 		dprintf(input->fd, "[%s] type =  %d\n", l->token, l->type);
 		l = l->next;
 	}
-}
+}*/
 
 static void	connect_tokens(t_bsh *bsh)
 {
@@ -30,18 +30,6 @@ static void	connect_tokens(t_bsh *bsh)
 	bsh->tokens[1] = bsh->lexer->token_list[1];
 	bsh->lexer->token_list[0] = NULL;
 	bsh->lexer->token_list[1] = NULL;
-}
-
-static void	replace_newlines(char *buffer)
-{
-	int	i;
-
-	i = -1;
-	while (buffer[++i])
-	{
-		if (buffer[i] == '\n')
-			buffer[i] = ' ';
-	}
 }
 
 static void	start_process(t_bsh *bsh, int mode)
@@ -58,25 +46,16 @@ static void	start_process(t_bsh *bsh, int mode)
 		{
 			if (handle_unclosed_quotes(bsh->lexer, bsh->input, &ret,
 						bsh->tokens) == CATCH_SIGINT)
-			{
-				display_token_list(bsh->input, bsh->tokens[0]);
 				return ;
-			}
-			display_token_list(bsh->input, bsh->tokens[0]);
 			bsh->tokens[1]->pushed = 0;
 			if (ret == ACCEPTED)
 				ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 		}
 		else
-			ft_printf("Missing closing quotes or end of input is an operator\n");
+			ft_printf("Missing closing quotes or end of input is an operator\n"
+					);
 	}
-	//dprintf(bsh->input->fd, "{%s}\n", bsh->input->buffer);
-	(bsh->input->buffer[bsh->input->buffer_len - 1] == '\n') ?
-		bsh->input->buffer[--bsh->input->buffer_len] = '\0': 0;
-	replace_newlines(bsh->input->buffer);
-	if (bsh->input->buffer_len > 0)
-		append_history(bsh->history, bsh->input->buffer,
-				bsh->input->buffer_len);
+	add_cmd_to_history(bsh);
 	(ret == ACCEPTED) ? execution(bsh) : 0;
 }
 
@@ -110,11 +89,11 @@ int			main(int argc, char **argv, char **environ)
 	t_bsh	*bsh;
 
 	bsh = shell_init(environ);
+	init_termcaps(bsh->term);
 	if (argc > 1)
 		file_mode(bsh, argv);
 	else
 	{
-		init_termcaps(bsh->term);
 		while (42)
 		{
 			ft_bzero(bsh->input->buffer, bsh->input->buffer_len);
@@ -123,7 +102,6 @@ int			main(int argc, char **argv, char **environ)
 			print_prompt(bsh->term, BOLD_CYAN);
 			wait_for_input(bsh->input, REGULAR_INPUT);
 			start_process(bsh, INTERACTIVE);
-			display_token_list(bsh->input, bsh->tokens[0]);
 			clear_token_list(&bsh->tokens[0]);
 			clear_exec(&(bsh->exec));
 		}

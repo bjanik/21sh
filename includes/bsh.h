@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 17:59:05 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:21:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@
 
 # define REGULAR_INPUT 0
 # define HEREDOC_INPUT 1
+# define UNCLOSED_QUOTES 2
+# define HISTORY_SEARCH 3
 
 # define STOP_HEREDOC 1
-# define UNCLOSED_QUOTES 2
 # define UNEXPECTED_EOF 3
 # define RETURN 4
 # define CATCH_SIGINT 5
@@ -80,6 +81,7 @@ void			set_signals(void);
 void			winsize_change(int signum);
 void			sigint_handler(int signum);
 void			save_history_to_hist_file(void);
+void			add_cmd_to_history(t_bsh *bsh);
 
 void			simple_command(t_bsh *bsh, t_exec *exec);
 void			launch_builtin(t_bsh *bsh, t_exec *exec, int index);

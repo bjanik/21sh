@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 18:09:03 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 13:40:52 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-int		run_builtin(t_exec *exec, int offset)
+int			run_builtin(t_exec *exec, int offset)
 {
 	t_bsh	*bsh;
 	t_env	*e;

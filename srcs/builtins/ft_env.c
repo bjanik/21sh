@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/10 12:31:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 11:22:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:07:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,45 +20,6 @@ static int	env_usage(char invalid_opt)
 	ft_putendl_fd("env: usage: env [-ui] [name[=value] ...]",
 		STDERR);
 	return (1);
-}
-
-int			size_env(t_env *env)
-{
-	int	size;
-
-	size = 0;
-	while (env)
-	{
-		size++;
-		env = env->next;
-	}
-	return (size);
-}
-
-char		**env_to_tab(t_env *env)
-{
-	char	**tab;
-	int		i;
-
-	i = 0;
-	tab = NULL;
-	if (!(tab = (char**)malloc((size_env(env) + 1) * sizeof(char*))))
-		ft_error_msg("Malloc failed\n");
-	while (env)
-	{
-		if (env->exportable)
-		{
-			if (!(tab[i] = (char*)malloc(sizeof(char) *
-				(ft_strlen(env->var_value) + ft_strlen(env->var_name) + 2))))
-				ft_error_msg("Malloc failed\n");
-			ft_strcpy(tab[i], env->var_name);
-			ft_strcat(tab[i], "=");
-			ft_strcat(tab[i++], env->var_value);
-		}
-		env = env->next;
-	}
-	tab[i] = NULL;
-	return (tab);
 }
 
 static void	env_u_option(t_env *env, char **cmd, int *index)
@@ -87,6 +48,20 @@ static void	env_i_option(t_env **mod_env, char **cmd, int *i)
 		set_var(mod_env, cmd[(*i)++], EXPORT_VAR);
 }
 
+static void	env_process(t_bsh *bsh, char **cmd, int *i)
+{
+	if (IS_OPTION(bsh->env_options, 'i'))
+		env_i_option(&bsh->mod_env, cmd, i);
+	else if (IS_OPTION(bsh->env_options, 'u'))
+		env_u_option(bsh->env, cmd, i);
+	else
+	{
+		(!bsh->mod_env) ? bsh->mod_env = mod_env(bsh->env) : 0;
+		while (cmd[*i] && ft_strchr(cmd[*i], '='))
+			set_var(&bsh->mod_env, cmd[(*i)++], EXPORT_VAR);
+	}
+}
+
 int			ft_env(t_env **env, char **cmd)
 {
 	char	wrong_opt;
@@ -111,16 +86,7 @@ int			ft_env(t_env **env, char **cmd)
 	}
 	(options[0]) ? bsh->env_options[0] = options[0] : 0;
 	(options[1]) ? bsh->env_options[1] = options[1] : 0;
-	if (IS_OPTION(bsh->env_options, 'i'))
-		env_i_option(&bsh->mod_env, cmd, &i);
-	else if (IS_OPTION(bsh->env_options, 'u'))
-		env_u_option(*env, cmd, &i);
-	else
-	{
-		(!bsh->mod_env) ? bsh->mod_env = mod_env(*env) : 0;
-		while (cmd[i] && ft_strchr(cmd[i], '='))
-			set_var(&bsh->mod_env, cmd[i++], EXPORT_VAR);
-	}
+	env_process(bsh, cmd, &i);
 	bsh->env_index = (bsh->env_index > -1) ? bsh->env_index += i : i;
-	return ((!cmd[i]) ? display_env(bsh->mod_env): 0); 
+	return ((!cmd[i]) ? display_env(bsh->mod_env) : 0);
 }

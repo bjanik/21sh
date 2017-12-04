@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:14:17 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 11:14:37 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:08:36 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,6 @@ int				ft_history(t_env **env, char **cmd)
 		}
 		if ((wrong_opt = check_arg_opt(cmd[i] + 1, HISTORY_OPTIONS, options)))
 			return (history_usage(wrong_opt, INVALID_OPT));
-	}
-	if (IS_OPTION(options, 'w'))
-	{
-		
 	}
 	if (IS_OPTION(options, 'c'))
 	{

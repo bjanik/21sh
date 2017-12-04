@@ -6,17 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 16:04:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 16:47:54 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 19:24:24 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
-void		del_token(t_token **token)
-{
-	ft_strdel(&(*token)->token);
-	ft_memdel((void**)&(*token)->token);
-}
 
 void		clear_token_list(t_token **token)
 {

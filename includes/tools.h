@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:58:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/08 12:22:16 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 19:28:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define SEMI 11
 # define AND 12
 # define PIPE 13
+
 /*enum e_tokens {
 				DGREAT,
 				DLESS,

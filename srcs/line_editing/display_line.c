@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 11:59:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 19:59:40 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 16:52:42 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	display_buffer(t_input *input, int cursor)
 	while (input->buffer[++i])
 	{
 		enable_video_display(input, cursor);
-		write(STDOUT, &input->buffer[i], 1);
+		write(STDIN, &input->buffer[i], 1);
 		if (input->term->cursor_col == input->term->width)
 		{
 			tputs(tgetstr("do", NULL), 1, ft_putchar_termcaps);

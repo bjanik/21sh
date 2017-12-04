@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:57:47 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 15:51:06 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 15:13:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-static int		update_working_directories(char *dir, t_env *env)
+static int		update_working_directories(char *dir, t_env *env, char **cmd)
 {
 	char	*wd[2];
 	t_env	*e;
@@ -30,12 +30,14 @@ static int		update_working_directories(char *dir, t_env *env)
 		set_var(&env, wd[1], e->exportable);
 	else
 		set_var(&env, wd[1], EXPORT_VAR);
+	if (cmd[1] && !ft_strcmp(cmd[1], "-"))
+		ft_putendl(ft_getenv(env, "PWD")->var_value);
 	ft_strdel(&wd[0]);
 	ft_strdel(&wd[1]);
 	return (0);
 }
 
-static int		check_and_change_dir(char *dir, t_env *env)
+static int		check_and_change_dir(char *dir, t_env *env, char **cmd)
 {
 	struct stat	info;
 
@@ -59,7 +61,7 @@ static int		check_and_change_dir(char *dir, t_env *env)
 		ft_putendl_fd(": cd: Permission denied", STDERR);
 	}
 	else
-		return (update_working_directories(dir, env));
+		return (update_working_directories(dir, env, cmd));
 	return (1);
 }
 
@@ -72,18 +74,18 @@ int				ft_cd(t_env **env, char **cmd)
 	else if (cmd[0] && !cmd[1])
 	{
 		if ((e = ft_getenv(*env, "HOME")))
-			return (check_and_change_dir(e->var_value, *env));
+			return (check_and_change_dir(e->var_value, *env, cmd));
 		else
 			ft_putendl_fd("bsh: cd: HOME not set", STDERR);
 	}
 	else if (!ft_strcmp(cmd[1], "-"))
 	{
 		if ((e = ft_getenv(*env, "OLDPWD")))
-			return (check_and_change_dir(e->var_value, *env));
+			return (check_and_change_dir(e->var_value, *env, cmd));
 		else
 			ft_putendl_fd("bsh: cd: OLDPWD not set", STDERR);
 	}
 	else
-		return (check_and_change_dir(cmd[1], *env));
+		return (check_and_change_dir(cmd[1], *env, cmd));
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 16:33:58 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/21 12:14:41 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 17:21:27 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,15 @@ int		handle_ctrl_left(t_input *input)
 
 int		handle_clear_screen(t_input *input)
 {
-	int	cursor_pos;
 	int	i;
+	int	cursor_pos;
 
 	cursor_pos = input->cursor_pos;
 	tputs(tgetstr("cl", NULL), 1, ft_putchar_termcaps);
 	if (input->type == REGULAR_INPUT)
 		print_prompt(input->term, BOLD_CYAN);
+	else if (input->type == HISTORY_SEARCH)
+		ft_putstr_fd("History search> ", STDERR);
 	else
 		display_basic_prompt(input->term);
 	input->cursor_pos = 0;

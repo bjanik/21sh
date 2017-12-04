@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 18:25:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 16:26:50 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 12:11:30 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		set_var(t_env **env, char *var, int export)
 
 	ptr = *env;
 	if (!(spvar = ft_strsplit(var, '=')))
-		ft_error_msg("Strsplit failed\n");
+		return ;
 	if (!spvar || !spvar[0] || var[0] == '=')
 	{
 		ft_free_string_tab(&spvar);

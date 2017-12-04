@@ -6,13 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 13:32:04 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 14:47:54 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:06:21 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-int	copy_selection(t_input *input)
+int			copy_selection(t_input *input)
 {
 	if (input->pivot < 0)
 		return (0);
@@ -29,9 +29,9 @@ int	copy_selection(t_input *input)
 					input->pivot - input->cursor_pos)))
 			ft_error_msg("Malloc failed");
 	}
-	else
-		if (!(input->buf_copy = ft_strndup(input->buffer + input->pivot, 1)))
-			ft_error_msg("Malloc failed");
+	else if (!(input->buf_copy = ft_strndup(input->buffer + input->pivot, 1)))
+		ft_error_msg("Malloc failed");
+	switch_input_state(input);
 	return (0);
 }
 
@@ -48,7 +48,7 @@ static void	cut_from_buffer(t_input *input)
 			input->buffer_size - input->buffer_len);
 }
 
-int	cut_selection(t_input *input)
+int			cut_selection(t_input *input)
 {
 	int	i;
 	int	cursor;
@@ -76,7 +76,7 @@ int	cut_selection(t_input *input)
 	return (0);
 }
 
-int	paste_selection(t_input *input)
+int			paste_selection(t_input *input)
 {
 	int	len;
 

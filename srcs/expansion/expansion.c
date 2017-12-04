@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 14:39:46 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 13:38:02 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 15:10:17 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,38 +55,6 @@ static void	save_expanded_word(t_expander *exp, char **word, int i)
 	get_event_exp(exp);
 }
 
-void		realloc_exp_buffer(t_expander *exp)
-{
-	char	*tmp;
-
-	tmp = exp->buffer;
-	if (!(exp->buffer = (char*)malloc((exp->buffer_size * 2) * sizeof(char))))
-		ft_error_msg("Realloc_exp_buffer failed\n");
-	exp->buffer_size *= 2;
-	ft_bzero(exp->buffer, exp->buffer_size);
-	ft_strcpy(exp->buffer, tmp);
-	free(tmp);
-}
-
-inline void	append(t_expander *exp)
-{
-	if (exp->buffer_len == exp->buffer_size)
-		realloc_exp_buffer(exp);
-	exp->buffer[exp->buffer_len++] = *(exp->tmp);
-}
-
-inline void	skip(t_expander *exp)
-{
-	(void)exp;
-}
-
-inline void	handle_bckslsh(t_expander *exp)
-{
-	exp->tmp++;
-	if (*(exp->tmp) != '\n')
-		exp->buffer[exp->buffer_len++] = *(exp->tmp);
-}
-
 static void	expand(t_expander *exp, int type)
 {
 	while (*(exp->tmp))
@@ -98,7 +66,7 @@ static void	expand(t_expander *exp, int type)
 	}
 }
 
-char	**expand_words(t_expander *exp, t_exec *exec)
+char		**expand_words(t_expander *exp, t_exec *exec)
 {
 	int		i;
 	char	**word_tab;
@@ -124,7 +92,7 @@ char	**expand_words(t_expander *exp, t_exec *exec)
 	return (word_tab);
 }
 
-void	expand_filenames(t_expander *exp, t_exec *exec)
+void		expand_filenames(t_expander *exp, t_exec *exec)
 {
 	t_redir	*rd;
 
@@ -147,7 +115,7 @@ void	expand_filenames(t_expander *exp, t_exec *exec)
 	}
 }
 
-void	remove_quotes_heredoc(t_expander *exp, t_exec *exec)
+void		remove_quotes_heredoc(t_expander *exp, t_exec *exec)
 {
 	t_redir	*rd;
 	t_exec	*ex;

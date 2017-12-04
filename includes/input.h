@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/24 11:36:46 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 16:46:43 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int				handle_alt_great(t_input *input);
 int				handle_clear_screen(t_input *input);
 int				handle_clear_line(t_input *input);
 int				handle_eof(t_input *input);
+void			exit_ctrl_d(void);
 int				handle_history_search(t_input *input);
 int				switch_input_state(t_input *input);
 int				select_right(t_input *input);

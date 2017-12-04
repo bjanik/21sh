@@ -6,15 +6,15 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:56:16 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/20 11:00:29 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:08:16 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-void			append_history(t_history *history, char *cmd, int cmd_len)
+void		append_history(t_history *history, char *cmd, int cmd_len)
 {
-	t_dlst		*hist;
+	t_dlst	*hist;
 
 	hist = ft_dlstnew(cmd, cmd_len + 1);
 	ft_dlstadd(&history->head, hist);
@@ -45,7 +45,7 @@ static void	import_history_from_file(t_history *history)
 	}
 }
 
-t_history		*init_history(void)
+t_history	*init_history(void)
 {
 	t_history	*history;
 

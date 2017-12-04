@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 16:32:52 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 15:43:19 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 13:13:10 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	fork_and_exec(t_bsh *bsh, t_exec *exec, int offset)
 	set_signals();
 }
 
-void	launch_builtin(t_bsh *bsh, t_exec *exec, int offset)
+void		launch_builtin(t_bsh *bsh, t_exec *exec, int offset)
 {
 	save_fds(bsh->saved_fds);
 	bsh->exit_status = run_builtin(exec, offset);
@@ -49,7 +49,7 @@ void	launch_builtin(t_bsh *bsh, t_exec *exec, int offset)
 	}
 }
 
-void	simple_command(t_bsh *bsh, t_exec *exec)
+void		simple_command(t_bsh *bsh, t_exec *exec)
 {
 	int	exit_status;
 

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 13:38:26 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 17:41:54 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 12:58:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ void	sigint_handler(int signum)
 
 	(void)signum;
 	bsh = get_bsh();
-	write(STDOUT, "\n", 1);
+	bsh->input->type = REGULAR_INPUT;
+	write(STDIN, "\n", 1);
 	print_prompt(bsh->term, BOLD_CYAN);
 	ft_bzero(bsh->input->buffer, bsh->input->buffer_size);
+	bsh->history->current = NULL;
 	bsh->input->buffer_len = 0;
 	bsh->input->cursor_pos = 0;
-	bsh->input->type = REGULAR_INPUT;
 	bsh->lexer->state = INIT;
 	clear_token_list(&bsh->tokens[0]);
 	bsh->tokens[1] = NULL;

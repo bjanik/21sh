@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 14:39:25 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 18:17:17 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:20:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,22 @@ static void	update_input_buffer(t_input *input)
 	input->buffer = input->buf_tmp;
 }
 
-int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
+static void	do_stuff(int *ret, t_lexer *lexer, t_token *tokens[],
+		t_input *input)
+{
+	if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
+			tokens[1]->type == WORD)
+		concat_tokens(lexer, tokens, input);
+	else if (*ret != SYNTAX_ERROR)
+	{
+		tokens[1]->next = lexer->token_list[0];
+		tokens[1] = lexer->token_list[1];
+	}
+	else if (*ret == SYNTAX_ERROR)
+		clear_token_list(&lexer->token_list[0]);
+}
+
+int			handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 		t_token *tokens[])
 {
 	while (*ret == END_IS_OP || *ret == UNCLOSED_QUOTES)
@@ -95,19 +110,9 @@ int		handle_unclosed_quotes(t_lexer *lex, t_input *input, int *ret,
 			return (handle_unexpected_eof(input, &tokens[0]));
 		if (input->type == REGULAR_INPUT)
 			return (CATCH_SIGINT);
-		//dprintf(input->fd, "prev_state = %d\n", lexer_prev_state);
 		lexer(lex, input->buffer, lex->state);
 		*ret = parser(NULL, lex->token_list[0], NO_SAVE_EXEC);
-		if ((*ret == UNCLOSED_QUOTES || *ret == ACCEPTED) &&
-				tokens[1]->type == WORD)
-			concat_tokens(lex, tokens, input);
-		else if (*ret != SYNTAX_ERROR)
-		{
-			tokens[1]->next = lex->token_list[0];
-			tokens[1] = lex->token_list[1];
-		}
-		else if (*ret == SYNTAX_ERROR)
-			clear_token_list(&lex->token_list[0]);
+		do_stuff(ret, lex, tokens, input);
 		lex->token_list[0] = NULL;
 		lex->token_list[1] = NULL;
 		update_input_buffer(input);

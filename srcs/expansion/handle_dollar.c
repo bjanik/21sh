@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:43:22 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/28 13:35:00 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:52:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ static void	get_env_variable(t_expander *exp, char *s)
 	len = 0;
 	while (ft_isdigit(*(s + len)) || ft_isalpha(*(s + len)))
 		len++;
+	if (!len)
+	{
+		exp->buffer[exp->buffer_len++] = *(s - 1);
+		return ;
+	}
 	if (!(s = ft_strndup(exp->tmp + 1, len)))
 		ft_error_msg("Get_env_variable failed\n");
 	if ((env_var = ft_getenv(exp->env, s)))

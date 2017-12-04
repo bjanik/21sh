@@ -6,11 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 15:47:39 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 18:59:34 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 18:01:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "bsh.h"
 
 t_env		*env_to_lst(char **environ)
 {
@@ -37,18 +37,18 @@ t_env		*create_node(char *env_var, int export)
 	if (!env_var)
 		return (NULL);
 	if (!(splitted_env_var = ft_strsplit(env_var, '=')))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	if (!(env = (t_env*)malloc(sizeof(t_env))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	if (!(env->var_name = ft_strdup(splitted_env_var[0])))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	if (splitted_env_var[1])
 	{
 		if (!(env->var_value = ft_strdup(splitted_env_var[1])))
-			exit(EXIT_FAILURE);
+			ft_error_msg("Malloc failed\n");
 	}
 	else if (!(env->var_value = ft_strdup("")))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc failed\n");
 	env->next = NULL;
 	env->exportable = export;
 	ft_free_string_tab(&splitted_env_var);

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:16:44 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 16:52:25 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 15:36:54 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	handle_return(t_input *input)
 		handle_end(input);
 		input->cursor_pos = 0;
 	}
+	input->history->current = NULL;
 	if (input->buffer_len == input->buffer_size)
 		realloc_buffer(input);
 	input->buffer[input->buffer_len++] = '\n';

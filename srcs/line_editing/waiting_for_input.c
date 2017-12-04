@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 11:41:51 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 19:15:28 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/04 13:02:15 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int		wait_for_input(t_input *input, int input_type)
 		if ((ret = get_key(input)))
 			break ;
 	}
-	write(STDOUT, RETURN_C, 1);
+	if (input->type != HISTORY_SEARCH)
+		write(STDOUT, RETURN_C, 1);
 	return (ret);
 }
