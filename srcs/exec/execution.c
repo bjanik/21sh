@@ -12,6 +12,8 @@
 
 #include "bsh.h"
 
+extern const t_builtins	g_builtins[];
+
 int			run_builtin(t_exec *exec, int offset)
 {
 	t_bsh	*bsh;

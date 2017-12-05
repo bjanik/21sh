@@ -35,3 +35,11 @@ int		ft_cmd_not_found(char *cmd)
 	ft_putendl_fd(": command not found...", STDERR);
 	return (1);
 }
+
+int		ft_is_directory(char *file)
+{
+	ft_putstr_fd("bsh: ", STDERR);
+	ft_putstr_fd(file, STDERR);
+	ft_putendl_fd(": Is a directory", STDERR);
+
+}

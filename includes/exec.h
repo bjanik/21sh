@@ -18,6 +18,7 @@
 
 # define COMMAND_NOT_FOUND 127
 # define PERMISSION_DENIED 126
+# define IS_DIRECTORY 125
 # define READ 0
 # define WRITE 1
 

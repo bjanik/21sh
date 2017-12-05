@@ -19,6 +19,8 @@ int		wait_for_input(t_input *input, int input_type)
 	input->type = input_type;
 	while (42)
 	{
+		if (input->type != input_type)
+			dprintf(input->fd, "DIFF!\n");
 		ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
 		if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
 			exit(EXIT_FAILURE);

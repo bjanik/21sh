@@ -15,10 +15,15 @@
 
 static int	access_exec_binary(char *bin_path)
 {
+	struct stat	info;
+
+	stat(bin_path, &info);	
 	if (access(bin_path, F_OK))
 		return (COMMAND_NOT_FOUND);
 	else if (access(bin_path, X_OK))
 		return (PERMISSION_DENIED);
+	if (S_ISDIR(info.st_mode))
+		return (IS_DIRECTORY);
 	return (0);
 }
 
@@ -80,7 +85,14 @@ void		run_binary(t_exec *exec, t_env *env, int offset)
 		ret = exec_current_dir(exec->cmd + offset, env_tab);
 	else
 		ret = exec_search_in_env_path(exec->cmd + offset, env, env_tab);
-	(ret == COMMAND_NOT_FOUND) ? ft_cmd_not_found(exec->cmd[offset]) :
+	if (ret == COMMAND_NOT_FOUND)
+		ft_cmd_not_found(exec->cmd[offset]);
+	else if (ret == PERMISSION_DENIED)		
 		ft_perm_denied_msg(exec->cmd[offset]);
+	else if (ret == IS_DIRECTORY)
+	{
+		ft_is_directory(exec->cmd[offset]);
+		ret = PERMISSION_DENIED;
+	}
 	exit(ret);
 }

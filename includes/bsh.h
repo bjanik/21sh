@@ -17,6 +17,7 @@
 # include <limits.h>
 # include <pwd.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <uuid/uuid.h>
 # include "libft.h"
 # include "input.h"

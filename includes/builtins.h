@@ -57,7 +57,7 @@ int					ft_history(t_env **env, char **cmd);
 
 char				check_arg_opt(char *arg_opt, char *avail_opt, char *opts);
 
-static t_builtins	g_builtins[] = {
+/*static t_builtins	g_builtins[] = {
 	{"cd", ft_cd},
 	{"echo", ft_echo},
 	{"env", ft_env},
@@ -67,5 +67,5 @@ static t_builtins	g_builtins[] = {
 	{"history", ft_history},
 	{"exit", ft_exit},
 	{NULL, NULL},
-};
+};*/
 #endif

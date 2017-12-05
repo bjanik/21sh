@@ -12,6 +12,18 @@
 
 #include "bsh.h"
 
+const t_builtins	g_builtins[] = {
+	{"cd", ft_cd},
+	{"echo", ft_echo},
+	{"env", ft_env},
+	{"setenv", ft_setenv},
+	{"unsetenv", ft_unsetenv},
+	{"export", ft_export},
+	{"history", ft_history},
+	{"exit", ft_exit},
+	{NULL, NULL},
+};
+
 int			cmd_is_builtin(char **cmd)
 {
 	int		i;
