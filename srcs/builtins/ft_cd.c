@@ -12,6 +12,13 @@
 
 #include "bsh.h"
 
+static void		cd_error_msg(char *dir, char *msg)
+{
+	ft_putstr_fd("bsh: cd: ", STDERR);
+	ft_putstr_fd(dir, STDERR);
+	ft_putendl_fd(msg, STDERR);
+}
+
 static int		update_working_directories(char *dir, t_env *env, char **cmd)
 {
 	char	*wd[2];
@@ -43,23 +50,11 @@ static int		check_and_change_dir(char *dir, t_env *env, char **cmd)
 
 	stat(dir, &info);
 	if (access(dir, F_OK))
-	{
-		ft_putstr_fd("bsh: ", STDERR);
-		ft_putstr_fd(dir, STDERR);
-		ft_putendl_fd(": cd: No such file or directory", STDERR);
-	}
+		cd_error_msg(dir, ": No such file or directory");
 	else if (!S_ISDIR(info.st_mode))
-	{
-		ft_putstr_fd("bsh: ", STDERR);
-		ft_putstr_fd(dir, STDERR);
-		ft_putendl_fd(": cd: Not a directory", STDERR);
-	}
+		cd_error_msg(dir, ": Not a directory");
 	else if (access(dir, X_OK))
-	{
-		ft_putstr_fd("bsh: ", STDERR);
-		ft_putstr_fd(dir, STDERR);
-		ft_putendl_fd(": cd: Permission denied", STDERR);
-	}
+		cd_error_msg(dir, ": Permission denied");
 	else
 		return (update_working_directories(dir, env, cmd));
 	return (1);

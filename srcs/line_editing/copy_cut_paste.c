@@ -31,7 +31,6 @@ int			copy_selection(t_input *input)
 	}
 	else if (!(input->buf_copy = ft_strndup(input->buffer + input->pivot, 1)))
 		ft_error_msg("Malloc failed");
-	switch_input_state(input);
 	return (0);
 }
 
@@ -56,9 +55,8 @@ int			cut_selection(t_input *input)
 	cursor = input->cursor_pos;
 	copy_selection(input);
 	cut_from_buffer(input);
+	switch_input_state(input);
 	tputs(tgetstr("me", NULL), 1, ft_putchar_termcaps);
-	input->pivot = -1;
-	input->state = STANDARD;
 	handle_home(input);
 	if (input->buffer_len + (int)ft_strlen(input->buf_copy) >
 			input->term->first_line_len)

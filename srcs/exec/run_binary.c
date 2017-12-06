@@ -78,6 +78,7 @@ void		run_binary(t_exec *exec, t_env *env, int offset)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	(handle_redirection(exec)) ? exit(EXIT_FAILURE) : 0;
+	(!exec->cmd) ? exit(0): 0;
 	env_tab = env_to_tab(env);
 	if (exec->cmd[offset][0] == '/')
 		ret = exec_absolute_path(exec->cmd + offset, env_tab);

@@ -15,7 +15,6 @@
 static void	delete_char(t_input *input)
 {
 	int	cursor_pos;
-	int	cursor_col;
 	int	i;
 
 	if (input->cursor_pos == input->buffer_len)
@@ -23,7 +22,6 @@ static void	delete_char(t_input *input)
 	ft_strcpy(input->buffer + input->cursor_pos,
 				input->buffer + input->cursor_pos + 1);
 	cursor_pos = input->cursor_pos;
-	cursor_col = input->term->cursor_col;
 	handle_home(input);
 	tputs(tgetstr("sc", NULL), 1, ft_putchar_termcaps);
 	tputs(tgetstr("ce", NULL), 1, ft_putchar_termcaps);

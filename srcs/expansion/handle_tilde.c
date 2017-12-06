@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waiting_for_input.c                                :+:      :+:    :+:   */
+/*   handle_tidle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/03 11:41:51 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 13:02:15 by bjanik           ###   ########.fr       */
+/*   Created: 2017/10/24 18:30:32 by bjanik            #+#    #+#             */
+/*   Updated: 2017/11/03 16:50:35 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-int		wait_for_input(t_input *input, int input_type)
+void		handle_tilde(t_expander *exp)
 {
-	int	ret;
+	t_env	*home;
 
-	input->type = input_type;
-	while (42)
+	home = NULL;
+	if (exp->buffer_len == 0 && (*(exp->tmp + 1) == '/' || !*(exp->tmp + 1)) &&
+			(home = ft_getenv(exp->env, "HOME")))
 	{
-		ft_bzero(input->read_buffer, MAX_KEY_LENGTH);
-		if (read(STDIN, input->read_buffer, MAX_KEY_LENGTH) < 1)
-			exit(EXIT_FAILURE);
-		if ((ret = get_key(input)))
-			break ;
+		ft_strcpy(exp->buffer, home->var_value);
+		exp->buffer_len += ft_strlen(home->var_value);
 	}
-	if (input->type != HISTORY_SEARCH)
-		write(STDOUT, RETURN_C, 1);
-	return (ret);
+	else
+		append(exp);
 }

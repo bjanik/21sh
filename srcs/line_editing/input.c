@@ -52,10 +52,8 @@ int			handle_reg_char(t_input *input, char c)
 
 void		cp_history_to_buffer(t_input *input)
 {
-	int		i;
 	char	*str;
 
-	i = -1;
 	str = input->history->current->data;
 	ft_bzero(input->buffer, input->buffer_size);
 	handle_home(input);

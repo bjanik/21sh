@@ -41,5 +41,14 @@ inline void	handle_bckslsh(t_expander *exp)
 {
 	exp->tmp++;
 	if (*(exp->tmp) != '\n')
-		exp->buffer[exp->buffer_len++] = *(exp->tmp);
+		append(exp);
+}
+
+
+inline void	handle_bckslsh_dquote(t_expander *exp)
+{
+	if (*(exp->tmp + 1) == '\\' || (*(exp->tmp + 1) == '"'))
+		exp->tmp++;
+	append(exp);
+	
 }

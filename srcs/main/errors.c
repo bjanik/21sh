@@ -41,5 +41,5 @@ int		ft_is_directory(char *file)
 	ft_putstr_fd("bsh: ", STDERR);
 	ft_putstr_fd(file, STDERR);
 	ft_putendl_fd(": Is a directory", STDERR);
-
+	return (1);
 }

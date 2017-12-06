@@ -46,12 +46,10 @@ void		pipe_sequence(t_exec **exec, t_pipes *pipes)
 	int		pid[10000];
 	int		k;
 	t_bsh	*bsh;
-	t_exec	*ex;
 
 	bsh = get_bsh();
 	k = 0;
 	create_pipes(pipes);
-	ex = *exec;
 	pipes_loop(bsh, exec, pid, &k);
 	close_pipes_fds(bsh->pipes);
 	signal(SIGINT, SIG_IGN);

@@ -38,12 +38,12 @@ void	sigint_handler(int signum)
 	(void)signum;
 	bsh = get_bsh();
 	bsh->input->type = REGULAR_INPUT;
+	bsh->input->state = STANDARD;
+	bsh->input->pivot = -1;
 	write(STDIN, "\n", 1);
 	print_prompt(bsh->term, BOLD_CYAN);
-	ft_bzero(bsh->input->buffer, bsh->input->buffer_size);
+	reset_buffer(bsh->input);
 	bsh->history->current = NULL;
-	bsh->input->buffer_len = 0;
-	bsh->input->cursor_pos = 0;
 	bsh->lexer->state = INIT;
 	clear_token_list(&bsh->tokens[0]);
 	bsh->tokens[1] = NULL;

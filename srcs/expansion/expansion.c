@@ -34,7 +34,7 @@ t_transit	g_expander[MAX_STATE1][MAX_EVENT1] = {
 		{DQUOTE1, {append, append}},
 		{DQUOTE1, {handle_dollar, append}},
 		{DQUOTE1, {append, append}},
-		{DQUOTE1, {handle_bckslsh, append}},
+		{DQUOTE1, {handle_bckslsh_dquote, append}},
 		{DQUOTE1, {append, append}}},
 
 	{{QUOTE1, {NULL, NULL}},

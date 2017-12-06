@@ -51,9 +51,6 @@ void		launch_builtin(t_bsh *bsh, t_exec *exec, int offset)
 
 void		simple_command(t_bsh *bsh, t_exec *exec)
 {
-	int	exit_status;
-
-	exit_status = 0;
 	exec->cmd = expand_words(bsh->exp, exec);
 	expand_filenames(bsh->exp, exec);
 	if ((exec->is_builtin = cmd_is_builtin(exec->cmd)) > -1)
