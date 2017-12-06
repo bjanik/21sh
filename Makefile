@@ -4,14 +4,14 @@ CC = gcc
 
 FLAGS = -Wall -Wextra
 
-LIBFT  = libft/includes
+LIBFT  = libft/
 
 LIB = libft/libft.a
 
-HEADER = includes
+HEADERS = includes
 
-SRC_PATH = srcs
-OBJ_PATH = obj
+SRC_PATH = srcs/
+OBJ_PATH = obj/
 
 SRC_NAME = builtins/check_arg_opt.c \
 	   builtins/cmd_is_builtin.c \
@@ -69,6 +69,7 @@ SRC_NAME = builtins/check_arg_opt.c \
 	   lexer/get_operator.c \
 	   lexer/init_lexer.c \
 	   lexer/init_token.c \
+	   lexer/is_operator.c \
 	   lexer/lexer.c \
 	   lexer/realloc_current_token.c\
 	   main/add_cmd_to_history.c \
@@ -76,11 +77,16 @@ SRC_NAME = builtins/check_arg_opt.c \
 	   main/errors.c \
 	   main/init_bsh.c \
 	   main/main.c \
+	   main/signals.c \
 	   main/unclosed_quotes.c \
 	   main/unexpected_eof.c \
+	   parser/init_parser.c \
 	   parser/parser.c \
 	   parser/parser_tables.c \
 	   parser/parser_stack.c \
+	   parser/reduce.c \
+	   parser/shift.c \
+	   parser/syntax_error.c \
 	   history/ft_history.c \
 	   history/history.c \
 	   history/history_errors.c \
@@ -89,30 +95,31 @@ SRC_NAME = builtins/check_arg_opt.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
-SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
-OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
+SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-	make -C $(LIBFT)
-	$(CC) $(FLAGS) $(OBJ) $(LIB) -o $(NAME)
+	@make -C $(LIBFT)
+	@$(CC) $(FLAGS) $(OBJ) $(LIB) -ltermcap -o $(NAME)
 
 $(OBJ) : $(OBJ_PATH)
 
 $(OBJ_PATH) :
-	mkdir -p $(OBJ_PATH)
+	@mkdir -p $(OBJ_PATH)
+	@mkdir -p $(dir $(OBJ))
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
-	$(CC) $(FLAGS) -I$(HEADER) -I$(LIBFT) -c $< -o $@
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c 
+	$(CC) $(FLAGS) -I$(HEADERS) -I$(LIBFT)includes -c $< -o $@
 
 clean :
-	rm -rf $(OBJ_PATH)
+	/bin/rm -rf $(OBJ_PATH)
 	make clean -C $(LIBFT)
 
 fclean : clean
 	make fclean -C $(LIBFT)
-	rm -f $(NAME)
+	/bin/rm -f $(NAME)
 
 re : fclean all
 
