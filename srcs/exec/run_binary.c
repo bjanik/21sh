@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 15:00:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 15:43:30 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 13:45:19 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	access_exec_binary(char *bin_path)
 {
 	struct stat	info;
 
-	stat(bin_path, &info);	
+	stat(bin_path, &info);
 	if (access(bin_path, F_OK))
 		return (COMMAND_NOT_FOUND);
 	else if (access(bin_path, X_OK))
@@ -78,7 +78,7 @@ void		run_binary(t_exec *exec, t_env *env, int offset)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	(handle_redirection(exec)) ? exit(EXIT_FAILURE) : 0;
-	(!exec->cmd) ? exit(0): 0;
+	(!exec->cmd) ? exit(0) : 0;
 	env_tab = env_to_tab(env);
 	if (exec->cmd[offset][0] == '/')
 		ret = exec_absolute_path(exec->cmd + offset, env_tab);
@@ -88,7 +88,7 @@ void		run_binary(t_exec *exec, t_env *env, int offset)
 		ret = exec_search_in_env_path(exec->cmd + offset, env, env_tab);
 	if (ret == COMMAND_NOT_FOUND)
 		ft_cmd_not_found(exec->cmd[offset]);
-	else if (ret == PERMISSION_DENIED)		
+	else if (ret == PERMISSION_DENIED)
 		ft_perm_denied_msg(exec->cmd[offset]);
 	else if (ret == IS_DIRECTORY)
 	{

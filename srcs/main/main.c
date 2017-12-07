@@ -6,23 +6,11 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 19:26:38 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 15:55:25 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
-
-/*void		display_token_list(t_input *input, t_token *lst)
-{
-	t_token	*l;
-
-	l = lst;
-	while (l)
-	{
-		dprintf(input->fd, "[%s] type =  %d\n", l->token, l->type);
-		l = l->next;
-	}
-}*/
 
 static void	connect_tokens(t_bsh *bsh)
 {
@@ -52,8 +40,7 @@ static void	start_process(t_bsh *bsh, int mode)
 				ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 		}
 		else
-			ft_printf("Missing closing quotes or end of input is an operator\n"
-					);
+			ft_printf("Missing quotes or end of input is an operator\n");
 	}
 	add_cmd_to_history(bsh);
 	(ret == ACCEPTED) ? execution(bsh) : 0;

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 16:48:42 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/03 18:37:05 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 13:46:02 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_input		*init_input(t_term *term, t_history *history)
 	input->cursor_pos = 0;
 	input->term = term;
 	input->history = history;
-	//input->fd = open("/dev/pts/1", O_WRONLY | O_CREAT);
 	input->state = STANDARD;
 	input->pivot = -1;
 	return (input);

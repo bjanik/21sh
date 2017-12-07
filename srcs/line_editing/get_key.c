@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 15:11:38 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/22 19:51:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 12:18:43 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_keys	g_handle_keys[] = {
 	{CTRL_D, {handle_eof, handle_eof}},
 	{CTRL_E, {paste_selection, paste_selection}},
 	{CTRL_F, {skip_key, copy_selection}},
-	{CTRL_R, {handle_history_search, handle_history_search}},
+	{CTRL_R, {handle_history_search, skip_key}},
 	{CTRL_U, {handle_clear_line, skip_key}},
 	{CTRL_X, {skip_key, cut_selection}},
 	{ALT_GREAT, {handle_alt_great, skip_key}},

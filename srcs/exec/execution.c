@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 13:40:52 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 15:53:54 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,30 @@ static void	get_exit_status(t_bsh *bsh, t_exec *exec)
 		bsh->exit_status = WTERMSIG(bsh->exit_status) + 128;
 }
 
+t_exec		*go_to_next_command(t_bsh *bsh, t_exec *exec)
+{
+	if (exec->cmd_separator == AND_IF && bsh->exit_status)
+	{
+		while (exec->cmd_separator == AND_IF)
+		{
+			exec = exec->next;
+			while (exec && exec->cmd_separator == PIPE)
+				exec = exec->next;
+		}
+	}
+	if (exec->cmd_separator == OR_IF && !bsh->exit_status)
+	{
+		while (exec->cmd_separator == OR_IF)
+		{
+			exec = exec->next;
+			while (exec && exec->cmd_separator == PIPE)
+				exec = exec->next;
+		}
+	}
+	exec = (exec) ? exec->next : exec;
+	return (exec);
+}
+
 void		execution(t_bsh *bsh)
 {
 	t_exec	*exec;
@@ -57,14 +81,7 @@ void		execution(t_bsh *bsh)
 		else
 			simple_command(bsh, exec);
 		(exec->is_builtin < 0) ? get_exit_status(bsh, exec) : 0;
-		if ((exec->cmd_separator == AND_IF && bsh->exit_status) ||
-				(exec->cmd_separator == OR_IF && !bsh->exit_status))
-		{
-			exec = exec->next;
-			while (exec && exec->cmd_separator == PIPE)
-				exec = exec->next;
-		}
-		exec = (exec) ? exec->next : exec;
+		exec = go_to_next_command(bsh, exec);
 	}
 	restore_custom_attr(bsh->term);
 }

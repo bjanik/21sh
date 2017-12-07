@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 17:13:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 19:27:44 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 12:10:10 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void			skip(t_expander *exp);
 void			handle_tilde(t_expander *exp);
 void			handle_dollar(t_expander *exp);
 void			handle_bckslsh(t_expander *exp);
+void			handle_bckslsh_dquote(t_expander *exp);
 void			get_event_exp(t_expander *exp);
 void			realloc_exp_buffer(t_expander *exp);
 

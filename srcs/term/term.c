@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/28 14:58:05 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 14:41:16 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int					init_termcaps(t_term *term)
 
 	if (!isatty(STDIN))
 		ft_error_msg("$TERM isn't a tty\n");
-	if (!(termtype = getenv("TERM")))
+	if (!(termtype = ft_getenv(get_bsh()->env, "TERM")->var_value))
 		ft_error_msg("Missing $TERM variable");
 	if (tgetent(NULL, termtype) < 1)
 		ft_error_msg("tgetent failed\n");

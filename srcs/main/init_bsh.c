@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/28 16:55:20 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 15:54:20 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,20 @@ static t_bsh		*init_bsh(void)
 	bsh->tokens[1] = NULL;
 	bsh->pipes = init_pipes();
 	bsh->pid = getpid();
+	bsh->back_up_fds = NULL;
 	bsh->exit_status = 0;
 	bsh->shell_name = "-bsh";
 	bsh->env_index = -1;
 	return (bsh);
 }
 
-static void			update_shlvl(t_env *env)
+static void			update_shlvl(t_env **env)
 {
 	t_env	*shlvl;
 	char	*tmp;
 
-	if (!(shlvl = ft_getenv(env, "SHLVL")))
-		set_var(&env, "SHLVL=1", EXPORT_VAR);
+	if (!(shlvl = ft_getenv(*env, "SHLVL")))
+		set_var(env, "SHLVL=1", EXPORT_VAR);
 	else
 	{
 		tmp = shlvl->var_value;
@@ -49,13 +50,13 @@ static void			update_shlvl(t_env *env)
 	}
 }
 
-static void			update_shell_name(t_env *env)
+static void			update_shell_name(t_env **env)
 {
 	t_env	*shell_name;
 	char	*tmp;
 
-	if (!(shell_name = ft_getenv(env, "SHELL")))
-		set_var(&env, "SHELL=-bsh", EXPORT_VAR);
+	if (!(shell_name = ft_getenv(*env, "SHELL")))
+		set_var(env, "SHELL=-bsh", EXPORT_VAR);
 	else
 	{
 		tmp = shell_name->var_value;
@@ -81,8 +82,9 @@ t_bsh				*shell_init(char **environ)
 	bsh->env = env_to_lst(environ);
 	bsh->mod_env = NULL;
 	bsh->exp = init_expander(bsh->env);
-	update_shlvl(bsh->env);
-	update_shell_name(bsh->env);
+	update_shlvl(&bsh->env);
+	update_shell_name(&bsh->env);
+	set_var(&bsh->env, "TERM=xterm-256color", LOCAL_VAR);
 	set_signals();
 	return (bsh);
 }

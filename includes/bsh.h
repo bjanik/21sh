@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 18:21:08 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 15:42:12 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct	s_bsh
 	t_pipes		*pipes;
 	int			exit_status;
 	char		*shell_name;
+	t_list		*back_up_fds;
 	int			saved_fds[3];
 	int			env_index;
 	char		env_options[3];
@@ -75,6 +76,7 @@ void			execution(t_bsh *bsh);
 int				ft_perm_denied_msg(char *file);
 int				ft_no_file_msg(char *file);
 int				ft_cmd_not_found(char *cmd);
+int				ft_is_directory(char *file);
 int				check_access_exist(char *file);
 int				check_access_writing(char *file);
 int				check_access_reading(char *file);

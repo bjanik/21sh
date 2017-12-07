@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 11:59:28 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 16:52:42 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 13:45:52 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	enable_video_display(t_input *input, int cursor)
 {
-	ft_printf("ENABLE VIDEO :cursor = %d\n", cursor);
 	if (cursor > input->pivot)
 	{
 		if (input->cursor_pos == input->pivot)
@@ -33,7 +32,7 @@ static void	enable_video_display(t_input *input, int cursor)
 		tputs(tgetstr("me", NULL), 1, ft_putchar_termcaps);
 }
 
-void	display_buffer(t_input *input, int cursor)
+void		display_buffer(t_input *input, int cursor)
 {
 	int	i;
 
@@ -53,7 +52,7 @@ void	display_buffer(t_input *input, int cursor)
 	}
 }
 
-void	display_line(t_input *input, int cursor)
+void		display_line(t_input *input, int cursor)
 {
 	int	i;
 

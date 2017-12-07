@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/04 15:05:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 18:54:58 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 12:10:25 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,9 @@ inline void	handle_bckslsh(t_expander *exp)
 		append(exp);
 }
 
-
 inline void	handle_bckslsh_dquote(t_expander *exp)
 {
 	if (*(exp->tmp + 1) == '\\' || (*(exp->tmp + 1) == '"'))
 		exp->tmp++;
 	append(exp);
-	
 }

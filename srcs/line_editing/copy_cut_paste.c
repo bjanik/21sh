@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 13:32:04 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 18:06:21 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/07 12:34:56 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int			copy_selection(t_input *input)
 	}
 	else if (!(input->buf_copy = ft_strndup(input->buffer + input->pivot, 1)))
 		ft_error_msg("Malloc failed");
+	if (!ft_strcmp(input->read_buffer, CTRL_F))
+		switch_input_state(input);
 	return (0);
 }
 
