@@ -46,7 +46,11 @@ inline void	handle_bckslsh(t_expander *exp)
 
 inline void	handle_bckslsh_dquote(t_expander *exp)
 {
-	if (*(exp->tmp + 1) == '\\' || (*(exp->tmp + 1) == '"'))
+	char	*s;
+
+	s = exp->tmp + 1;
+	if (*s == '\\' || *s == '"' || *s == '\n')
 		exp->tmp++;
-	append(exp);
+	if (*(exp->tmp) != '\n')
+		append(exp);
 }

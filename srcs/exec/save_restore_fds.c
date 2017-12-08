@@ -14,9 +14,12 @@
 
 void	save_fds(int *saved_fd)
 {
-	saved_fd[0] = dup(STDIN);
-	saved_fd[1] = dup(STDOUT);
-	saved_fd[2] = dup(STDERR);
+	if ((saved_fd[0] = dup(STDIN)) < 0)
+		ft_error_msg("Dup failed\n");
+	if ((saved_fd[1] = dup(STDOUT)) < 0)
+		ft_error_msg("Dup failed\n");
+	if ((saved_fd[2] = dup(STDERR)) < 0)
+		ft_error_msg("Dup failed\n");
 }
 
 void	restore_fds(int *saved_fd)

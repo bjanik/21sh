@@ -39,6 +39,7 @@ void	sigint_handler(int signum)
 	bsh = get_bsh();
 	bsh->input->type = REGULAR_INPUT;
 	bsh->input->state = STANDARD;
+	tputs(tgetstr("me", NULL), 1, ft_putchar_termcaps);
 	bsh->input->pivot = -1;
 	write(STDIN, "\n", 1);
 	print_prompt(bsh->term, BOLD_CYAN);

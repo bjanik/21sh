@@ -940,7 +940,7 @@ int					parser(t_exec **exec, t_token *token_list, int ex)
 		ret = g_parser[parse->state][parse->cur_token->type].p_switch(parse);
 	while (parse->stack)
 		pop_stack(&parse->stack);
-	if (ex && ret == ACCEPTED)
+	if (ex && ret == ACCEPTED && token_list->type != NEWLINE)
 		*exec = parse->exec_list;
 	else
 		clear_exec(&parse->exec_list);

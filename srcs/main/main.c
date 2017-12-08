@@ -43,7 +43,7 @@ static void	start_process(t_bsh *bsh, int mode)
 			ft_printf("Missing quotes or end of input is an operator\n");
 	}
 	add_cmd_to_history(bsh);
-	(ret == ACCEPTED) ? execution(bsh) : 0;
+	(ret == ACCEPTED && bsh->exec) ? execution(bsh) : 0;
 }
 
 static void	file_mode(t_bsh *bsh, char **argv)

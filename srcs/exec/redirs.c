@@ -22,6 +22,11 @@ int		redir_great(t_redir *redir)
 		return (1);
 	if ((fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644)) < 0)
 		return (1);
+	if (redir->fd > 1023)
+	{
+		ft_putendl_fd("bsh : Bad file descriptor", STDERR);
+		return (1);
+	}
 	if (dup2(fd, redir->fd) < 0)
 	{
 		ft_putendl_fd("dup2 failed\n", STDERR);
