@@ -37,3 +37,7 @@ Ctrl + F : copy the selected part of the input
 Ctrl + E : Paste the copied buffer
 
 Ctrl + X : Cut the selected part of the input
+
+## Complete report of the project
+
+
