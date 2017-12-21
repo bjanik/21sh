@@ -8,6 +8,7 @@ Grade : 125/100
           Line editing;
           Redirections : >, >>, >&, <, <<, <&;
           Pipes;
-          Builtin : env [-iu], setenv [name=value] ..., unsetenv [name] ..., echo [-n] [args]...
+          Builtin : env, setenv, unsetenv, echo, cd
           
-     
+ ## Line editing
+          
