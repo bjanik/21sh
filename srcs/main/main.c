@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/21 16:12:49 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/21 16:18:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	start_process(t_bsh *bsh)
 	(ret == ACCEPTED && bsh->exec) ? execution(bsh) : 0;
 }
 
-static void	file_mode(t_bsh *bsh)
+static void	file_input(t_bsh *bsh)
 {
 	int		len;
 	char	*line;
@@ -57,7 +57,7 @@ static void	file_mode(t_bsh *bsh)
 		len = ft_strlen(line);
 		ft_strcpy(bsh->input->buffer, line);
 		bsh->input->buffer[len] = '\n';
-		start_process(bsh, FILE_MODE);
+		start_process(bsh);
 		ft_bzero(bsh->input->buffer, len + 1);
 		clear_token_list(&bsh->tokens[0]);
 		clear_exec(&(bsh->exec));
@@ -73,7 +73,7 @@ int			main(int argc, char **argv, char **environ)
 	(void)argv;
 	bsh = shell_init(environ);
 	if (!(bsh->interactive = isatty(STDIN)))
-		file_mode(bsh);
+		file_input(bsh);
 	else
 	{
 		init_termcaps(bsh->term);
@@ -84,7 +84,7 @@ int			main(int argc, char **argv, char **environ)
 			bsh->input->buffer_len = 0;
 			print_prompt(bsh->term, BOLD_CYAN);
 			wait_for_input(bsh->input, REGULAR_INPUT);
-			start_process(bsh, INTERACTIVE);
+			start_process(bsh);
 			clear_token_list(&bsh->tokens[0]);
 			clear_exec(&(bsh->exec));
 		}
