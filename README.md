@@ -65,7 +65,10 @@ Ctrl + X : Cut the selected part of the input
 #### Env
           env [-i] [name=value] ... [utility [argument]]
           
+                 
               [-u] [name] ... [utility [argument]]
+              
+              If i option is set, invoke utility with exactly the environment specified by the arguments; the  inherited environment shall be ignored completely.
               
 #### Export
           export [-n] [name=value] ...
