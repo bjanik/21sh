@@ -14,7 +14,6 @@ Grade : 125/100
  ## Line editing
  
 UP: Move up in command history
-
 DOWN: Move down in command history
 
 RIGHT: Move cursor to the right (standard AND selection mode)
@@ -78,6 +77,10 @@ Ctrl + X : Cut the selected part of the input
           history [-c]          
           If c option is set, deletes the current history.          
           Otherwise, display the numerotated current history.
+          
+### Echo
+          echo [-n] [args]
+          Display on standard output the arguments. If n option is not set, display a final newline.
 
 ## Expansion
 
