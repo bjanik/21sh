@@ -50,36 +50,36 @@ Ctrl + X : Cut the selected part of the input
 
 ## Builtins
 
-### Setenv
+#### Setenv
           setenv [name=value] ...
           
           If name exists, modify the value of name. Otherwise, appends a new variable name to the LOCAL environment.
           
-### Unsetenv          
+#### Unsetenv          
           unsetenv [name] ...
           
           Delete name from the environment.
           
           If name does not exist, goes to the next argument.
           
-### Env
+#### Env
           env [-i] [name=value] ... [utility [argument]]
           
               [-u] [name] ... [utility [argument]]
               
-### Export
+#### Export
           export [-n] [name=value] ...
           
           If n option is set, makes a GLOBAL environment variable a LOCAL environment variable.
           
           Otherwise, if name exists, changes the value of name and/or makes name GLOBAL, if it was previously LOCAL.
           
- ### Cd
+ #### Cd
           cd [arg]
           
           Changes the shell's working directory.
           
-### History
+#### History
 
           history [-c]
           
