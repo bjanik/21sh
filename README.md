@@ -12,6 +12,15 @@ Grade : 125/100
           Builtin : env, setenv, unsetenv, echo, cd
           
  ## Line editing
+ 
+UP: Move up in command history
+
+DOWN: Move down in command history
+
+RIGHT: Move cursor to the right (standard AND selection mode)
+
+LEFT: Move cursor to the left (standard AND selection mode)
+
 HOME : cursor goes at the beginnig of the line
 
 END : cursor goes at the end of the line
@@ -38,6 +47,5 @@ Ctrl + E : Paste the copied buffer
 
 Ctrl + X : Cut the selected part of the input
 
-## Complete report of the project
 
 
