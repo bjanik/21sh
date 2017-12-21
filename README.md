@@ -14,6 +14,7 @@ Grade : 125/100
  ## Line editing
  
 UP: Move up in command history
+
 DOWN: Move down in command history
 
 RIGHT: Move cursor to the right (standard AND selection mode)
@@ -34,9 +35,9 @@ Shift + UP : Move the cursor one line up
 
 Shift + DOWN : Move the cursor one line down
 
-Shift + LEFT : Move the cursor to the end of the previous word
+Shift + LEFT : Move the cursor to the end of the next word
 
-Shift + RIGHT : Move the cursor to the beginning of the next word
+Shift + RIGHT : Move the cursor to the beginning of the previous word
 
 Ctrl + A : switch to selection/standard mode
 
@@ -65,13 +66,13 @@ Ctrl + X : Cut the selected part of the input
               ited environment shall be ignored completely.
               
 #### Export
-          export [-n] [name=value] ...          
-          If n option is set, makes a GLOBAL environment variable a LOCAL environment variable.          
-          Otherwise, if name exists, changes the value of name and/or makes name GLOBAL, if it was previously LOCAL.
+          export [-n] [name[=value]] ...          
+          If n option is set, makes the GLOBAL environment variable [name] LOCAL environment variable.          
+          Otherwise, if name exists, changes the value of name. If it was previously LOCAL, makes it GLOBAL.
           
  #### Cd
           cd [arg]          
-          Changes the shell's working directory.
+          Changes the shell's working directory to arg. 
           
 #### History
           history [-c]          
@@ -80,15 +81,15 @@ Ctrl + X : Cut the selected part of the input
           
 ### Echo
           echo [-n] [args]
-          Display on standard output the arguments. If n option is not set, display a final newline.
+          Display on standard output the arguments. If n option is not set, display an additional  newline.
 
 ## Expansion
 #### Environment variables :
           if FOO=bar
-          Not single-quoted "$FOO" expands to "bar"
+          If not single-quoted, "$FOO" expands to "bar"
 
 #### Exit status:
-          "$?" expands to the last command exit status
+          If not single-quoted, "$?" expands to the last command exit status
 
 #### Process ID:
 
