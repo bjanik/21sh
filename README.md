@@ -48,4 +48,16 @@ Ctrl + E : Paste the copied buffer
 Ctrl + X : Cut the selected part of the input
 
 
+## Expansion
+
+Environment variables :
+if FOO=bar
+$FOO expands to bar
+
+Exit status:
+$? expands to the last command exit status
+
+Process id:
+$$ expands to the shell's PID
+
 
