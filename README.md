@@ -48,20 +48,38 @@ Ctrl + E : Paste the copied buffer
 Ctrl + X : Cut the selected part of the input
 
 
+## Builtins
+
+### Setenv
+          setenv [name=value] ...
+          
+          unsetenv [name]
+          
+          env [-i] [name=value] [utility [argument]]
+          
+              [-u] [name] ... [utility [argument]]
+              
+          
+              
+
+
 ## Expansion
 
 Environment variables :
 
 if FOO=bar
 
-$FOO expands to bar
+Not single-quoted "$FOO" expands to "bar"
+
 
 Exit status:
 
-$? expands to the last command exit status
+"$?" expands to the last command exit status
+
 
 Process id:
 
-$$ expands to the shell's PID
+"$$" expands to the shell's PID
 
 
+##
