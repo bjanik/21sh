@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:56:24 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 19:07:29 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/08 17:56:43 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void		unset_var(t_env **env, t_env **ptr, t_env *prev)
 {
 	if (*env == *ptr)
 	{
-		*env = (*env)->next;
-		free_env(ptr);
-		*ptr = *env;
+		*ptr = (*ptr)->next;
+		free_env(env);
+		*env = *ptr;
 	}
 	else if (!(*ptr)->next)
 	{
@@ -89,5 +89,6 @@ int			ft_unsetenv(t_env **env, char **args)
 		}
 		i++;
 	}
+	get_bsh()->env = *env;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 15:00:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/07 13:45:19 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 12:22:40 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,14 @@ static int	exec_search_in_env_path(char **cmd, t_env *env, char **env_tab)
 	int		i;
 
 	i = -1;
+	if (cmd[0][0] == '\0')
+		return (COMMAND_NOT_FOUND);
 	paths = get_cmd_path(env);
-	if (!paths)
+	if (!paths && !ft_getenv(env, "PATH") &&
+			IS_OPTION(get_bsh()->env_options, 'i'))
 		paths = ft_strsplit(BACK_UP_PATH, ':');
+	if (!paths)
+		return (COMMAND_NOT_FOUND);
 	ret = 0;
 	while (paths[++i])
 	{

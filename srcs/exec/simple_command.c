@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/23 16:32:52 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 13:13:10 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 13:04:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ static void	fork_and_exec(t_bsh *bsh, t_exec *exec, int offset)
 	if (!g_pid)
 		run_binary(exec, (bsh->mod_env || IS_OPTION(bsh->env_options, 'i')) ?
 					bsh->mod_env : bsh->env, offset);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGWINCH, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	reset_signals();
 	(exec->is_builtin == -1) ? waitpid(g_pid, &bsh->exit_status, 0) : 0;
 	bsh->env_index = -1;
 	clear_env(&bsh->mod_env);

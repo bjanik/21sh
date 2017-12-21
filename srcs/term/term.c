@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:55:29 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/07 14:41:16 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/21 14:53:29 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int					init_termcaps(t_term *term)
 {
 	char			*termtype;
 
-	if (!isatty(STDIN))
-		ft_error_msg("$TERM isn't a tty\n");
 	if (!(termtype = ft_getenv(get_bsh()->env, "TERM")->var_value))
 		ft_error_msg("Missing $TERM variable");
 	if (tgetent(NULL, termtype) < 1)
@@ -62,7 +60,7 @@ t_term				*init_term(void)
 	t_term			*term;
 
 	if (!(term = (t_term*)malloc(sizeof(t_term))))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Malloc term failed\n");
 	term->prompt_len = 0;
 	term->cursor_row = 0;
 	term->cursor_col = 0;

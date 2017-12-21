@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 13:38:26 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 12:58:08 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 13:08:59 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@ void	set_signals(void)
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
-	signal(SIGPIPE, SIG_DFL);
+}
+
+void	reset_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGWINCH, SIG_IGN);
 }
 
 void	winsize_change(int signum)

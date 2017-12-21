@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/05 14:56:16 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 18:08:16 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 13:17:22 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*get_pw_dir(void)
 	struct passwd	*pw;
 
 	if (!(pw = (struct passwd*)getpwuid(getuid())))
-		exit(EXIT_FAILURE);
+		ft_error_msg("Getpwuid failed\n");
 	return (pw->pw_dir);
 }
 
@@ -50,7 +50,7 @@ t_history	*init_history(void)
 	t_history	*history;
 
 	if (!(history = (t_history*)malloc(sizeof(t_history))))
-		return (NULL);
+		ft_error_msg("Malloc failed\n");
 	history->head = NULL;
 	history->end = NULL;
 	history->current = NULL;
@@ -60,7 +60,7 @@ t_history	*init_history(void)
 		exit(EXIT_FAILURE);
 	if ((history->fd = open(history->hist_file, O_CREAT | O_RDWR | O_APPEND,
 					0644)) < 0)
-		exit(EXIT_FAILURE);
+		ft_error_msg("Open failed\n");
 	import_history_from_file(history);
 	close(history->fd);
 	return (history);

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/16 14:35:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/07 15:54:20 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/21 14:56:21 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static t_bsh		*init_bsh(void)
 	bsh->tokens[1] = NULL;
 	bsh->pipes = init_pipes();
 	bsh->pid = getpid();
-	bsh->back_up_fds = NULL;
 	bsh->exit_status = 0;
 	bsh->shell_name = "-bsh";
 	bsh->env_index = -1;
@@ -84,7 +83,8 @@ t_bsh				*shell_init(char **environ)
 	bsh->exp = init_expander(bsh->env);
 	update_shlvl(&bsh->env);
 	update_shell_name(&bsh->env);
-	set_var(&bsh->env, "TERM=xterm-256color", LOCAL_VAR);
+	if (!ft_getenv(bsh->env, "TERM"))
+		set_var(&bsh->env, "TERM=xterm", LOCAL_VAR);
 	set_signals();
 	return (bsh);
 }

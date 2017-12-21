@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/07 15:55:25 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/21 15:05:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,18 @@ static void	start_process(t_bsh *bsh, int mode)
 	(ret == ACCEPTED && bsh->exec) ? execution(bsh) : 0;
 }
 
-static void	file_mode(t_bsh *bsh, char **argv)
+static void	file_mode(t_bsh *bsh)
 {
 	int		len;
 	char	*line;
-	int		fd;
 
 	len = 0;
-	if (access(argv[1], F_OK))
+	/*if (access(argv[1], F_OK))
 		exit(ft_no_file_msg(argv[1]));
 	else if (access(argv[1], R_OK))
 		exit(ft_perm_denied_msg(argv[1]));
-	fd = open(argv[1], O_RDONLY, 0644);
-	while (get_next_line(fd, &line) > 0)
+	fd = open(argv[1], O_RDONLY, 0644);*/
+	while (get_next_line(STDIN, &line) > 0)
 	{
 		len = ft_strlen(line);
 		ft_strcpy(bsh->input->buffer, line);
@@ -75,12 +74,14 @@ int			main(int argc, char **argv, char **environ)
 {
 	t_bsh	*bsh;
 
+	(void)argc;
+	(void)argv;
 	bsh = shell_init(environ);
-	init_termcaps(bsh->term);
-	if (argc > 1)
-		file_mode(bsh, argv);
+	if (!(bsh->interactive = isatty(STDIN)))
+		file_mode(bsh);
 	else
 	{
+		init_termcaps(bsh->term);
 		while (42)
 		{
 			ft_bzero(bsh->input->buffer, bsh->input->buffer_len);
@@ -93,6 +94,6 @@ int			main(int argc, char **argv, char **environ)
 			clear_exec(&(bsh->exec));
 		}
 	}
-	restore_initial_attr(bsh->term);
+	(bsh->interactive) ? restore_initial_attr(bsh->term) : 0;
 	return (0);
 }

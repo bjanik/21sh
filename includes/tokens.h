@@ -6,12 +6,12 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:58:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 19:28:38 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 14:36:17 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOOLS_H
-# define TOOLS_H
+#ifndef TOKENS_H
+# define TOKENS_H
 
 # define WORD 0
 # define NEWLINE 1
@@ -27,22 +27,6 @@
 # define SEMI 11
 # define AND 12
 # define PIPE 13
-
-/*enum e_tokens {
-				DGREAT,
-				DLESS,
-				GREAT,
-				LESS,
-				AND_IF,
-				OR_IF,
-				PIPE,
-				LESS_AND,
-				GREAT_AND,
-				SEMI,
-				NEWLINE,
-				IO_NUMBER,
-				WORD,
-};*/
 
 typedef struct		s_token
 {

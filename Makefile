@@ -2,13 +2,13 @@ NAME = 21sh
 
 CC = gcc
 
-FLAGS = -Wall -Wextra
+FLAGS = -g -Wall -Wextra -Werror
 
 LIBFT  = libft/
 
 LIB = libft/libft.a
 
-HEADERS = includes
+HEADERS = includes/
 
 SRC_PATH = srcs/
 OBJ_PATH = obj/
@@ -110,7 +110,7 @@ $(OBJ_PATH) :
 	@mkdir -p $(OBJ_PATH)
 	@mkdir -p $(dir $(OBJ))
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c 
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	$(CC) $(FLAGS) -I$(HEADERS) -I$(LIBFT)includes -c $< -o $@
 
 clean :

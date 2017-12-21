@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 18:42:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/28 12:35:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 13:44:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ t_redir		*init_redir(void)
 	redir->here_end = NULL;
 	redir->heredoc_input[0] = NULL;
 	redir->heredoc_input[1] = NULL;
-	redir->fd = STDOUT;
+	redir->fd = -1;
 	return (redir);
 }

@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 14:39:25 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 18:20:47 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 12:06:35 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,20 @@ static int	del_newline_token(t_lexer *lexer, t_token *tokens[], t_input *input)
 	{
 		if (tk == NULL)
 		{
-			ft_strdel(&tokens[0]->token);
-			ft_memdel((void**)&tokens[0]);
+			clear_token(&tokens[0]);
 			tokens[0] = lexer->token_list[0];
 			tokens[1] = lexer->token_list[1];
 			return (0);
 		}
 		tk->next = lexer->token_list[0];
 		lexer->token_list[0]->prev = tk;
-		ft_strdel(&tokens[1]->token);
-		ft_memdel((void**)&tokens[1]);
+		clear_token(&tokens[1]);
 		tokens[1] = lexer->token_list[1];
 		return (0);
 	}
 	lexer->state = STD;
 	tk->next = NULL;
-	ft_strdel(&tokens[1]->token);
-	ft_memdel((void**)&tokens[1]);
+	clear_token(&tokens[1]);
 	tokens[1] = tk;
 	input->buffer[--input->buffer_len] = '\0';
 	return (0);

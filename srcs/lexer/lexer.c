@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:22:54 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/14 15:40:20 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 13:02:06 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_transition		g_lexer[MAX_STATE][MAX_EVENT] = {
 	{{STD, skip_char},
 		{DQUOTE, append_char},
 		{QUOTE, append_char},
-		{BQUOTE, append_char},
 		{STD, append_char},
 		{STD, NULL},
 		{NWLINE, NULL},
@@ -49,7 +48,6 @@ t_transition		g_lexer[MAX_STATE][MAX_EVENT] = {
 
 	{{DQUOTE, append_char},
 		{STD, append_char},
-		{DQUOTE, append_char},
 		{DQUOTE, append_char},
 		{DQUOTE, append_char},
 		{DQUOTE, append_char},
@@ -66,24 +64,11 @@ t_transition		g_lexer[MAX_STATE][MAX_EVENT] = {
 		{QUOTE, append_char},
 		{QUOTE, append_char},
 		{QUOTE, append_char},
-		{QUOTE, append_char},
 		{QUOTE, append_char}},
-
-	{{STD, NULL},
-		{DQUOTE, append_char},
-		{QUOTE, append_char},
-		{BQUOTE, NULL},
-		{STD, append_char},
-		{STD, append_char},
-		{STD, append_char},
-		{NWLINE, append_char},
-		{COMMENT, NULL},
-		{STD, handle_backslash}},
 
 	{{STD, append_char},
 		{DQUOTE, append_char},
 		{QUOTE, append_char},
-		{STD, append_char},
 		{STD, get_operator},
 		{STD, delimitate_token},
 		{NWLINE, end_of_input},
@@ -99,11 +84,9 @@ t_transition		g_lexer[MAX_STATE][MAX_EVENT] = {
 		{NWLINE, NULL},
 		{NWLINE, NULL},
 		{NWLINE, NULL},
-		{NWLINE, NULL},
 		{NWLINE, NULL}},
 
 	{{COMMENT, NULL},
-		{COMMENT, skip_char},
 		{COMMENT, skip_char},
 		{COMMENT, skip_char},
 		{COMMENT, skip_char},

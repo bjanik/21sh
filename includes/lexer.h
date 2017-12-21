@@ -6,15 +6,13 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:46:10 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/01 11:49:46 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 13:01:22 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
-# include "libft.h"
-# include "tools.h"
-
+# include "tokens.h"
 # define INITIAL_TOKEN_SIZE 512
 # define MAX_TOKENS 14
 # define MAX_OP_CHAR 5
@@ -24,7 +22,6 @@ enum		e_state
 	INIT,
 	DQUOTE,
 	QUOTE,
-	BQUOTE,
 	STD,
 	NWLINE,
 	COMMENT,
@@ -36,7 +33,6 @@ enum		e_event
 	START,
 	EV_DQUOTE,
 	EV_QUOTE,
-	EV_BQUOTE,
 	EV_OP_CHAR,
 	EV_BLANK,
 	EV_NEWLINE,

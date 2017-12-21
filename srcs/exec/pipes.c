@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 16:40:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/24 13:47:32 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 12:08:47 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,5 @@ void	connect_processes_pipes(t_pipes *pipes, int i)
 	{
 		if (dup2(pipes->pipes_fd[i - 1][READ], STDIN) < 0)
 			ft_error_msg("Dup2 failed\n");
-	}
-}
-
-void	close_pipes_fds(t_pipes *pipes)
-{
-	int	i;
-
-	i = -1;
-	while (++i < pipes->nb_pipes)
-	{
-		close(pipes->pipes_fd[i][READ]);
-		close(pipes->pipes_fd[i][WRITE]);
 	}
 }

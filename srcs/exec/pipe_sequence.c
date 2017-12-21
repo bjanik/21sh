@@ -6,13 +6,25 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 15:08:24 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 13:42:48 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 12:56:09 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
 
-static void	pipes_loop(t_bsh *bsh, t_exec **exec, int pid[], int *k)
+static void	close_pipes_fds(t_pipes *pipes)
+{
+	int	i;
+
+	i = -1;
+	while (++i < pipes->nb_pipes)
+	{
+		close(pipes->pipes_fd[i][READ]);
+		close(pipes->pipes_fd[i][WRITE]);
+	}
+}
+
+static void	pipes_loop(t_bsh *bsh, t_exec **exec, int *pid, int *k)
 {
 	int	i;
 
@@ -43,18 +55,21 @@ static void	pipes_loop(t_bsh *bsh, t_exec **exec, int pid[], int *k)
 void		pipe_sequence(t_exec **exec, t_pipes *pipes)
 {
 	int		i;
-	int		pid[10000];
+	int		*pid;
 	int		k;
 	t_bsh	*bsh;
 
 	bsh = get_bsh();
 	k = 0;
 	create_pipes(pipes);
+	if (!(pid = (int*)malloc((pipes->nb_pipes + 1) * sizeof(int))))
+		ft_error_msg("Malloc failed\n");
 	pipes_loop(bsh, exec, pid, &k);
 	close_pipes_fds(bsh->pipes);
-	signal(SIGINT, SIG_IGN);
+	reset_signals();
 	i = 0;
 	while (i <= k)
 		waitpid(pid[i++], &bsh->exit_status, 0);
-	signal(SIGINT, sigint_handler);
+	set_signals();
+	ft_memdel((void**)&pid);
 }

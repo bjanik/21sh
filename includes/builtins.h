@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 18:33:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/27 12:48:48 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 15:03:08 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "errno.h"
 
 # define IS_OPTION(x, y) ft_strchr(x, y)
-# define EXPORT_OPTIONS "np"
-# define HISTORY_OPTIONS "canw"
+# define EXPORT_OPTIONS "n"
+# define HISTORY_OPTIONS "c"
 # define LOCAL_VAR 0
 # define EXPORT_VAR 1
 
@@ -57,15 +57,4 @@ int					ft_history(t_env **env, char **cmd);
 
 char				check_arg_opt(char *arg_opt, char *avail_opt, char *opts);
 
-/*static t_builtins	g_builtins[] = {
-	{"cd", ft_cd},
-	{"echo", ft_echo},
-	{"env", ft_env},
-	{"setenv", ft_setenv},
-	{"unsetenv", ft_unsetenv},
-	{"export", ft_export},
-	{"history", ft_history},
-	{"exit", ft_exit},
-	{NULL, NULL},
-};*/
 #endif

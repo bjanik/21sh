@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 18:43:22 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 18:52:09 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/08 17:24:43 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void	get_env_variable(t_expander *exp, char *s)
 	int		len;
 
 	len = 0;
-	while (ft_isdigit(*(s + len)) || ft_isalpha(*(s + len)))
+	while (ft_isdigit(*(s + len)) || ft_isalpha(*(s + len)) ||
+			*(s + len) == '_')
 		len++;
 	if (!len)
 	{

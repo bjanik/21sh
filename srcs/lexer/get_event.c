@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 15:17:02 by bjanik            #+#    #+#             */
-/*   Updated: 2017/10/19 15:59:09 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 13:00:38 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void		get_event(t_lexer *lexer)
 		lexer->event = EV_BACKSLASH;
 	else if (c == '\'')
 		lexer->event = EV_QUOTE;
-	else if (c == '`')
-		lexer->event = EV_BQUOTE;
 	else if (ft_strchr(g_op_char, c))
 		lexer->event = EV_OP_CHAR;
 	else if (c == '\n')

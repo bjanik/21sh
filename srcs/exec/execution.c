@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/27 15:50:33 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/07 15:53:54 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/21 15:03:58 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,22 @@ extern const t_builtins	g_builtins[];
 int			run_builtin(t_exec *exec, int offset)
 {
 	t_bsh	*bsh;
-	t_env	*e;
 
 	bsh = get_bsh();
-	e = (bsh->mod_env) ? bsh->mod_env : bsh->env;
 	if (handle_redirection(exec))
 	{
 		bsh->exit_status = 1;
 		return (1);
 	}
 	if (exec->cmd + offset)
-		return (g_builtins[exec->is_builtin].builtin(&e, exec->cmd + offset));
+	{
+		if (bsh->mod_env)
+			return (g_builtins[exec->is_builtin].builtin(&bsh->mod_env,
+						exec->cmd + offset));
+		else
+			return (g_builtins[exec->is_builtin].builtin(&bsh->env,
+						exec->cmd + offset));
+	}
 	return (0);
 }
 
@@ -63,6 +68,17 @@ t_exec		*go_to_next_command(t_bsh *bsh, t_exec *exec)
 	return (exec);
 }
 
+static void	clear_pipes(t_pipes *pipes)
+{
+	int		i;
+
+	i = -1;
+	while (++i < pipes->nb_pipes)
+		ft_memdel((void**)&(pipes->pipes_fd[i]));
+	ft_memdel((void**)pipes);
+	pipes->nb_pipes = 0;
+}
+
 void		execution(t_bsh *bsh)
 {
 	t_exec	*exec;
@@ -70,7 +86,7 @@ void		execution(t_bsh *bsh)
 	exec = bsh->exec;
 	if (handle_heredocs(bsh->exec) == CATCH_SIGINT)
 		return ;
-	restore_initial_attr(bsh->term);
+	(bsh->interactive) ? restore_initial_attr(bsh->term) : 0;
 	while (exec)
 	{
 		if (get_pipes_fd(exec, bsh->pipes))
@@ -83,5 +99,5 @@ void		execution(t_bsh *bsh)
 		(exec->is_builtin < 0) ? get_exit_status(bsh, exec) : 0;
 		exec = go_to_next_command(bsh, exec);
 	}
-	restore_custom_attr(bsh->term);
+	(bsh->interactive) ? restore_custom_attr(bsh->term) : 0;
 }

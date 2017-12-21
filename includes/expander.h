@@ -6,15 +6,12 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 17:13:23 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/07 12:10:10 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/08 15:49:04 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
-# include "tools.h"
-# include "history.h"
-# include "builtins.h"
 # define INITIAL_SIZE 4096
 
 enum			e_state1

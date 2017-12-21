@@ -6,17 +6,14 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:58:09 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/16 11:40:19 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 11:52:55 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TERM_H
 # define TERM_H
-# include "libft.h"
 # include "term.h"
 # include "termios.h"
-# include "termcap.h"
-# include "input.h"
 # define MAX_PROMPT_SIZE 256
 
 typedef struct termios	t_termios;

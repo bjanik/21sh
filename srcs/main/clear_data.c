@@ -6,11 +6,17 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 16:04:13 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/04 19:24:24 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 12:08:01 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bsh.h"
+
+void		clear_token(t_token **token)
+{
+	ft_strdel(&(*token)->token);
+	ft_memdel((void**)token);
+}
 
 void		clear_token_list(t_token **token)
 {
@@ -32,17 +38,6 @@ void		del(void *content, size_t size)
 {
 	(void)size;
 	ft_memdel(&content);
-}
-
-void		clear_pipes(t_pipes *pipes)
-{
-	int		i;
-
-	i = -1;
-	while (++i < pipes->nb_pipes)
-		ft_memdel((void**)&(pipes->pipes_fd[i]));
-	ft_memdel((void**)pipes);
-	pipes->nb_pipes = 0;
 }
 
 static void	clear_redir(t_redir **redir)

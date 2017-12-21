@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 15:49:12 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/25 15:50:22 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/09 15:04:32 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			ft_export(t_env **env, char **cmd)
 			ft_putendl_fd("bsh: export: `-': not a valid identifier", STDERR);
 			return (1);
 		}
-		if ((wrong_opt = check_arg_opt(cmd[i] + 1, "np", options)))
+		if ((wrong_opt = check_arg_opt(cmd[i] + 1, EXPORT_OPTIONS, options)))
 			return (export_usage(wrong_opt));
 	}
 	if (IS_OPTION(options, 'n'))

@@ -6,14 +6,14 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:57 by bjanik            #+#    #+#             */
-/*   Updated: 2017/11/23 12:29:59 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/08 15:50:42 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 # include "libft.h"
-# include "tools.h"
+# include "tokens.h"
 # include "input.h"
 # include "lexer.h"
 # include "exec.h"

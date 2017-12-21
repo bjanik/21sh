@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 17:57:19 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/07 15:42:12 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/21 14:52:44 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ typedef struct	s_bsh
 	t_expander	*exp;
 	pid_t		pid;
 	t_pipes		*pipes;
+	short int	interactive;
 	int			exit_status;
 	char		*shell_name;
-	t_list		*back_up_fds;
 	int			saved_fds[3];
 	int			env_index;
 	char		env_options[3];
@@ -68,9 +68,11 @@ t_bsh			*get_bsh(void);
 t_bsh			*shell_init(char **environ);
 void			clear_exec(t_exec **exec);
 void			clear_token_list(t_token **token);
+void			clear_token(t_token **token);
 void			del(void *content, size_t size);
 int				handle_unclosed_quotes(t_lexer *lexer, t_input *input, int *ret,
 				t_token *tokens[]);
+int				handle_unexpected_eof(t_input *input, t_token **token);
 int				wait_for_input(t_input *input, int input_type);
 void			execution(t_bsh *bsh);
 int				ft_perm_denied_msg(char *file);
@@ -81,6 +83,7 @@ int				check_access_exist(char *file);
 int				check_access_writing(char *file);
 int				check_access_reading(char *file);
 void			set_signals(void);
+void			reset_signals();
 void			winsize_change(int signum);
 void			sigint_handler(int signum);
 void			save_history_to_hist_file(void);
