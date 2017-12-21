@@ -90,21 +90,18 @@ Ctrl + X : Cut the selected part of the input
 
 ## Expansion
 
-Environment variables :
+#### Environment variables :
 
-if FOO=bar
+          if FOO=bar
 
-Not single-quoted "$FOO" expands to "bar"
-
-
-Exit status:
-
-"$?" expands to the last command exit status
+          Not single-quoted "$FOO" expands to "bar"
 
 
-Process id:
+#### Exit status:
 
-"$$" expands to the shell's PID
+          "$?" expands to the last command exit status
 
 
-##
+#### Process ID:
+
+          "$$" expands to the shell's PID
