@@ -51,8 +51,7 @@ Ctrl + X : Cut the selected part of the input
 ## Builtins
 
 #### Setenv
-          setenv [name=value] ...
-          
+          setenv [name=value] ...          
           If name exists, modify the value of name. Otherwise, appends a new variable name to the LOCAL environment.
           
 #### Unsetenv          
@@ -61,47 +60,35 @@ Ctrl + X : Cut the selected part of the input
           If name does not exist, goes to the next argument.
           
 #### Env
-          env [-i] [name=value] ... [utility [argument]]          
-                 
-              [-u] [name] ... [utility [argument]]
-              
+          env [-i] [name=value] ... [utility [argument]]                           
+              [-u] [name] ... [utility [argument]]              
               If i option is set, invoke utility with exactly the environment specified by the arguments; the  inher-
               ited environment shall be ignored completely.
               
 #### Export
-          export [-n] [name=value] ...
-          
-          If n option is set, makes a GLOBAL environment variable a LOCAL environment variable.
-          
+          export [-n] [name=value] ...          
+          If n option is set, makes a GLOBAL environment variable a LOCAL environment variable.          
           Otherwise, if name exists, changes the value of name and/or makes name GLOBAL, if it was previously LOCAL.
           
  #### Cd
-          cd [arg]
-          
+          cd [arg]          
           Changes the shell's working directory.
           
 #### History
-
-          history [-c]
-          
-          If c option is set, deletes the current history.
-          
+          history [-c]          
+          If c option is set, deletes the current history.          
           Otherwise, display the numerotated current history.
-
 
 ## Expansion
 
 #### Environment variables :
 
           if FOO=bar
-
           Not single-quoted "$FOO" expands to "bar"
-
 
 #### Exit status:
 
           "$?" expands to the last command exit status
-
 
 #### Process ID:
 
