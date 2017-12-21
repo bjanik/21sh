@@ -67,8 +67,25 @@ Ctrl + X : Cut the selected part of the input
           
               [-u] [name] ... [utility [argument]]
               
+### Export
+          export [-n] [name=value] ...
           
-              
+          If n option is set, makes a GLOBAL environment variable a LOCAL environment variable.
+          
+          Otherwise, if name exists, changes the value of name and/or makes name GLOBAL, if it was previously LOCAL.
+          
+ ### Cd
+          cd [arg]
+          
+          Changes the shell's working directory.
+          
+### History
+
+          history [-c]
+          
+          If c option is set, deletes the current history.
+          
+          Otherwise, display the numerotated current history.
 
 
 ## Expansion
