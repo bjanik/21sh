@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/21 15:05:08 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/21 16:12:49 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	connect_tokens(t_bsh *bsh)
 	bsh->lexer->token_list[1] = NULL;
 }
 
-static void	start_process(t_bsh *bsh, int mode)
+static void	start_process(t_bsh *bsh)
 {
 	int		ret;
 
@@ -30,7 +30,7 @@ static void	start_process(t_bsh *bsh, int mode)
 	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{
-		if (mode == INTERACTIVE)
+		if (bsh->interactive == INTERACTIVE)
 		{
 			if (handle_unclosed_quotes(bsh->lexer, bsh->input, &ret,
 						bsh->tokens) == CATCH_SIGINT)
@@ -52,11 +52,6 @@ static void	file_mode(t_bsh *bsh)
 	char	*line;
 
 	len = 0;
-	/*if (access(argv[1], F_OK))
-		exit(ft_no_file_msg(argv[1]));
-	else if (access(argv[1], R_OK))
-		exit(ft_perm_denied_msg(argv[1]));
-	fd = open(argv[1], O_RDONLY, 0644);*/
 	while (get_next_line(STDIN, &line) > 0)
 	{
 		len = ft_strlen(line);
