@@ -68,7 +68,8 @@ Ctrl + X : Cut the selected part of the input
                  
               [-u] [name] ... [utility [argument]]
               
-              If i option is set, invoke utility with exactly the environment specified by the arguments; the  inherited environment shall be ignored completely.
+              If i option is set, invoke utility with exactly the environment specified by the arguments; the  inher-
+              ited environment shall be ignored completely.
               
 #### Export
           export [-n] [name=value] ...
