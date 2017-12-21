@@ -53,9 +53,17 @@ Ctrl + X : Cut the selected part of the input
 ### Setenv
           setenv [name=value] ...
           
-          unsetenv [name]
+          If name exists, modify the value of name. Otherwise, appends a new variable name to the LOCAL environment.
           
-          env [-i] [name=value] [utility [argument]]
+### Unsetenv          
+          unsetenv [name] ...
+          
+          Delete name from the environment.
+          
+          If name does not exist, goes to the next argument.
+          
+### Env
+          env [-i] [name=value] ... [utility [argument]]
           
               [-u] [name] ... [utility [argument]]
               
