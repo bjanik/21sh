@@ -3,13 +3,20 @@ by bjanik
 
 Grade : 125/100
 
-21sh is the second 42's shell project.
+21sh is, after minishell, the second 42's shell project.
 
 ## Mandatory part :
           Line editing;
           Redirections : >, >>, >&, <, <<, <&;
           Pipes;
           Builtin : env, setenv, unsetenv, echo, cd
+          
+## Bonus features
+          History search
+          Builtin export and history
+          Expansions
+          Tokens AND_IF ('&&') and OR_IF ('||')
+          
           
  ## Line editing
  
@@ -64,6 +71,7 @@ Ctrl + X : Cut the selected part of the input
               [-u] [name] ... [utility [argument]]              
               If i option is set, invoke utility with exactly the environment specified by the arguments; the  inher-
               ited environment shall be ignored completely.
+              If u option is set, invoke utility with a modified environment resulting of the deletion of [name] variables
               
 #### Export
           export [-n] [name[=value]] ...          
