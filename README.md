@@ -15,7 +15,7 @@ Grade : 125/100
           History search
           Builtin export and history
           Expansions
-          Tokens AND_IF ('&&') and OR_IF ('||')
+          Logical operators AND_IF ('&&') and OR_IF ('||')
           
           
  ## Line editing
