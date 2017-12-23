@@ -88,7 +88,7 @@ Ctrl + X : Cut the selected part of the input
           Otherwise, display the numerotated current history.
           
 ### Echo
-          echo [-n] [args]
+          echo [-n] [args] ...
           Display on standard output the arguments. If n option is not set, display an additional  newline.
 
 ## Expansion
