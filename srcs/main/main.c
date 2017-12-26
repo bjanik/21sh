@@ -6,7 +6,7 @@
 /*   By: bjanik <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 20:15:06 by bjanik            #+#    #+#             */
-/*   Updated: 2017/12/21 16:18:38 by bjanik           ###   ########.fr       */
+/*   Updated: 2017/12/26 17:20:45 by bjanik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	start_process(t_bsh *bsh)
 	ret = parser(&(bsh->exec), bsh->tokens[0], SAVE_EXEC);
 	if (ret == UNCLOSED_QUOTES || ret == END_IS_OP)
 	{
-		if (bsh->interactive == INTERACTIVE)
+		if (bsh->interactive)
 		{
 			if (handle_unclosed_quotes(bsh->lexer, bsh->input, &ret,
 						bsh->tokens) == CATCH_SIGINT)
